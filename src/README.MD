@@ -1,5 +1,3 @@
-# LightZen
-
 modules文件夹这里面的每一个控件可以单独打开，可以使用。
 #由于这个控件采用的是jQuery，所以需要讲原有框架中的Store.data的部分换成jQuery的obj.data,这个需要特别注意
 #当然也可以查看框架的模块划定，module的template部分，css部分，js部分和页面的html，css，js相分离，更加方便构建大型应用

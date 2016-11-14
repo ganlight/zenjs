@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="http://cdn.bootcss.com/jquery/1.12.2/jquery.min.js" type="text/javascript"></script>
+    <style>
+        .c-multi-select {
+            position: relative;
+            display: inline-block;
+            min-width: 160px;
+            vertical-align: bottom;
+        }
+
+        .c-multi-select .select-area {
+            line-height: 30px;
+            height: 30px;
+            padding: 0 10px;
+            color: gray;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            overflow: hidden;
+        }
+
+        .c-multi-select .select-list {
+            display: none;
+            position: absolute;
+            width: 100%;
+            top: 32px;
+            left: 0;
+            z-index: 100;
+            max-height: 200px;
+            text-align: center;
+            background-color: #FFF;
+        }
+
+        .c-multi-select:hover .select-list {
+            display: block;
+            width: 100%;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+
+        .c-multi-select .select-list>div {
+            line-height: 30px;
+            border-bottom: 1px solid #ccc;
+            background-color: #FFF;
+        }
+
+        .c-multi-select .select-list>div:last-child {
+            border: none;
+        }
+
+        .c-multi-select .select-list>div.selected {
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>
+            <span class="label-txt">多选择1：</span>
+            <div class="c-multi-select w160" id="m-type">
+                <div class="select-area">请选择</div>
+                <div class="select-list">
+                    <div class="select-item" data-value="">全部</div>
+                </div>
+            </div>
+        </li>
+        <br>
+        <li>
+            <span class="label-txt">多选择2：</span>
+            <div class="c-multi-select w160" id="m-status">
+                <div class="select-area">请选择</div>
+                <div class="select-list">
+                    <div class="select-item" data-value="">全部</div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</body>
+<script type="text/javascript">
+    var MultiSelect = function(config) {
+        if (config && config.ele && config.data) {
+            this.ele = $("#" + config.ele);
+            this.data = config.data;
+            this.para = "";
+            this.rend(config.data);
+            this.bind();
+        }
+        return this;
+    }
+
+    MultiSelect.prototype = {
+        rend: function(data) {
+            var _this = this;
+            var parent = _this.ele.find(".select-list");
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var clone = $("<div>").addClass("select-item");
+                clone.data(item);
+                clone.attr("data-value", item.value).text(item.name);
+                // MultiSelect.bind(clone);
+                parent.append(clone);
+            }
+        },
+        bind: function() {
+            var _this = this;
+            this.ele.find(".select-item").click(function() {
+                var $this = $(this);
+                if (!$this.attr("data-value")) {
+                    _this.ele.find(".select-item").removeClass("selected");
+                } else {
+                    _this.ele.find(".select-item").eq(0).removeClass("selected");
+                }
+                $this.toggleClass("selected");
+                _this.rendValue();
+            });
+        },
+        rendValue: function() {
+            var _this = this;
+            var parent = _this.ele.find(".select-list");
+            var value = "";
+            var name = "";
+            parent.find(".selected").each(function() {
+                var $this = $(this);
+                if ($this.attr("data-value")) {
+                    if (value == "") {
+                        value += $this.attr("data-value");
+                        name += $this.text();
+                    } else {
+                        value += "," + $this.attr("data-value");
+                        name += "," + $this.text();
+                    }
+                }
+            });
+            if (value == "") {
+                name = "请选择";
+            }
+            _this.ele.find(".select-area").text(name);
+            _this.ele.attr("data-value", value);
+            _this.para = value;
+        }
+    }
+
+    var MultiSelectSimple = {
+        ele: null,
+        data: null,
+        para: null,
+        init: function(config) {
+            if (config && config.ele && config.data) {
+                this.ele = $("#" + config.ele);
+                this.data = config.data;
+                this.rend(config.data);
+                this.bind();
+            }
+        },
+        rend: function(data) {
+            var parent = MultiSelect.ele.find(".select-list");
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var clone = $("<div>").addClass("select-item");
+                clone.data(item);
+                clone.attr("data-value", item.value).text(item.name);
+                // MultiSelect.bind(clone);
+                parent.append(clone);
+            }
+        },
+        bind: function() {
+            this.ele.find(".select-item").click(function() {
+                var _this = $(this);
+                if (!_this.attr("data-value")) {
+                    MultiSelect.ele.find(".select-item").removeClass("selected");
+                } else {
+                    MultiSelect.ele.find(".select-item").eq(0).removeClass("selected");
+                }
+                _this.toggleClass("selected");
+                MultiSelect.rendValue();
+            });
+        },
+        rendValue: function() {
+            var parent = MultiSelect.ele.find(".select-list");
+            var value = "";
+            var name = "";
+            parent.find(".selected").each(function() {
+                var _this = $(this);
+                if (_this.attr("data-value")) {
+                    if (value == "") {
+                        value += _this.attr("data-value");
+                        name += _this.text();
+                    } else {
+                        value += "," + _this.attr("data-value");
+                        name += "," + _this.text();
+                    }
+                }
+            });
+            if (value == "") {
+                name = "请选择";
+            }
+            MultiSelect.ele.find(".select-area").text(name);
+            MultiSelect.ele.attr("data-value", value);
+            MultiSelect.para = value;
+        }
+    }
+
+    var multi_type, multi_status;
+    $(document).ready(function() {
+        var config_type = {
+            ele: "m-type",
+            data: [{
+                name: "例子1",
+                value: "33"
+            }, {
+                name: "例子2",
+                value: "34"
+            }, {
+                name: "例子3",
+                value: "35"
+            }, {
+                name: "例子1",
+                value: "33"
+            }, {
+                name: "例子2",
+                value: "34"
+            }, {
+                name: "例子3",
+                value: "35"
+            }, {
+                name: "例子1",
+                value: "33"
+            }, {
+                name: "例子2",
+                value: "34"
+            }, {
+                name: "例子3",
+                value: "35"
+            }]
+        }
+        var config_status = {
+            ele: "m-status",
+            data: [{
+                name: "状态1",
+                value: "33"
+            }, {
+                name: "状态2",
+                value: "34"
+            }, {
+                name: "状态3",
+                value: "35"
+            }]
+        }
+        multi_type = new MultiSelect(config_type);
+        multi_status = new MultiSelect(config_status);
+        //MultiSelect.para
+    });
+</script>
+
+</html>

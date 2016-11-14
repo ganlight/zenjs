@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="http://cdn.bootcss.com/jquery/1.12.2/jquery.min.js" type="text/javascript"></script>
+    <style>
+        .toggle-item {
+            font-size: 14px;
+            display: inline-block;
+            line-height: 40px;
+            text-align: center;
+            width: 100px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>
+            <div class="" id="m-type">
+                <div class="c-toggle-group">
+                    <div class="group-area" data-type="selected">
+                        <span class="group-name">已选中</span>
+                        <div class="toggle-list">
+
+                        </div>
+                    </div>
+                    <div class="group-area" data-type="none">
+                        <span class="group-name">未选中</span>
+                        <div class="toggle-list">
+
+                        </div>
+                    </div>
+                    <div class="template-area hide">
+                        <span class="toggle-item"></span>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <br>
+        <li>
+            <div class="" id="m-status">
+                <div class="c-toggle-group">
+                    <div class="group-area" data-type="selected">
+                        <span class="group-name">已选中</span>
+                        <div class="toggle-list">
+
+                        </div>
+                    </div>
+                    <div class="group-area" data-type="none">
+                        <span class="group-name">未选中</span>
+                        <div class="toggle-list">
+
+                        </div>
+                    </div>
+                    <div class="template-area hide">
+                        <span class="toggle-item"></span>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</body>
+<script type="text/javascript">
+    var ToggleGroup = function(config) {
+        this.ele = $("#" + config.ele);
+        this.data = config.data;
+        this.para = "";
+        this.addAction = config.addAction;
+        this.delAction = config.delAction;
+        this.rend(config.data);
+        this.bind();
+    }
+    ToggleGroup.prototype = {
+        rend: function(data) {
+            var self = this;
+            var parent = self.ele;
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var clone = parent.find(".template-area .toggle-item").clone();
+                // Store.data(clone, item);
+                clone.data(item);
+                clone.text(item.name);
+                if (item.selected) {
+                    parent.find("*[data-type='selected'] .toggle-list").append(clone);
+                } else {
+                    parent.find("*[data-type='none'] .toggle-list").append(clone);
+                }
+                self.bind(clone);
+            }
+        },
+        add: function(obj) {
+            var parent = this.ele;
+            // var data = Store.data(obj);
+            var data = obj.data();
+            obj.remove();
+            parent.find("*[data-type='selected'] .toggle-list").append(obj);
+            data.selected = true;
+            // Store.data(obj, data);
+            obj.data(data);
+            this.addAction && this.addAction(data);
+        },
+        del: function(obj) {
+            var parent = this.ele;
+            // var data = Store.data(obj);
+            var data = obj.data();
+            obj.remove();
+            parent.find("*[data-type='none'] .toggle-list").append(obj);
+            data.selected = false;
+            // Store.data(obj, data);
+            obj.data(data);
+            this.addAction && this.delAction(data);
+        },
+        bind: function(clone) {
+            var self = this;
+            if (clone) {
+                clone.click(function() {
+                    // var data = Store.data(clone);
+                    var data = clone.data();
+                    if (data.selected) {
+                        self.del(clone);
+                    } else {
+                        self.add(clone);
+                    }
+                })
+            }
+        }
+    }
+
+    var toggle_type, toggle_status;
+    var config_type = {
+        ele: "m-type",
+        addAction: function(item) {
+            alert("选择" + item.name);
+        },
+        delAction: function(item) {
+            alert("取消" + item.name);
+        },
+        data: [{
+            name: "例子1",
+            value: "33",
+            selected: true
+        }, {
+            name: "例子2",
+            value: "34",
+            selected: true
+        }, {
+            name: "例子3",
+            value: "35",
+            selected: true
+        }, {
+            name: "例子1",
+            value: "33",
+            selected: true
+        }, {
+            name: "例子2",
+            value: "34",
+            selected: false
+        }, {
+            name: "例子3",
+            value: "35",
+            selected: false
+        }, {
+            name: "例子1",
+            value: "33",
+            selected: true
+        }, {
+            name: "例子2",
+            value: "34",
+            selected: true
+        }, {
+            name: "例子3",
+            value: "35",
+            selected: true
+        }]
+    }
+    var config_status = {
+        ele: "m-status",
+        addAction: function(item) {
+            alert("选择" + item.name);
+        },
+        delAction: function(item) {
+            alert("取消" + item.name);
+        },
+        data: [{
+            name: "状态1",
+            value: "33",
+            selected: true
+        }, {
+            name: "状态2",
+            value: "34",
+            selected: false
+        }, {
+            name: "状态3",
+            value: "35",
+            selected: true
+        }]
+    }
+
+
+    $(document).ready(function() {
+        toggle_type = new ToggleGroup(config_type);
+        toggle_status = new ToggleGroup(config_status);
+    });
+</script>
+
+</html>
