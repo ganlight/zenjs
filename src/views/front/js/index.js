@@ -1,19 +1,19 @@
 $(function() {
     var pages = [{
         "name": "red",
-        "href": "#red"
+        "href": "#front/red"
     }, {
         "name": "green",
-        "href": "#green"
+        "href": "#front/green"
     }, {
         "name": "page",
-        "href": "#page"
+        "href": "#front/page"
     }, {
         "name": "front-page",
         "href": "#views/front/page"
     }, {
         "name": "multi-select",
-        "href": "#example/multi-select"
+        "href": "#views/example/multi-select"
     }];
     var Service = {
         init: function() {
