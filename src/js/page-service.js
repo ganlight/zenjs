@@ -14,7 +14,7 @@ var PageService = {
         });
     },
     loadView: function() {
-        var view = Util.getHash() || "green";
+        var view = Util.getHash() || "index";
         CGI.getView(view);
         $(window).on('hashchange', function() {
             var name = Util.getHash();

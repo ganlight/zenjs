@@ -1,0 +1,462 @@
+/*----------------------------------------------*/
+/* 0. common-button Styles
+----------------------------------------------*/
+
+.c-btn {
+    position: relative;
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: #fdfcfc;
+    text-align: center;
+    color: #333333;
+    border-radius: .3rem;
+    top: 0.4rem;
+    text-decoration: none;
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+    cursor: pointer;
+}
+
+.c-btn.bg-blue {
+    background: #03a3fc;
+    color: #FFF;
+}
+
+.c-btn.bg-green {
+    background: #7cc854;
+    color: #FFF;
+}
+
+.c-btn.blue {
+    background: #FFF;
+    color: #03a3fc;
+}
+
+.c-btn.green {
+    background: #FFF;
+    color: #7cc854;
+}
+
+.c-btn.c-small {
+    font-size: 1.2rem;
+    padding: 0.5rem 1.5rem;
+    margin-top: 0.3rem;
+}
+
+.white-btn {
+    height: 3.5rem;
+    background-color: #FFF;
+    border: 0;
+    color: #ff663d;
+    line-height: 3.5rem;
+    display: inline-block;
+    border-radius: .3rem;
+    font-size: 1.4rem;
+    text-align: center;
+    text-decoration: none;
+    margin: 1rem 0;
+    border: .1rem solid #ff663d;
+}
+
+.red-btn {
+    height: 3.5rem;
+    background-color: #ff663d;
+    border: 0;
+    color: #FFF;
+    line-height: 3.5rem;
+    display: inline-block;
+    border-radius: .3rem;
+    font-size: 1.4rem;
+    text-align: center;
+    text-decoration: none;
+    margin: 1rem 0;
+    border: .1rem solid #ff663d;
+}
+
+.wap-btn {
+    height: 4.5rem;
+    background-color: #ff663d;
+    border: 0;
+    color: #FFF;
+    line-height: 4.5rem;
+    display: inline-block;
+    border-radius: .4rem;
+    font-size: 1.6rem;
+    text-align: center;
+    text-decoration: none;
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.wap-btn.large-btn {
+    height: 4.5rem;
+    line-height: 4.5rem;
+    font-size: 1.6rem;
+}
+
+.wap-btn.gray-btn {
+    background-color: #c2c2c2;
+}
+
+.wap-btn.red-btn {
+    background-color: #da360a;
+}
+
+.wap-btn.red-btn {
+    background-color: #ff663d;
+}
+
+.wap-btn.white-btn {
+    background-color: #FFF;
+    border: .1rem solid #ff663d;
+    color: #ff663d;
+}
+.c-tag {
+    background: #ff663d;
+    padding: 0.2rem 0.5rem;
+    border-radius: .3rem;
+    color: #FFF;
+}
+
+.c-tag.gray {
+    background: #c2c2c2;
+    padding: 0.2rem 0.5rem;
+    border-radius: .3rem;
+    color: #FFF;
+}
+
+.c-input {
+    position: relative;
+    padding: 0 1rem;
+    background-color: #FFF;
+    line-height: 4rem;
+    height: 4rem;
+    border: 1px solid #eee;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.c-input.x-sub {
+    position: relative;
+    padding: 0 1.5rem;
+    background-color: #FFF;
+    line-height: 4rem;
+    height: 4rem;
+}
+
+.c-input.x-sub .title {
+    font-size: 1.3rem;
+    color: #666666;
+    width: 33%;
+}
+
+.c-input .title {
+    font-size: 1.4rem;
+    width: 33%;
+}
+
+.c-input.x-main .title {
+    font-size: 1.6rem;
+    width: 33%;
+}
+
+.c-input.x-sub .title {
+    font-size: 1.2rem;
+    width: 33%;
+}
+
+.c-input .value {
+    width: 66%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+}
+
+.c-input .opt {
+    position: absolute;
+    font-size: 1.2rem;
+    color: #ff663d;
+    right: 1.5rem;
+    top: 0;
+}
+
+.c-input .more {
+    position: absolute;
+    top: 0rem;
+    right: 1.5rem;
+}
+
+.c-input .input-value {
+    border-style: none;
+    background-color: #FFF;
+    outline: medium;
+    height: 3rem;
+    line-height: 3rem;
+    width: 95%;
+    color: #636366;
+    -webkit-user-modify: read-write-plaintext-only;
+}
+
+.c-input .text-value {
+  border-style: none;
+  height: 4rem;
+  line-height: 4rem;
+  display: block;
+  padding-right: 1.5rem;
+}
+
+.c-input .value .fa{
+    position: absolute;
+    right: 0.5rem;
+    top: 1rem;
+}
+
+.c-input select {
+    color: #787878;
+    direction: rtl;
+    background: transparent;
+    -webkit-appearance: none;
+    border: 0;
+    outline: 0;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    max-width: 10rem;
+}
+
+.c-input.x-main .text-value {
+    border-style: none;
+    background-color: #FFF;
+    height: 4.8rem;
+    line-height: 4.8rem;
+    display: block;
+    padding-right: 2.5rem;
+}
+
+.c-input.x-sub .text-value {
+    border-style: none;
+    background-color: #FFF;
+    height: 3.8rem;
+    line-height: 3.8rem;
+    display: block;
+    padding-right: 2.5rem;
+}
+
+.c-input .input-value.b-line {
+    border-style: none;
+    background-color: #FFF;
+    outline: medium;
+    height: 3rem;
+    line-height: 4rem;
+    width: 90%;
+    border-bottom: .1rem solid #eee;
+}
+
+.c-input .text-value.b-line {
+    background-color: #FFF;
+    height: 3.8rem;
+    line-height: 4rem;
+    border-bottom: .1rem solid #eee;
+}
+
+.c-input .input-line {
+    height: 0.1rem;
+    width: 80%;
+    color: #000;
+    position: absolute;
+    z-index: 1000;
+    bottom: 0;
+    left: 0;
+    display: inline-block;
+}
+
+.c-input.x-blank .value {
+    left: 1.5rem;
+}
+
+.c-input.x-blank .title {
+    position: absolute;
+    right: 0;
+    top: 0;
+    min-width: 12rem;
+}
+
+.c-input .code-img {
+    cursor: pointer;
+    height: 4rem;
+    margin-top: .3rem;
+}
+.c-area{
+  position: relative;
+  border-radius: .5rem;
+  background: #FFF;
+  margin-bottom: 0.5rem;
+}
+.c-area .title{
+  position: absolute;
+  left: 1.5rem;
+}
+.c-area textarea{
+    border-style: none;
+    outline: medium;
+    height: 12rem;
+    line-height: 2.5rem;
+    width: 100%;
+    resize: none;
+    display: block;
+    margin-top: 3rem;
+}
+
+.c-tip {
+    position: relative;
+    line-height: 2.4rem;
+    font-size: 1.15rem;
+    padding: .8rem 1.5rem;
+    color: #999999;
+}
+
+.c-check {
+    display: inline-block;
+    width: 1.4rem;
+    height: 1.4rem;
+    background: url('/assets/img/common/check-ico.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    margin-right: 0.5rem;
+    vertical-align: text-top;
+}
+
+.selected .c-check {
+    background: url('/assets/img/common/checked-ico.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.c-radio {
+    display: inline-block;
+    width: 1.4rem;
+    height: 1.4rem;
+    background: url('/assets/img/common/radio-ico.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    margin-right: 0.5rem;
+}
+
+.selected .c-radio {
+    background: url('/assets/img/common/radio-s-ico.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.c-card {
+    position: relative;
+}
+
+.c-card img {
+    padding: 1rem 0;
+    margin-right: .5rem;
+}
+
+.c-card .title {
+    display: inline-block;
+    padding: 1rem 0;
+    line-height: 2.5rem;
+    vertical-align: bottom;
+}
+
+.c-card .card-btn {
+    position: absolute;
+    display: inline-block;
+    padding: 0.7rem 1.2rem;
+    background: #ff663d;
+    /*max-width: 5rem;*/
+    text-align: center;
+    color: #FFF;
+    border-radius: .3rem;
+    top: 2rem;
+    right: .5rem;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.c-card .card-more {
+    display: inline-block;
+    width: 1rem;
+    height: 2rem;
+    background: url('/assets/img/common/arrow-right-ico.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 2.5rem;
+    right: 0rem;
+}
+
+.c-lable {
+    position: relative;
+    line-height: 3.5rem;
+}
+
+.c-lable .lable {
+    width: 7rem;
+    display: block;
+    float: left;
+}
+
+.c-lable .value {
+    position: relative;
+    padding-left: 7rem;
+    display: block;
+}
+
+.c-lable-x {
+    position: relative;
+    line-height: 4rem;
+}
+
+.c-lable-x .lable {
+    width: 50%;
+    display: block;
+    float: left;
+}
+
+.c-lable-x .value {
+    position: relative;
+    padding-left: 50%;
+    display: block;
+}
+
+.c-amount-input {
+    position: relative;
+    background: #FFF;
+}
+
+.c-amount-input .amount-header {
+    line-height: 4rem;
+    padding: 0 1.5rem;
+}
+
+.c-amount-input .c-input .title {
+    font-size: 2.4rem;
+    width: 20%;
+}
+
+.c-amount-input .c-input .value {
+    font-size: 2.4rem;
+    width: 80%;
+}
+
+.c-amount-input .amount-footer {
+    line-height: 4.5rem;
+    padding: 0 1.5rem;
+}
+
+.c-amount-input .amount-tip {
+    position: absolute;
+    top: 0rem;
+    font-size: 1.4rem;
+    display: inline-block;
+    width: 100%;
+    left: 0;
+}

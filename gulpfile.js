@@ -129,11 +129,11 @@ gulp.task('server', function() {
 //  -p: 服务器启动端口，默认8080
 gulp.task('default', ['release'], function() {
     if (yargs.s) {
-        gulp.start('server');
+        gulp.start('zen:server');
     }
 
     if (yargs.w) {
-        gulp.start('watch');
+        gulp.start('zen:watch');
     }
 });
 
@@ -156,7 +156,7 @@ gulp.task('light', function() {
 
 
 gulp.task('copy', function() {
-    return gulp.src(['src/index.html','src/lib/*.js','src/example/*','src/example/*/*','src/views/*','src/views/*/*'], option)
+    return gulp.src(['src/index.html','src/lib/*.js','src/example/*','src/example/*/*','src/views/*','src/views/**/*'], option)
         .pipe(gulp.dest('dist'))
 });
 
@@ -171,22 +171,17 @@ gulp.task('zen:css', function() {
     return gulp.src(['src/css/*.css','src/zen/*/index.css'], option)
         .pipe(concat('common.css'))
         .pipe(gulp.dest('dist'))
-        // .pipe(rename('zen.min.js'))
-        // .pipe(gulp.dest('dist'));
 });
 gulp.task('zen:html', function() {
     return gulp.src('src/zen/*/index.html', option)
         .pipe(concat('zen.html'))
         .pipe(gulp.dest('dist'))
-        // .pipe(rename('zen.min.js'))
-        // .pipe(gulp.dest('dist'));
 });
 
 gulp.task('zen:watch', ['release'], function() {
-    gulp.watch('src/common.css', ['build:style']);
-    gulp.watch('src/example/example.less', ['build:example:style']);
-    gulp.watch('src/example/**/*.?(png|jpg|gif|js)', ['build:example:assets']);
-    gulp.watch('src/**/*.html', ['build:example:html']);
+    gulp.watch('src/css/*.css', ['zen:css']);
+    gulp.watch('src/js/*.js', ['zen:js']);
+    gulp.watch('src/views/**/*', ['zen']);
 });
 
 gulp.task('zen:server', function() {
@@ -206,4 +201,4 @@ gulp.task('zen:server', function() {
     });
 });
 
-gulp.task('zen', ['copy','zen:js', 'zen:css', 'zen:html', 'zen:server']);
+gulp.task('zen', ['copy','zen:js', 'zen:css', 'zen:html']);

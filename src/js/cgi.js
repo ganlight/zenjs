@@ -78,7 +78,7 @@ var CGI = {
                 Zen.init();
             },
             error: function(e) {
-                window.location.hash = "red";
+                window.location.hash = "index";
                 // CGI.getView("views/red");
             }
         });

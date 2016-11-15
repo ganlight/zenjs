@@ -78,7 +78,7 @@ var CGI = {
                 Zen.init();
             },
             error: function(e) {
-                window.location.hash = "red";
+                window.location.hash = "index";
                 // CGI.getView("views/red");
             }
         });
@@ -328,7 +328,7 @@ var PageService = {
         });
     },
     loadView: function() {
-        var view = Util.getHash() || "green";
+        var view = Util.getHash() || "index";
         CGI.getView(view);
         $(window).on('hashchange', function() {
             var name = Util.getHash();
@@ -1092,6 +1092,7 @@ var Zen = {
     }
 }
 
+//此处在最后拼接，所以用zzz.js放到最后拼接
 PageService.init();
 
 var MultiSelect = function(config) {
