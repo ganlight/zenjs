@@ -1,0 +1,66 @@
+<style>
+    .c-multi-select {
+        position: relative;
+        display: inline-block;
+        min-width: 160px;
+        vertical-align: bottom;
+    }
+
+    .c-multi-select .select-area {
+        line-height: 30px;
+        height: 30px;
+        padding: 0 10px;
+        color: gray;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        overflow: hidden;
+    }
+
+    .c-multi-select .select-list {
+        display: none;
+        position: absolute;
+        width: 100%;
+        top: 32px;
+        left: 0;
+        z-index: 100;
+        max-height: 200px;
+        text-align: center;
+        background-color: #FFF;
+    }
+
+    .c-multi-select:hover .select-list {
+        display: block;
+        width: 100%;
+        border: 1px solid #ccc;
+        max-height: 200px;
+        overflow-y: scroll;
+    }
+
+    .c-multi-select .select-list>div {
+        line-height: 30px;
+        border-bottom: 1px solid #ccc;
+        background-color: #FFF;
+    }
+
+    .c-multi-select .select-list>div:last-child {
+        border: none;
+    }
+
+    .c-multi-select .select-list>div.selected {
+        background-color: #eee;
+    }
+</style>
+
+<div class="example-field"  v-page="/example/js/multi-select.js">
+    <ul>
+        <li>
+            <span class="label-txt">多选择1：</span>
+            <div id="m-type" v-zen="multi-select"></div>
+        </li>
+        <br>
+        <li>
+            <span class="label-txt">多选择2：</span>
+            <div id="m-status" v-zen="multi-select"></div>
+        </li>
+    </ul>
+</div>
