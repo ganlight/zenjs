@@ -4,18 +4,20 @@
         "type": "git",
         "url": "https://github.com/ganlight/LightZen.git"
     },
-    "description": "wechat mobile ui",
-    "main": "dist/style/weui.css",
-    "version": "0.4.0",
+    "description": "light zen framework",
+    "main": "",
+    "version": "0.1.0",
     "authors": [
-        "wechat ui team"
+        "ganlight@foxmail.com"
     ],
     "license": "MIT",
     "keywords": [
-        "wechat",
-        "weixin",
-        "mobile",
-        "ui"
+        "lightzen",
+        "script",
+        "framework",
+        "css",
+        "js",
+        "mobile"
     ],
     "homepage": "https://github.com/ganlight/LightZen",
     "ignore": []
