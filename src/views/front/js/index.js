@@ -1,19 +1,19 @@
 $(function() {
     var pages = [{
-        "name": "red",
-        "href": "#front/red"
-    }, {
-        "name": "green",
-        "href": "#front/green"
-    }, {
-        "name": "page",
-        "href": "#front/page"
-    }, {
         "name": "toggle-group",
         "href": "#example/toggle-group"
     }, {
         "name": "multi-select",
         "href": "#example/multi-select"
+    }, {
+        "name": "alert",
+        "action": "Message.alert('Light Zen')"
+    }, {
+        "name": "toast",
+        "action": "Message.toast('Light Zen')"
+    }, {
+        "name": "confirm",
+        "action": "Message.confirm('Light Zen')"
     }];
     var Service = {
         init: function() {
@@ -36,7 +36,13 @@ $(function() {
         bind: function(clone) {
             clone.click(function() {
                 var data = Store.data(clone);
-                window.location.href = data.href;
+                if (data.href) {
+                    window.location.href = data.href;
+                }
+                if (data.action) {
+                    eval(data.action);
+                }
+
             })
         }
     }
