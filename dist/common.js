@@ -85,45 +85,83 @@ var CGI = {
     }
 }
 
-var Zen = {
-    list: [],
-    init: function() {
-        var head = $('head');
-        head.find("*[data-type='page-script']").remove();
-        var script = $('<script>').attr("type","text/javascript");
-        var page = $('*[v-page]').eq(0);
-        var page_script = page.attr("v-page");
-        if (page.length > 0 && page_script) {
-            script.attr("src",page_script);
-            script.attr("data-type",'page-script');
-            head.append(script);
-            this.load(page);
+var Check = {
+    name: function(s) {
+        //检验姓名：姓名是2-15字的汉字
+        var patrn = /^\s*[\u4e00-\u9fa5]{1,}[\u4e00-\u9fa5.·]{0,15}[\u4e00-\u9fa5]{1,}\s*$/;
+        if (!patrn.exec(s)) {
+            return false;
         }
+        return true;
     },
-    get: function(name) {
-        var zen;
-        var url = "zen/" + name + ".html";
-        $.ajax({
-            url: url,
-            type: 'get',
-            async: false,
-            dataType: 'html',
-            success: function(data) {
-                zen = data;
-            },
-            error: function(e) {}
-        });
-        return zen;
+    idCard: function(card) {
+        //检查身份证
+        return IDCard.check(card);
     },
-    load: function(target) {
-        target.find('*[v-zen]').each(function() {
-            //对包含v-slot的加载特定id的代码块
-            var _this = $(this);
-            var name = $(this).attr('v-zen');
-            if (!name) return;
-            var zen = $(".zen-template .c-" + name).clone();
-            _this.html(zen);
-        });
+    number: function(s) {
+        if (s.length == 0) {
+            return false;
+        }
+        if (s.length != 6) {
+            return false;
+        }
+        var patrn = /^\s*\d+\s*$/;
+        //var patrn1=/^\s*\d{16}[\dxX]{2}\s*$/;
+        if (!patrn.exec(s)) {
+            return false;
+        }
+        return true;
+    },
+    phone: function(phone) {
+        if (phone.length == 0) {
+            return false;
+        }
+        if (phone.length != 11) {
+            return false;
+        }
+        if (!(/^1[3|4|5|7|8][0-9]\d{4,8}$/.test(phone))) {
+            return false;
+        }
+        return true;
+    },
+    password: function(password) {
+        if (password.length == 0) {
+            return false;
+        }
+        if (password.length < 6 || password.length > 16) {
+            return false;
+        }
+        return true;
+    },
+    code: function(code) {
+        if (code.length == 0) {
+            return false;
+        }
+        if (code.length == 6) {
+            return true;
+        }
+        return false;
+    },
+    bankcard: function(bankno) {
+        if (bankno.length < 8 || bankno.length > 19) {
+            //$("#banknoInfo").html("银行卡号长度必须在16到19之间");
+            return false;
+        }
+        var num = /^\d*$/; //全数字
+        if (!num.exec(bankno)) {
+            //$("#banknoInfo").html("银行卡号必须全为数字");
+            return false;
+        }
+        return true;
+    },
+    agreement: function() {
+        if ($(".agreement").length) {
+            if (!$(".agreement").hasClass("selected")) {
+                Message.toast("您需要阅读并同意《用户协议》");
+                return false;
+            };
+            return true;
+        };
     }
 }
 
@@ -273,6 +311,199 @@ var Message = {
         }
     }
 }
+
+var PageService = {
+    isLogin: false,
+    key: null,
+    init: function() {
+        // Util.resize();
+        Util._date();
+        this.ready();
+        //zepto的data问题
+    },
+    ready: function() {
+        $(document).ready(function() {
+            PageService.bind();
+            PageService.loadView();
+        });
+    },
+    loadView: function() {
+        var view = Util.getHash() || "green";
+        CGI.getView(view);
+        $(window).on('hashchange', function() {
+            var name = Util.getHash();
+            CGI.getView(name);
+        });
+    },
+    bind: function() {
+        $('*[v-insert]').each(function() {
+            //对包含v-insert的加载html
+            var _this = $(this);
+            var _insert = $(this).attr('v-insert');
+            if (!_insert) return;
+            var url = _insert + ".html";
+            $.ajax({
+                url: url,
+                type: 'get',
+                async: false,
+                dataType: 'html',
+                success: function(data) {
+                    _this.html(data);
+                }
+            });
+        });
+        $('*[v-slot]').each(function() {
+            //对包含v-slot的加载特定id的代码块
+            var _this = $(this);
+            var _slot = $(this).attr('v-slot');
+            if (!_slot) return;
+            _this.html($("#" + _slot));
+        });
+        $('*[v-send]').click(function() {
+            //对包含v-send相关的控件，直接进行发送短信或语音验证码
+            //这里包含多个参数例如，regist,sms,fn
+            var _send = $(this).attr('v-send');
+            if (!_send) return;
+            var _para = _send.split(',')
+            Message.send(_para[0], _para[1], _para[2]);
+        });
+        $('*[v-select]').click(function() {
+            //对包含v-send相关的控件，直接进行发送短信或语音验证码
+            //这里包含多个参数例如，regist,sms
+            var _select = $(this).attr('v-select');
+            if (!_select) return;
+            Message.select('', _select);
+        });
+        $('*[v-toggle]').click(function() {
+            //对包含v-toggle相关的控件，直接进行绑定操作
+            var _toggle = $(this).attr('v-toggle');
+            if (!_toggle) return;
+            $("#" + _toggle).toggle();
+            $(this).toggleClass("selected");
+        });
+        $('*[v-link]').click(function() {
+            //对包含v-link相关的地址，直接绑定事件跳转
+            var _link = $(this).attr('v-link');
+            if (!_link) return;
+            window.location.href = _link;
+        });
+    },
+    hideNavMenu: function() {
+        $('#nav-menu').hide();
+    },
+    setTitle: function(title) {
+        $('.c-navmenu-banner .title').text(title);
+    },
+    status: function() {
+        var _url = CGI.URL('USER', 'STATUS');
+        CGI.ajaxModule(_url, '', function(json) {
+            if (json && json.code == "00000") {
+                PageService.isLogin = true;
+            } else {
+                PageService.isLogin = false;
+            }
+            PageService.key = json;
+        });
+    },
+    mustLogin: function(via) {
+        var _url = CGI.URL('USER', 'STATUS');
+        CGI.ajaxModule(_url, '', function(json) {
+            if (json && json.code == "50000") {
+                if (via) {
+                    Store.sLocal("VIA", via);
+                } else {
+                    Store.sLocal("VIA", window.location.href);
+                }
+                window.location.href = "/user/login.html";
+                return false;
+            }
+        });
+    },
+    token: function() {
+        var _url = CGI.URL('FRONT', 'TOKEN_GET');
+        CGI.ajaxModule(_url, '', function(json) {
+            if (json && json.code != "00000") {
+                Message.toast(json.message);
+            }
+        });
+    },
+    loginAction: function(dofun, undofun) {
+        var _url = CGI.URL('USER', 'STATUS');
+        CGI.ajax(_url, '', function(json) {
+            if (json && json.code == "00000") {
+                dofun && dofun();
+            } else {
+                undofun && undofun();
+            }
+        });
+    },
+    logout: function() {
+        var _url = CGI.URL('USER', 'LOGOUT');
+        CGI.ajax(_url, '', function(json) {
+            if (json && json.code == "00000") {
+                window.location.href = "/index.html";
+            }
+        });
+    }
+}
+
+var PageTips = {
+    tips: null,
+    page: null,
+    init: function(page) {
+        this.tips = $('.c-page-tips');
+        this.tips.show();
+        this.page = page;
+        PageTips.rend();
+        setInterval(function() {
+            PageTips.rend();
+        }, 1000);
+    },
+    list: function() {
+        var tips = this.tips;
+        var page = this.page;
+        var text = "当前加载" + page.current_page + "/" + page.page_count + "页，共" + page.item_count + "条数据"
+        tips.find('.text').text(text);
+        tips.attr("data-status", 'enable');
+    },
+    loading: function() {
+        var tips = this.tips;
+        tips.find('.text').text("数据加载中……");
+        tips.attr("data-status", 'disable');
+    },
+    none: function() {
+        var tips = this.tips;
+        tips.find('.text').text("当前暂无记录");
+        tips.attr("data-status", 'disable');
+    },
+    end: function() {
+        var tips = this.tips;
+        tips.find('.text').text("当前数据已经加载完成");
+        tips.attr("data-status", 'disable');
+    },
+    rend: function(page) {
+        var page = this.page;
+        this.loading();
+        if (!page) {
+            this.none();
+            return;
+        }
+        if (page && page.item_count == 0) {
+            this.none();
+            return;
+        }
+        if (page && page.current_page == page.page_count) {
+            this.end();
+            return;
+        }
+        if (page && page.current_page < page.page_count) {
+            this.list();
+            return;
+        }
+        this.loading();
+    }
+}
+
 var Store = {
     data: function(clone, obj) {
         if (obj) {
@@ -353,6 +584,224 @@ var Store = {
         return redirect_url;
     }
 }
+
+var User = {
+    key: null,
+    isLogin: false,
+    need_verify_code: false,
+    baseinfo: null,
+    spread_code: null,
+    init: function() {
+        User.getKey();
+        User.isLogin = PageService.isLogin;
+        return this;
+    },
+    getKey: function() {
+        var modulus = PageService.key.modulus;
+        var exponent = PageService.key.public_exponent;
+        if (exponent != undefined) {
+            var key = RSAUtils.getKeyPair(exponent, '', modulus);
+            console.log(key);
+            User.key = key;
+            User.need_verify_code = PageService.key.need_verify_code;
+        }
+    },
+    getBaseInfo: function() {
+        if (PageService.isLogin) {
+            var _url = CGI.URL('USER', 'BASE_INFO');
+            CGI.ajaxModule(_url, '', function(json) {
+                if (json && json.code == "00000") {
+                    User.baseinfo = json.result;
+                }
+            });
+        }
+    },
+    getSpreadCode: function() {
+        if (PageService.isLogin) {
+            var _url = CGI.URL('USER', 'SPREAD_CODE');
+            CGI.ajaxModule(_url, '', function(json) {
+                if (json && json.code == "00000") {
+                    User.spread_code = json.result.spread_code;
+                }
+            });
+        }
+    },
+    checkIdentity: function() {
+        //加载用户基本信息，检查用户是否实名
+        User.getBaseInfo();
+        Identity.init();
+        if (Identity.status == 'BTG') {
+            //如果未实名认证
+            window.location.href = "/bid/identity.html?return_url=" + window.location.href;
+            return;
+        }
+        if (User.baseinfo) {
+            //如果有余额
+            $('.user-account').text(User.baseinfo.balance)
+        }
+    },
+    checkBankcard: function() {
+        //加载银行卡信息，如果没有银行卡则显示绑卡
+        BankCard.getBind();
+        if (BankCard.card) {
+            //如果没有卡
+            $('.methods-field').show();
+            $('.identity-field').hide();
+        } else {
+            $('.methods-field').hide();
+            $('.identity-field').show();
+            BankCard.init();
+        }
+    },
+    isIdentity: function(fn) {
+        if (User.isLogin) {
+            var _url = CGI.URL('PAY', 'GET_ID_CARD');
+            CGI.ajaxModule(_url, '', function(json) {
+                if (json.code != "00000") {
+                    return;
+                };
+                if (json.result.status == "TG") {
+                    //认证通过,直接下一步
+                    fn && fn();
+                } else {
+                    //认证未通过,采用国政通认证
+                    Message.alert("为了您的资金安全，您需要实名认证。", function() {
+                        window.location.href = '/pay/wxidentity.html';
+                    });
+                };
+            });
+        }
+    },
+    initPicCode: function() {
+        if (User.need_verify_code) {
+            $('.pic-code').show();
+            var pic_code = $(".pic-code .code-img");
+            pic_code.attr("src", '/userx/get_verify_code?' + Math.random() + '&verify_type=login');
+        } else {
+            $('.pic-code').hide();
+        }
+    },
+    loginData: function() {
+        var data = {};
+        if (User.key) {
+            var key = User.key;
+            if ($('.pic-code').css('display') == 'none') {
+                data = {
+                    "username": RSAUtils.encryptedString(key, $(".username").val()),
+                    "password": RSAUtils.encryptedString(key, $(".password").val())
+                }
+            } else {
+                data = {
+                    "username": RSAUtils.encryptedString(key, $(".username").val()),
+                    "password": RSAUtils.encryptedString(key, $(".password").val()),
+                    "verify_code": $("input[name='piccode']").val()
+                }
+            };
+            return data;
+        } else {
+            Message.alert("您的信息有误，请重新登录！");
+        }
+    },
+    login: function(para) {
+        var _url = CGI.URL('USER', 'LOGIN');
+        CGI.ajax(_url, para, function(json) {
+            if (json.code == "00000") {
+                var return_url = Util.getPar("return_url") || Store.gLocal("VIA");
+                if (return_url) {
+                    window.location.href = return_url;
+                } else {
+                    window.location.href = "/index.html";
+                }
+            } else if (json && (json.code == "50008" || json.code == "50002" || json.code == "50012")) {
+                User.need_verify_code = true;
+                User.initPicCode();
+                Message.toast(json.message);
+            } else {
+                User.initPicCode();
+                Message.toast(json.message);
+            }
+        });
+    },
+    registData: function() {
+        var data = {};
+        if (User.key) {
+            var key = User.key;
+            data = {
+                "username": RSAUtils.encryptedString(key, $(".username").val()),
+                "password": RSAUtils.encryptedString(key, $(".password").val()),
+                "verify_code": $("input[name='verify_code']").val(),
+                "invitation_code": $("input[name='invitation_code']").val()
+            }
+            return data;
+        } else {
+            Message.alert("您的信息有误，请重新注册！");
+        }
+    },
+    regist: function(para) {
+        var _url = CGI.URL('USER', 'REGIST');
+        CGI.ajax(_url, para, function(json) {
+            if (json.code == "00000") {
+                window.location.href = "/index.html?type=newuser";
+            } else if (json && json.code == "50000") {
+                var return_url = window.location.pathname + window.location.search;
+                window.location.href = '/user/login.html?return_url=' + return_url;
+            } else {
+                Message.alert(json.message);
+            }
+        });
+    },
+    changeData: function() {
+        var data = {};
+        if (User.key) {
+            var key = User.key;
+            data = {
+                "old_password": RSAUtils.encryptedString(key, $("input[name='password']").val()),
+                "new_password": RSAUtils.encryptedString(key, $("input[name='new_password']").val())
+            }
+            return data;
+        } else {
+            Message.alert("您的信息有误，请重新输入！");
+        }
+    },
+    resetData: function() {
+        var data = {};
+        if (User.key) {
+            var key = User.key;
+            data = {
+                "verify_code": $("input[name='verify_code']").val(),
+                "password": RSAUtils.encryptedString(key, $("input[name='new_password']").val())
+            }
+            return data;
+        } else {
+            Message.alert("您的信息有误，请重新输入！");
+        }
+    },
+    resetPassword: function(para) {
+        var _url = CGI.URL('USER', 'RESET_PASSWORD');
+        CGI.ajax(_url, para, function(json) {
+            if (json.code == "00000") {
+                Message.alert("密码找回成功,请用新密码登录", function() {
+                    window.location.href = "/user/login.html";
+                });
+            } else {
+                Message.alert(json.message);
+            }
+        });
+    },
+    changePassword: function(para) {
+        var _url = CGI.URL('USER', 'CHANGE_PASSWORD');
+        CGI.ajax(_url, para, function(json) {
+            if (json.code == "00000") {
+                Message.alert("密码修改成功,请用新密码登录", function() {
+                    window.location.href = "/user/login.html";
+                });
+            } else {
+                Message.alert(json.message);
+            }
+        });
+    }
+}
+
 var Util = {
     lastClick: null,
     once: function(fn) {
@@ -600,491 +1049,49 @@ var Util = {
         });
     }
 }
-var Check = {
-    name: function(s) {
-        //检验姓名：姓名是2-15字的汉字
-        var patrn = /^\s*[\u4e00-\u9fa5]{1,}[\u4e00-\u9fa5.·]{0,15}[\u4e00-\u9fa5]{1,}\s*$/;
-        if (!patrn.exec(s)) {
-            return false;
-        }
-        return true;
-    },
-    idCard: function(card) {
-        //检查身份证
-        return IDCard.check(card);
-    },
-    number: function(s) {
-        if (s.length == 0) {
-            return false;
-        }
-        if (s.length != 6) {
-            return false;
-        }
-        var patrn = /^\s*\d+\s*$/;
-        //var patrn1=/^\s*\d{16}[\dxX]{2}\s*$/;
-        if (!patrn.exec(s)) {
-            return false;
-        }
-        return true;
-    },
-    phone: function(phone) {
-        if (phone.length == 0) {
-            return false;
-        }
-        if (phone.length != 11) {
-            return false;
-        }
-        if (!(/^1[3|4|5|7|8][0-9]\d{4,8}$/.test(phone))) {
-            return false;
-        }
-        return true;
-    },
-    password: function(password) {
-        if (password.length == 0) {
-            return false;
-        }
-        if (password.length < 6 || password.length > 16) {
-            return false;
-        }
-        return true;
-    },
-    code: function(code) {
-        if (code.length == 0) {
-            return false;
-        }
-        if (code.length == 6) {
-            return true;
-        }
-        return false;
-    },
-    bankcard: function(bankno) {
-        if (bankno.length < 8 || bankno.length > 19) {
-            //$("#banknoInfo").html("银行卡号长度必须在16到19之间");
-            return false;
-        }
-        var num = /^\d*$/; //全数字
-        if (!num.exec(bankno)) {
-            //$("#banknoInfo").html("银行卡号必须全为数字");
-            return false;
-        }
-        return true;
-    },
-    agreement: function() {
-        if ($(".agreement").length) {
-            if (!$(".agreement").hasClass("selected")) {
-                Message.toast("您需要阅读并同意《用户协议》");
-                return false;
-            };
-            return true;
-        };
-    }
-}
-var User = {
-    key: null,
-    isLogin: false,
-    need_verify_code: false,
-    baseinfo: null,
-    spread_code: null,
+
+var Zen = {
+    list: [],
     init: function() {
-        User.getKey();
-        User.isLogin = PageService.isLogin;
-        return this;
-    },
-    getKey: function() {
-        var modulus = PageService.key.modulus;
-        var exponent = PageService.key.public_exponent;
-        if (exponent != undefined) {
-            var key = RSAUtils.getKeyPair(exponent, '', modulus);
-            console.log(key);
-            User.key = key;
-            User.need_verify_code = PageService.key.need_verify_code;
+        var head = $('head');
+        head.find("*[data-type='page-script']").remove();
+        var script = $('<script>').attr("type","text/javascript");
+        var page = $('*[v-page]').eq(0);
+        var page_script = page.attr("v-page");
+        if (page.length > 0 && page_script) {
+            script.attr("src",page_script);
+            script.attr("data-type",'page-script');
+            head.append(script);
+            this.load(page);
         }
     },
-    getBaseInfo: function() {
-        if (PageService.isLogin) {
-            var _url = CGI.URL('USER', 'BASE_INFO');
-            CGI.ajaxModule(_url, '', function(json) {
-                if (json && json.code == "00000") {
-                    User.baseinfo = json.result;
-                }
-            });
-        }
-    },
-    getSpreadCode: function() {
-        if (PageService.isLogin) {
-            var _url = CGI.URL('USER', 'SPREAD_CODE');
-            CGI.ajaxModule(_url, '', function(json) {
-                if (json && json.code == "00000") {
-                    User.spread_code = json.result.spread_code;
-                }
-            });
-        }
-    },
-    checkIdentity: function() {
-        //加载用户基本信息，检查用户是否实名
-        User.getBaseInfo();
-        Identity.init();
-        if (Identity.status == 'BTG') {
-            //如果未实名认证
-            window.location.href = "/bid/identity.html?return_url=" + window.location.href;
-            return;
-        }
-        if (User.baseinfo) {
-            //如果有余额
-            $('.user-account').text(User.baseinfo.balance)
-        }
-    },
-    checkBankcard: function() {
-        //加载银行卡信息，如果没有银行卡则显示绑卡
-        BankCard.getBind();
-        if (BankCard.card) {
-            //如果没有卡
-            $('.methods-field').show();
-            $('.identity-field').hide();
-        } else {
-            $('.methods-field').hide();
-            $('.identity-field').show();
-            BankCard.init();
-        }
-    },
-    isIdentity: function(fn) {
-        if (User.isLogin) {
-            var _url = CGI.URL('PAY', 'GET_ID_CARD');
-            CGI.ajaxModule(_url, '', function(json) {
-                if (json.code != "00000") {
-                    return;
-                };
-                if (json.result.status == "TG") {
-                    //认证通过,直接下一步
-                    fn && fn();
-                } else {
-                    //认证未通过,采用国政通认证
-                    Message.alert("为了您的资金安全，您需要实名认证。", function() {
-                        window.location.href = '/pay/wxidentity.html';
-                    });
-                };
-            });
-        }
-    },
-    initPicCode: function() {
-        if (User.need_verify_code) {
-            $('.pic-code').show();
-            var pic_code = $(".pic-code .code-img");
-            pic_code.attr("src", '/userx/get_verify_code?' + Math.random() + '&verify_type=login');
-        } else {
-            $('.pic-code').hide();
-        }
-    },
-    loginData: function() {
-        var data = {};
-        if (User.key) {
-            var key = User.key;
-            if ($('.pic-code').css('display') == 'none') {
-                data = {
-                    "username": RSAUtils.encryptedString(key, $(".username").val()),
-                    "password": RSAUtils.encryptedString(key, $(".password").val())
-                }
-            } else {
-                data = {
-                    "username": RSAUtils.encryptedString(key, $(".username").val()),
-                    "password": RSAUtils.encryptedString(key, $(".password").val()),
-                    "verify_code": $("input[name='piccode']").val()
-                }
-            };
-            return data;
-        } else {
-            Message.alert("您的信息有误，请重新登录！");
-        }
-    },
-    login: function(para) {
-        var _url = CGI.URL('USER', 'LOGIN');
-        CGI.ajax(_url, para, function(json) {
-            if (json.code == "00000") {
-                var return_url = Util.getPar("return_url") || Store.gLocal("VIA");
-                if (return_url) {
-                    window.location.href = return_url;
-                } else {
-                    window.location.href = "/index.html";
-                }
-            } else if (json && (json.code == "50008" || json.code == "50002" || json.code == "50012")) {
-                User.need_verify_code = true;
-                User.initPicCode();
-                Message.toast(json.message);
-            } else {
-                User.initPicCode();
-                Message.toast(json.message);
-            }
+    get: function(name) {
+        var zen;
+        var url = "zen/" + name + ".html";
+        $.ajax({
+            url: url,
+            type: 'get',
+            async: false,
+            dataType: 'html',
+            success: function(data) {
+                zen = data;
+            },
+            error: function(e) {}
         });
+        return zen;
     },
-    registData: function() {
-        var data = {};
-        if (User.key) {
-            var key = User.key;
-            data = {
-                "username": RSAUtils.encryptedString(key, $(".username").val()),
-                "password": RSAUtils.encryptedString(key, $(".password").val()),
-                "verify_code": $("input[name='verify_code']").val(),
-                "invitation_code": $("input[name='invitation_code']").val()
-            }
-            return data;
-        } else {
-            Message.alert("您的信息有误，请重新注册！");
-        }
-    },
-    regist: function(para) {
-        var _url = CGI.URL('USER', 'REGIST');
-        CGI.ajax(_url, para, function(json) {
-            if (json.code == "00000") {
-                window.location.href = "/index.html?type=newuser";
-            } else if (json && json.code == "50000") {
-                var return_url = window.location.pathname + window.location.search;
-                window.location.href = '/user/login.html?return_url=' + return_url;
-            } else {
-                Message.alert(json.message);
-            }
-        });
-    },
-    changeData: function() {
-        var data = {};
-        if (User.key) {
-            var key = User.key;
-            data = {
-                "old_password": RSAUtils.encryptedString(key, $("input[name='password']").val()),
-                "new_password": RSAUtils.encryptedString(key, $("input[name='new_password']").val())
-            }
-            return data;
-        } else {
-            Message.alert("您的信息有误，请重新输入！");
-        }
-    },
-    resetData: function() {
-        var data = {};
-        if (User.key) {
-            var key = User.key;
-            data = {
-                "verify_code": $("input[name='verify_code']").val(),
-                "password": RSAUtils.encryptedString(key, $("input[name='new_password']").val())
-            }
-            return data;
-        } else {
-            Message.alert("您的信息有误，请重新输入！");
-        }
-    },
-    resetPassword: function(para) {
-        var _url = CGI.URL('USER', 'RESET_PASSWORD');
-        CGI.ajax(_url, para, function(json) {
-            if (json.code == "00000") {
-                Message.alert("密码找回成功,请用新密码登录", function() {
-                    window.location.href = "/user/login.html";
-                });
-            } else {
-                Message.alert(json.message);
-            }
-        });
-    },
-    changePassword: function(para) {
-        var _url = CGI.URL('USER', 'CHANGE_PASSWORD');
-        CGI.ajax(_url, para, function(json) {
-            if (json.code == "00000") {
-                Message.alert("密码修改成功,请用新密码登录", function() {
-                    window.location.href = "/user/login.html";
-                });
-            } else {
-                Message.alert(json.message);
-            }
-        });
-    }
-}
-var PageTips = {
-    tips: null,
-    page: null,
-    init: function(page) {
-        this.tips = $('.c-page-tips');
-        this.tips.show();
-        this.page = page;
-        PageTips.rend();
-        setInterval(function() {
-            PageTips.rend();
-        }, 1000);
-    },
-    list: function() {
-        var tips = this.tips;
-        var page = this.page;
-        var text = "当前加载" + page.current_page + "/" + page.page_count + "页，共" + page.item_count + "条数据"
-        tips.find('.text').text(text);
-        tips.attr("data-status", 'enable');
-    },
-    loading: function() {
-        var tips = this.tips;
-        tips.find('.text').text("数据加载中……");
-        tips.attr("data-status", 'disable');
-    },
-    none: function() {
-        var tips = this.tips;
-        tips.find('.text').text("当前暂无记录");
-        tips.attr("data-status", 'disable');
-    },
-    end: function() {
-        var tips = this.tips;
-        tips.find('.text').text("当前数据已经加载完成");
-        tips.attr("data-status", 'disable');
-    },
-    rend: function(page) {
-        var page = this.page;
-        this.loading();
-        if (!page) {
-            this.none();
-            return;
-        }
-        if (page && page.item_count == 0) {
-            this.none();
-            return;
-        }
-        if (page && page.current_page == page.page_count) {
-            this.end();
-            return;
-        }
-        if (page && page.current_page < page.page_count) {
-            this.list();
-            return;
-        }
-        this.loading();
-    }
-}
-var PageService = {
-    isLogin: false,
-    key: null,
-    init: function() {
-        // Util.resize();
-        Util._date();
-        this.ready();
-        //zepto的data问题
-    },
-    ready: function() {
-        $(document).ready(function() {
-            PageService.bind();
-            PageService.loadView();
-        });
-    },
-    loadView: function() {
-        var view = Util.getHash() || "green";
-        CGI.getView(view);
-        $(window).on('hashchange', function() {
-            var name = Util.getHash();
-            CGI.getView(name);
-        });
-    },
-    bind: function() {
-        $('*[v-insert]').each(function() {
-            //对包含v-insert的加载html
-            var _this = $(this);
-            var _insert = $(this).attr('v-insert');
-            if (!_insert) return;
-            var url = _insert + ".html";
-            $.ajax({
-                url: url,
-                type: 'get',
-                async: false,
-                dataType: 'html',
-                success: function(data) {
-                    _this.html(data);
-                }
-            });
-        });
-        $('*[v-slot]').each(function() {
+    load: function(target) {
+        target.find('*[v-zen]').each(function() {
             //对包含v-slot的加载特定id的代码块
             var _this = $(this);
-            var _slot = $(this).attr('v-slot');
-            if (!_slot) return;
-            _this.html($("#" + _slot));
-        });
-        $('*[v-send]').click(function() {
-            //对包含v-send相关的控件，直接进行发送短信或语音验证码
-            //这里包含多个参数例如，regist,sms,fn
-            var _send = $(this).attr('v-send');
-            if (!_send) return;
-            var _para = _send.split(',')
-            Message.send(_para[0], _para[1], _para[2]);
-        });
-        $('*[v-select]').click(function() {
-            //对包含v-send相关的控件，直接进行发送短信或语音验证码
-            //这里包含多个参数例如，regist,sms
-            var _select = $(this).attr('v-select');
-            if (!_select) return;
-            Message.select('', _select);
-        });
-        $('*[v-toggle]').click(function() {
-            //对包含v-toggle相关的控件，直接进行绑定操作
-            var _toggle = $(this).attr('v-toggle');
-            if (!_toggle) return;
-            $("#" + _toggle).toggle();
-            $(this).toggleClass("selected");
-        });
-        $('*[v-link]').click(function() {
-            //对包含v-link相关的地址，直接绑定事件跳转
-            var _link = $(this).attr('v-link');
-            if (!_link) return;
-            window.location.href = _link;
-        });
-    },
-    hideNavMenu: function() {
-        $('#nav-menu').hide();
-    },
-    setTitle: function(title) {
-        $('.c-navmenu-banner .title').text(title);
-    },
-    status: function() {
-        var _url = CGI.URL('USER', 'STATUS');
-        CGI.ajaxModule(_url, '', function(json) {
-            if (json && json.code == "00000") {
-                PageService.isLogin = true;
-            } else {
-                PageService.isLogin = false;
-            }
-            PageService.key = json;
-        });
-    },
-    mustLogin: function(via) {
-        var _url = CGI.URL('USER', 'STATUS');
-        CGI.ajaxModule(_url, '', function(json) {
-            if (json && json.code == "50000") {
-                if (via) {
-                    Store.sLocal("VIA", via);
-                } else {
-                    Store.sLocal("VIA", window.location.href);
-                }
-                window.location.href = "/user/login.html";
-                return false;
-            }
-        });
-    },
-    token: function() {
-        var _url = CGI.URL('FRONT', 'TOKEN_GET');
-        CGI.ajaxModule(_url, '', function(json) {
-            if (json && json.code != "00000") {
-                Message.toast(json.message);
-            }
-        });
-    },
-    loginAction: function(dofun, undofun) {
-        var _url = CGI.URL('USER', 'STATUS');
-        CGI.ajax(_url, '', function(json) {
-            if (json && json.code == "00000") {
-                dofun && dofun();
-            } else {
-                undofun && undofun();
-            }
-        });
-    },
-    logout: function() {
-        var _url = CGI.URL('USER', 'LOGOUT');
-        CGI.ajax(_url, '', function(json) {
-            if (json && json.code == "00000") {
-                window.location.href = "/index.html";
-            }
+            var name = $(this).attr('v-zen');
+            if (!name) return;
+            var zen = $(".zen-template .c-" + name).clone();
+            _this.html(zen);
         });
     }
 }
+
 PageService.init();
 
 var MultiSelect = function(config) {
