@@ -1,0 +1,42 @@
+.c-confirm .mask {
+    position: fixed;
+    z-index: 101;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.c-confirm .mbody {
+    position: fixed;
+    z-index: 102;
+    width: 85%;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #FAFAFC;
+    text-align: center;
+    border-radius: 3px;
+}
+
+.c-confirm .mbody .message-text {
+    padding: 30px;
+    text-align: left;
+}
+
+.c-confirm .mbody .confirm-btns a {
+    display: inline-block;
+    line-height: 40px;
+    border-top: 1px solid #EFCDCD;
+    color: #ff663d;
+    width: 49%;
+    float: left;
+    text-decoration: none;
+}
+
+.c-confirm .mbody .confirm-btns .confirm-cancel {
+    border-right: 1px solid #EFCDCD;
+    color: #000;
+}

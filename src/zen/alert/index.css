@@ -1,0 +1,37 @@
+.c-alert .mask {
+    position: fixed;
+    z-index: 101;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.c-alert .mbody {
+    position: fixed;
+    z-index: 102;
+    width: 85%;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #FAFAFC;
+    text-align: center;
+    border-radius: 3px;
+}
+
+.c-alert .mbody .message-text {
+    padding: 30px;
+    padding-top: 30px;
+    text-align: left;
+}
+
+.c-alert .mbody .alert-btns a {
+    display: block;
+    line-height: 16px;
+    padding: 15px;
+    border-top: 1px solid #EFCDCD;
+    color: #ff663d;
+    text-decoration: none;
+}

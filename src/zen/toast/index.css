@@ -1,0 +1,15 @@
+.c-toast .mbody {
+    position: fixed;
+    z-index: 3;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(226, 79, 50, 0.8);
+    text-align: center;
+    color: #FFFFFF;
+    z-index: 50;
+}
+
+.c-toast .mbody .message-text {
+    padding: 15px;
+}
