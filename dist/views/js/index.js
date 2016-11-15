@@ -1,23 +1,22 @@
 $(function() {
     var pages = [{
         "name": "red",
-        "href": "#front/red"
+        "href": "#red"
     }, {
         "name": "green",
-        "href": "#front/green"
+        "href": "#green"
     }, {
         "name": "page",
-        "href": "#front/page"
+        "href": "#page"
     }, {
         "name": "front-page",
-        "href": "#front/page"
+        "href": "#views/front/page"
     }, {
         "name": "multi-select",
         "href": "#example/multi-select"
     }];
     var Service = {
         init: function() {
-            this.data = pages;
             this.rend();
         },
         rend: function() {
@@ -40,5 +39,8 @@ $(function() {
             })
         }
     }
-    Zen.ready(Service);
+
+    Service.init();
+    delete Zen.current;
+    Zen.current = Service;
 })

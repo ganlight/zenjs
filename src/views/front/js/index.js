@@ -10,13 +10,14 @@ $(function() {
         "href": "#front/page"
     }, {
         "name": "front-page",
-        "href": "#views/front/page"
+        "href": "#front/page"
     }, {
         "name": "multi-select",
-        "href": "#views/example/multi-select"
+        "href": "#example/multi-select"
     }];
     var Service = {
         init: function() {
+            this.data = pages;
             this.rend();
         },
         rend: function() {
@@ -39,8 +40,5 @@ $(function() {
             })
         }
     }
-
-    Service.init();
-    delete Zen.current;
-    Zen.current = Service;
+    Zen.ready(Service);
 })

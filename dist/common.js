@@ -63,11 +63,7 @@ var CGI = {
         });
     },
     getView: function(name) {
-        if (name.indexOf("/") == -1) {
-            var url = "views/" + name + ".html";
-        } else {
-            var url = name + ".html";
-        }
+        var url = "views/" + name + ".html";
         $.ajax({
             url: url,
             type: 'get',
@@ -1055,30 +1051,17 @@ var Zen = {
     init: function() {
         var head = $('head');
         head.find("*[data-type='page-script']").remove();
-        var script = $('<script>').attr("type","text/javascript");
-        var page = $('*[v-page]').eq(0);
-        var page_script = page.attr("v-page");
-        if (page.length > 0 && page_script) {
-            script.attr("src",page_script);
-            script.attr("data-type",'page-script');
+        var script = $('<script>').attr("type", "text/javascript");
+        var app = $("#app");
+        this.load(app);
+        //默认只加载一个脚本
+        var ele_script = $('*[v-script]').eq(0);
+        var page_script = ele_script.attr("v-script");
+        if (ele_script.length > 0 && page_script) {
+            script.attr("src", page_script);
+            script.attr("data-type", 'page-script');
             head.append(script);
-            this.load(page);
         }
-    },
-    get: function(name) {
-        var zen;
-        var url = "zen/" + name + ".html";
-        $.ajax({
-            url: url,
-            type: 'get',
-            async: false,
-            dataType: 'html',
-            success: function(data) {
-                zen = data;
-            },
-            error: function(e) {}
-        });
-        return zen;
     },
     load: function(target) {
         target.find('*[v-zen]').each(function() {
@@ -1089,6 +1072,12 @@ var Zen = {
             var zen = $(".zen-template .c-" + name).clone();
             _this.html(zen);
         });
+    },
+    ready: function(service) {
+        //用于引导页面，并且便于获取调试信息
+        service && service.init && service.init();
+        delete Zen.current;
+        Zen.current = service;
     }
 }
 

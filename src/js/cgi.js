@@ -63,11 +63,7 @@ var CGI = {
         });
     },
     getView: function(name) {
-        if (name.indexOf("/") == -1) {
-            var url = "views/" + name + ".html";
-        } else {
-            var url = name + ".html";
-        }
+        var url = "views/" + name + ".html";
         $.ajax({
             url: url,
             type: 'get',
