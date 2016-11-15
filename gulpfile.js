@@ -9,6 +9,7 @@ var concat = require('gulp-concat');
 var nano = require('gulp-cssnano');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
+var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
 var browserSync = require('browser-sync');
@@ -112,6 +113,7 @@ gulp.task('watch', ['release'], function() {
 //  -s: 启动服务器
 //  -p: 服务器启动端口，默认8080
 gulp.task('default', ['release'], function() {
+    gulp.start('zen');
     if (yargs.s) {
         gulp.start('zen:server');
     }
@@ -133,12 +135,15 @@ gulp.task('zen:js', function() {
     return gulp.src(['src/js/*.js', 'src/zen/*/index.js'], option)
         .pipe(concat('common.js'))
         .pipe(gulp.dest('dist'))
-        // .pipe(rename('zen.min.js'))
-        // .pipe(gulp.dest('dist'));
+        .pipe(uglify())
+        .pipe(rename('common.min.js'))
+        .pipe(gulp.dest('dist'));
 });
+
 gulp.task('zen:css', function() {
     return gulp.src(['src/css/*.css', 'src/zen/*/index.css'], option)
         .pipe(concat('common.css'))
+        .pipe(gulp.dest('dist'))
         .pipe(nano({
             zindex: false
         }))
@@ -153,8 +158,9 @@ gulp.task('zen:html', function() {
 });
 
 gulp.task('zen:watch', ['release'], function() {
-    gulp.watch('src/css/*.css', ['zen:css']);
-    gulp.watch('src/js/*.js', ['zen:js']);
+    gulp.watch('src/*.html', ['zen']);
+    gulp.watch('src/css/*.css', ['zen']);
+    gulp.watch('src/js/*.js', ['zen']);
     gulp.watch('src/views/**/*', ['zen']);
     gulp.watch('src/zen/**/*', ['zen']);
 });
