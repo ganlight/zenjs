@@ -106,22 +106,6 @@ gulp.task('watch', ['release'], function() {
     gulp.watch('src/**/*.html', ['build:example:html']);
 });
 
-gulp.task('server', function() {
-    yargs.p = yargs.p || 8080;
-    browserSync.init({
-        server: {
-            baseDir: "./dist"
-        },
-        ui: {
-            port: yargs.p + 1,
-            weinre: {
-                port: yargs.p + 2
-            }
-        },
-        port: yargs.p,
-        startPath: '/example'
-    });
-});
 
 // 参数说明
 //  -w: 实时监听
@@ -137,41 +121,31 @@ gulp.task('default', ['release'], function() {
     }
 });
 
-gulp.task('light', function() {
-    yargs.p = yargs.p || 40001;
-    browserSync.init({
-        server: {
-            baseDir: "./src"
-        },
-        ui: {
-            port: yargs.p + 1,
-            weinre: {
-                port: yargs.p + 2
-            }
-        },
-        port: yargs.p,
-        startPath: '/'
-    });
-});
-
-
 gulp.task('copy', function() {
-    return gulp.src(['src/index.html','src/lib/*.js','src/example/*','src/example/*/*','src/views/*','src/views/**/*'], option)
+    return gulp.src(['src/index.html', 'src/lib/*.js', 'src/example/*', 'src/example/*/*', 'src/views/*', 'src/views/**/*'], option)
         .pipe(gulp.dest('dist'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
 });
 
 gulp.task('zen:js', function() {
-    return gulp.src(['src/js/*.js','src/zen/*/index.js'], option)
+    return gulp.src(['src/js/*.js', 'src/zen/*/index.js'], option)
         .pipe(concat('common.js'))
         .pipe(gulp.dest('dist'))
         // .pipe(rename('zen.min.js'))
         // .pipe(gulp.dest('dist'));
 });
 gulp.task('zen:css', function() {
-    return gulp.src(['src/css/*.css','src/zen/*/index.css'], option)
+    return gulp.src(['src/css/*.css', 'src/zen/*/index.css'], option)
         .pipe(concat('common.css'))
+        .pipe(nano({
+            zindex: false
+        }))
+        .pipe(rename('common.min.css'))
         .pipe(gulp.dest('dist'))
 });
+
 gulp.task('zen:html', function() {
     return gulp.src('src/zen/*/index.html', option)
         .pipe(concat('zen.html'))
@@ -182,6 +156,7 @@ gulp.task('zen:watch', ['release'], function() {
     gulp.watch('src/css/*.css', ['zen:css']);
     gulp.watch('src/js/*.js', ['zen:js']);
     gulp.watch('src/views/**/*', ['zen']);
+    gulp.watch('src/zen/**/*', ['zen']);
 });
 
 gulp.task('zen:server', function() {
@@ -201,4 +176,4 @@ gulp.task('zen:server', function() {
     });
 });
 
-gulp.task('zen', ['copy','zen:js', 'zen:css', 'zen:html']);
+gulp.task('zen', ['copy', 'zen:js', 'zen:css', 'zen:html']);
