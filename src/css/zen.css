@@ -1,7 +1,13 @@
-.light-zen{
+.zen-page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.zen-module{
   display: none;
 }
 
-.light-zen.show{
+.zen-module.show{
   display: block;
 }
