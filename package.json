@@ -1,30 +1,27 @@
 {
   "name": "weui",
   "version": "0.4.0",
-  "description": "A UI library by WeChat official design team, includes the most useful widgets/modules in mobile web applications.",
+  "description": "Light design to do the right thing,do it like a Zen status of coding.",
   "keywords": [
-    "weui",
-    "wechat",
-    "weixin",
+    "lightzen",
+    "script",
+    "framework",
     "css",
-    "less",
+    "js",
     "mobile"
   ],
-  "style": "dist/style/weui.css",
-  "less": "src/style/weui.less",
-  "main": "dist/style/weui.css",
   "scripts": {
     "start": "gulp -ws",
     "test": "gulp release"
   },
-  "author": "wechat ui team",
+  "author": "ganlight@foxmail.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/weui/weui.git"
+    "url": "https://github.com/ganlight/LightZen.git"
   },
-  "homepage": "https://github.com/weui/weui",
+  "homepage": "https://github.com/ganlight/LightZen",
   "bugs": {
-    "url": "https://github.com/weui/weui/issues"
+    "url": ""
   },
   "license": "MIT",
   "devDependencies": {

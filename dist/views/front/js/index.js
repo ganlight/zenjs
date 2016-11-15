@@ -9,8 +9,8 @@ $(function() {
         "name": "page",
         "href": "#front/page"
     }, {
-        "name": "front-page",
-        "href": "#front/page"
+        "name": "toggle-group",
+        "href": "#example/toggle-group"
     }, {
         "name": "multi-select",
         "href": "#example/multi-select"
