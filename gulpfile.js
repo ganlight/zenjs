@@ -140,6 +140,27 @@ gulp.task('zen:js', function() {
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task('zen:page', function() {
+    gulp.src('src/views/*/*.html', option)
+        .pipe(tap(function(file) {
+            var dir = path.dirname(file.path);
+            console.log(file.path);
+            var contents = file.contents.toString();
+            var pos = file.path.indexOf("views/");
+            var pathname = file.path.substring(pos,file.path.length);
+            var toname = pathname.replace(/\//g, ".").replace(".html", "").replace("-", "_");
+            var prefix = toname +' = function() {/*';
+            var suffix = '*/}'
+            contents = prefix +contents +suffix;
+            file.contents = new Buffer(contents);
+        }))
+        .pipe(concat('views.js'))
+        .pipe(gulp.dest(dist))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+
 gulp.task('zen:css', function() {
     return gulp.src(['src/css/*.css', 'src/zen/*/index.css'], option)
         .pipe(concat('common.css'))

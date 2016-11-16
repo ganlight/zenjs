@@ -935,6 +935,26 @@ var Zen = {
             _this.html(zen);
         });
     },
+    parse: function(fn) {
+        //这里面主要将html和js代码转化成js函数，通过这样的方式，可以获取里面的内容
+        return fn.toString().split('\n').slice(1, -1).join('\n') + '\n';
+    },
+    toCamel: function(name) {
+        //例如foo-style-css 变为fooStyleCss
+        var name = name.replace(/\-(\w)/g, function(all, letter) {　　　　　
+            return letter.toUpperCase();　　　　
+        });
+        return name;
+    },
+    toName: function(name) {
+        //例如fooStyleCss变为foo-style-css
+        var name = name.replace(/([A-Z])/g, "-$1").toLowerCase();
+        return name;
+    },
+    pathname: function(path) {
+        var pathname = path.replace(".html", "").replace("-", "_").replace(/\//g, ".");
+        return pathname;
+    },
     ready: function(service) {
         //用于引导页面，并且便于获取调试信息
         service && service.init && service.init();
