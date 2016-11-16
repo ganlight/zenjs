@@ -1,5 +1,4 @@
 $(function() {
-    var multi_type, multi_status;
     var config_type = {
         ele: "m-type",
         data: [{
@@ -44,6 +43,14 @@ $(function() {
             value: "35"
         }]
     }
-    multi_type = new MultiSelect(config_type);
-    multi_status = new MultiSelect(config_status);
+
+    var Service = {
+        multi_type:null,
+        multi_status:null,
+        init: function() {
+            this.multi_type = new MultiSelect(config_type);
+            this.multi_status = new MultiSelect(config_status);
+        }
+    }
+    Zen.ready(Service);
 })

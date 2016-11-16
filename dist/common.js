@@ -187,10 +187,12 @@ var PageService = {
     },
     loadView: function() {
         var view = Util.getHash() || "index";
-        CGI.getView(view);
+        // CGI.getView(view);
+        Zen.init();
         $(window).on('hashchange', function() {
             var name = Util.getHash()|| "index";
-            CGI.getView(name);
+            // CGI.getView(name);
+            Zen.init()
         });
     },
     bind: function() {
@@ -909,13 +911,23 @@ var Util = {
 }
 
 var views = {
-    front: {},
-    example: {}
+    front: {
+      js:{}
+    },
+    example: {
+      js:{}
+    }
 }
 
 var Zen = {
     list: [],
     init: function() {
+        var app = $("#app");
+        this.load_view();
+        this.load_module(app);
+        this.load_script();
+    },
+    _init: function() {
         var head = $('head');
         head.find("*[data-type='page-script']").remove();
         var script = $('<script>').attr("type", "text/javascript");
@@ -930,7 +942,12 @@ var Zen = {
             head.append(script);
         }
     },
-    load: function(target) {
+    load_view: function() {
+        var app = $("#app");
+        var view = Zen.view()
+        app.html(view);
+    },
+    load_module: function(target) {
         target.find('*[v-zen]').each(function() {
             //对包含v-slot的加载特定id的代码块
             var _this = $(this);
@@ -939,6 +956,30 @@ var Zen = {
             var zen = $(".zen-template .c-" + name).clone();
             _this.html(zen);
         });
+    },
+    load_script: function(href) {
+        var head = $('head');
+        head.find("*[data-type='page-script']").remove();
+        //默认只加载一个脚本
+        var items = $('*[v-script]');
+        for (var i = 0; i < items.length; i++) {
+            var item = items.eq(i);
+            var clone = $('<script>').attr("type", "text/javascript");
+            if (item && item.attr("v-script")) {
+                var script_src = item.attr("v-script");
+                if (script_src.indexOf("views") == -1) {
+                    clone.attr("src", script_src);
+                    clone.attr("data-type", 'page-script');
+                    head.append(clone);
+                    continue;
+                }else{
+                  var script_name = this.pathname(script_src.replace(".js", ""));
+                  script = this.parse(eval(script_name));
+                  var app = $("#app");
+                  app.append(script);
+                }
+            }
+        }
     },
     view: function() {
         var view = "";
@@ -966,7 +1007,7 @@ var Zen = {
         return name;
     },
     pathname: function(path) {
-        var pathname = path.replace(".html", "").replace("-", "_").replace(/\//g, ".");
+        var pathname = path.replace(".html", "").replace(/-/g, "_").replace(/\//g, ".");
         return pathname;
     },
     ready: function(service) {
@@ -974,6 +1015,7 @@ var Zen = {
         service && service.init && service.init();
         delete Zen.current;
         Zen.current = service;
+        console.log("Zen ready!");
     }
 }
 

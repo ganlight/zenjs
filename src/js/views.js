@@ -1,4 +1,8 @@
 var views = {
-    front: {},
-    example: {}
+    front: {
+      js:{}
+    },
+    example: {
+      js:{}
+    }
 }

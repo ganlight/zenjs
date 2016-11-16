@@ -136,13 +136,12 @@ gulp.task('zen:js', function() {
     return gulp.src(['src/js/*.js', 'src/zen/*/index.js'], option)
         .pipe(concat('common.js'))
         .pipe(gulp.dest('dist'))
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(rename('common.min.js'))
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('zen:views', function() {
-
     var banner = [].join('\n');
     var pos = 0;
     gulp.src('src/views/*', option)
@@ -177,7 +176,7 @@ gulp.task('zen:page', function() {
             var contents = file.contents.toString();
             var pos = file.path.indexOf("views/");
             var pathname = file.path.substring(pos, file.path.length);
-            var toname = pathname.replace(/\//g, ".").replace(".html", "").replace("-", "_");
+            var toname = pathname.replace(".html", "").replace(/\//g, ".").replace(/-/g, "_");
             var prefix = toname + ' = function() {/*';
             var suffix = '*/}'
             contents = prefix + contents + suffix;
@@ -185,13 +184,37 @@ gulp.task('zen:page', function() {
         }))
         .pipe(concat('views.js'))
         .pipe(gulp.dest(dist))
-        // .pipe(uglify({
-        //     mangle: true,
-        //     compress: true,
-        //     preserveComments: 'all'
-        // }))
-        // .pipe(rename('views.min.js'))
-        // .pipe(gulp.dest(dist))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+
+gulp.task('zen:page:script', function() {
+    var html_opt = {
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeComments: true,
+        removeEmptyAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        minifyJS: true,
+        minifyCSS: true
+    };
+    gulp.src('src/views/**/*.js', option)
+        .pipe(tap(function(file) {
+            var dir = path.dirname(file.path);
+            console.log(file.path);
+            var contents = file.contents.toString();
+            var pos = file.path.indexOf("views/");
+            var pathname = file.path.substring(pos, file.path.length);
+            var toname = pathname.replace(".js", "").replace(/\//g, ".").replace(/-/g, "_");
+            var prefix = toname + ' = function() {/*<script>';
+            var suffix = '</script>*/}'
+            contents = prefix + contents + suffix;
+            file.contents = new Buffer(contents);
+        }))
+        .pipe(concat('views_script.js'))
+        .pipe(gulp.dest(dist))
         .pipe(browserSync.reload({
             stream: true
         }));
@@ -239,4 +262,4 @@ gulp.task('zen:server', function() {
     });
 });
 
-gulp.task('zen', ['copy', 'zen:js', 'zen:css', 'zen:html']);
+gulp.task('zen', ['copy', 'zen:js', 'zen:css', 'zen:html','zen:page', 'zen:page:script']);
