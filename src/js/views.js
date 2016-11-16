@@ -1,0 +1,4 @@
+var views = {
+    front: {},
+    example: {}
+}

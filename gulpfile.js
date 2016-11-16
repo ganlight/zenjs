@@ -11,6 +11,7 @@ var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var htmlmin = require('gulp-htmlmin');
 var sourcemaps = require('gulp-sourcemaps');
 var browserSync = require('browser-sync');
 var pkg = require('./package.json');
@@ -124,7 +125,7 @@ gulp.task('default', ['release'], function() {
 });
 
 gulp.task('copy', function() {
-    return gulp.src(['src/index.html', 'src/lib/*.js', 'src/example/*', 'src/example/*/*', 'src/views/*', 'src/views/**/*'], option)
+    return gulp.src(['src/index.html', 'src/lib/*.js', 'src/example/**/*', 'src/views/**/*'], option)
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
             stream: true
@@ -140,22 +141,57 @@ gulp.task('zen:js', function() {
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task('zen:views', function() {
+
+    var banner = [].join('\n');
+    var pos = 0;
+    gulp.src('src/views/*', option)
+        .pipe(tap(function(file) {
+            console.log(file);
+            var dir = path.dirname(file.path);
+            banner[pos] = dir;
+            console.log(pos);
+            pos = pos + 1;
+        }))
+        .pipe(header(banner, {}))
+        .pipe(concat('views1.js'))
+        .pipe(gulp.dest(dist))
+});
+
 gulp.task('zen:page', function() {
-    gulp.src('src/views/*/*.html', option)
+    var html_opt = {
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeComments: true,
+        removeEmptyAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        minifyJS: true,
+        minifyCSS: true
+    };
+    gulp.src('src/views/**/*.html', option)
+        .pipe(htmlmin(html_opt))
         .pipe(tap(function(file) {
             var dir = path.dirname(file.path);
             console.log(file.path);
             var contents = file.contents.toString();
             var pos = file.path.indexOf("views/");
-            var pathname = file.path.substring(pos,file.path.length);
+            var pathname = file.path.substring(pos, file.path.length);
             var toname = pathname.replace(/\//g, ".").replace(".html", "").replace("-", "_");
-            var prefix = toname +' = function() {/*';
+            var prefix = toname + ' = function() {/*';
             var suffix = '*/}'
-            contents = prefix +contents +suffix;
+            contents = prefix + contents + suffix;
             file.contents = new Buffer(contents);
         }))
         .pipe(concat('views.js'))
         .pipe(gulp.dest(dist))
+        // .pipe(uglify({
+        //     mangle: true,
+        //     compress: true,
+        //     preserveComments: 'all'
+        // }))
+        // .pipe(rename('views.min.js'))
+        // .pipe(gulp.dest(dist))
         .pipe(browserSync.reload({
             stream: true
         }));
