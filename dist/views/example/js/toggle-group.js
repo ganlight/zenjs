@@ -2,10 +2,10 @@ $(function() {
     var config_type = {
         ele: "m-type",
         addAction: function(item) {
-            alert("选择"+item.name);
+            Message.toast("选择"+item.name);
         },
         delAction: function(item) {
-            alert("取消"+item.name);
+            Message.toast("取消"+item.name);
         },
         data: [{
             name: "例子1",
@@ -48,10 +48,10 @@ $(function() {
     var config_status = {
         ele: "m-status",
         addAction: function(item) {
-            alert("选择"+item.name);
+            Message.toast("选择"+item.name);
         },
         delAction: function(item) {
-            alert("取消"+item.name);
+            Message.toast("取消"+item.name);
         },
         data: [{
             name: "状态1",

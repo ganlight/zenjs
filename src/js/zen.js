@@ -51,11 +51,11 @@ var Zen = {
                     clone.attr("data-type", 'page-script');
                     head.append(clone);
                     continue;
-                }else{
-                  var script_name = this.pathname(script_src.replace(".js", ""));
-                  script = this.parse(eval(script_name));
-                  var app = $("#app");
-                  app.append(script);
+                } else {
+                    var script_name = this.pathname(script_src.replace(".js", ""));
+                    script = this.parse(eval(script_name));
+                    var app = $("#app");
+                    app.append(script);
                 }
             }
         }
@@ -94,6 +94,7 @@ var Zen = {
         service && service.init && service.init();
         delete Zen.current;
         Zen.current = service;
-        console.log("Zen ready!");
+        var page = Util.getHash()|| "index";
+        console.log("Zen page : " + page);
     }
 }
