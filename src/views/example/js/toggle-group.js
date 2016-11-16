@@ -1,5 +1,4 @@
 $(function() {
-    var toggle_type, toggle_status;
     var config_type = {
         ele: "m-type",
         addAction: function(item) {
@@ -68,6 +67,14 @@ $(function() {
             selected: true
         }]
     }
-    toggle_type = new ToggleGroup(config_type);
-    toggle_status = new ToggleGroup(config_status);
+
+    var Service = {
+        toggle_type:null,
+        toggle_status:null,
+        init: function() {
+          this.toggle_type = new ToggleGroup(config_type);
+          this.toggle_status = new ToggleGroup(config_status);
+        }
+    }
+    Zen.ready(Service);
 })

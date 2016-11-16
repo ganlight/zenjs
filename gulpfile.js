@@ -134,11 +134,9 @@ gulp.task('copy', function() {
 
 gulp.task('zen:js', function() {
     return gulp.src(['src/js/*.js', 'src/zen/*/index.js'], option)
+        .pipe(uglify())
         .pipe(concat('common.js'))
         .pipe(gulp.dest('dist'))
-        // .pipe(uglify())
-        .pipe(rename('common.min.js'))
-        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('zen:views', function() {
@@ -201,6 +199,7 @@ gulp.task('zen:page:script', function() {
         minifyCSS: true
     };
     gulp.src('src/views/**/*.js', option)
+        .pipe(uglify())
         .pipe(tap(function(file) {
             var dir = path.dirname(file.path);
             console.log(file.path);
@@ -222,12 +221,10 @@ gulp.task('zen:page:script', function() {
 
 gulp.task('zen:css', function() {
     return gulp.src(['src/css/*.css', 'src/zen/*/index.css'], option)
-        .pipe(concat('common.css'))
-        .pipe(gulp.dest('dist'))
         .pipe(nano({
             zindex: false
         }))
-        .pipe(rename('common.min.css'))
+        .pipe(concat('common.css'))
         .pipe(gulp.dest('dist'))
 });
 
@@ -262,4 +259,4 @@ gulp.task('zen:server', function() {
     });
 });
 
-gulp.task('zen', ['copy', 'zen:js', 'zen:css', 'zen:html','zen:page', 'zen:page:script']);
+gulp.task('zen', ['copy', 'zen:js', 'zen:css', 'zen:html', 'zen:page', 'zen:page:script']);
