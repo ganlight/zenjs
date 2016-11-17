@@ -162,6 +162,18 @@ gulp.task('views:combine', ['views:html', 'views:js'], function() {
         }));
 });
 
+gulp.task('release:zepto', ['build:zen'], function() {
+    return gulp.src(['dist/lib/zepto.min.js', 'dist/lib/zenjs.min.js'], option)
+        .pipe(concat('zenjs-zepto.min.js'))
+        .pipe(gulp.dest('dist/lib'))
+});
+
+gulp.task('release:jquery', ['build:zen'], function() {
+    return gulp.src(['dist/lib/jquery-2.1.1.min.js', 'dist/lib/zenjs.min.js'], option)
+        .pipe(concat('zenjs-jquery.min.js'))
+        .pipe(gulp.dest('dist/lib'))
+});
+
 gulp.task('server', function() {
     yargs.p = yargs.p || 40001;
     browserSync.init({
@@ -203,4 +215,4 @@ gulp.task('default', ['release'], function() {
 
 gulp.task('build:zen', ['zen:copy', 'zen:js', 'zen:css', 'zen:html', 'zen:combine']);
 gulp.task('build:views', ['views:html', 'views:js', 'views:combine']);
-gulp.task('release', ['build:zen', 'build:views']);
+gulp.task('release', ['build:zen', 'build:views','release:zepto','release:jquery']);
