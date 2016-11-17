@@ -1,9 +1,9 @@
 {
-  "name": "weui",
-  "version": "0.4.0",
-  "description": "Light design to do the right thing,do it like a Zen status of coding.",
+  "name": "zenjs",
+  "version": "0.1.0",
+  "description": "Zenjs design to do the right thing,do it like a Zen status of coding.",
   "keywords": [
-    "lightzen",
+    "zenjs",
     "script",
     "framework",
     "css",
@@ -17,9 +17,9 @@
   "author": "ganlight@foxmail.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ganlight/LightZen.git"
+    "url": "https://github.com/ganlight/zenjs.git"
   },
-  "homepage": "https://github.com/ganlight/LightZen",
+  "homepage": "https://github.com/ganlight/zenjs",
   "bugs": {
     "url": ""
   },

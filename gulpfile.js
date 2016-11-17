@@ -21,33 +21,23 @@ var option = {
 };
 var dist = __dirname + '/dist';
 
-gulp.task('build:style', function() {
+gulp.task('build:zenjs', function() {
     var banner = [
         '/*!',
-        ' * WeUI v<%= pkg.version %> (<%= pkg.homepage %>)',
-        ' * Copyright <%= new Date().getFullYear() %> Tencent, Inc.',
+        ' * Zenjs v<%= pkg.version %> (<%= pkg.homepage %>)',
+        ' * Author <%= pkg.author %> ',
         ' * Licensed under the <%= pkg.license %> license',
         ' */',
         ''
     ].join('\n');
-    gulp.src('src/style/weui.less', option)
+    gulp.src('dist/temp/*.js', option)
         .pipe(sourcemaps.init())
-        .pipe(less().on('error', function(e) {
-            console.error(e.message);
-            this.emit('end');
-        }))
-        .pipe(postcss([autoprefixer]))
+        .pipe(concat('zenjs.js'))
         .pipe(header(banner, {
             pkg: pkg
         }))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(dist))
-        .pipe(browserSync.reload({
-            stream: true
-        }))
-        .pipe(nano({
-            zindex: false
-        }))
         .pipe(rename(function(path) {
             path.basename += '.min';
         }))

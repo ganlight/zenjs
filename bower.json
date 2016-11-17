@@ -1,10 +1,10 @@
 {
-    "name": "weui",
+    "name": "zenjs",
     "repository": {
         "type": "git",
-        "url": "https://github.com/ganlight/LightZen.git"
+        "url": "https://github.com/ganlight/zenjs.git"
     },
-    "description": "light zen framework",
+    "description": "Zenjs framework",
     "main": "",
     "version": "0.1.0",
     "authors": [
@@ -12,13 +12,13 @@
     ],
     "license": "MIT",
     "keywords": [
-        "lightzen",
+        "zenjs",
         "script",
         "framework",
         "css",
         "js",
         "mobile"
     ],
-    "homepage": "https://github.com/ganlight/LightZen",
+    "homepage": "https://github.com/ganlight/zenjs",
     "ignore": []
 }
