@@ -64,7 +64,7 @@ var Zen = {
                     head.append(clone);
                     continue;
                 } else {
-                    var script_name = this.pathname(script_src.replace(".js", ""));
+                    var script_name = this.pathname(script_src).replace("views__", "views.");
                     script = this.parse(eval(script_name));
                     var app = $("#app");
                     app.append(script);
@@ -75,7 +75,7 @@ var Zen = {
     getView: function() {
         var view = "";
         var hash = Util.getHash() || "index";
-        var viewname = this.pathname("views/" + hash);
+        var viewname = "views." + this.pathname(hash) + "_html";
         view = this.parse(eval(viewname));
         return view;
     },
@@ -89,7 +89,7 @@ var Zen = {
                 return string.slice(15, -3);
             }
         }
-        return ;
+        return;
     },
     toCamel: function(name) {
         //例如foo-style-css 变为fooStyleCss
@@ -104,15 +104,18 @@ var Zen = {
         return name;
     },
     pathname: function(path) {
-        var pathname = path.replace(".html", "").replace(/-/g, "_").replace(/\//g, ".");
+        console.log("Zen path : " + path);
+        // var pathname = path.replace(".html", "").replace(/-/g, "_").replace(/\//g, ".");
+        var pathname = path.replace(".js", "_js").replace(".html", "_html").replace(/-/g, "_").replace(/\//g, "__");
         return pathname;
     },
     ready: function(service) {
         //用于引导页面，并且便于获取调试信息
+        var page = Util.getHash() || "index";
+        console.log("Zen enter : " + page);
         service && service.init && service.init();
         delete Zen.current;
         Zen.current = service;
-        var page = Util.getHash() || "index";
-        console.log("Zen page : " + page);
+        console.log("Zen ready : " + page);
     }
 }

@@ -106,9 +106,9 @@ gulp.task('views:html', function() {
             var dir = path.dirname(file.path);
             console.log(file.path);
             var contents = file.contents.toString();
-            var pos = file.path.indexOf("views/");
+            var pos = file.path.indexOf("views/") + 6;
             var pathname = file.path.substring(pos, file.path.length);
-            var toname = pathname.replace(".html", "").replace(/\//g, ".").replace(/-/g, "_");
+            var toname = "views." + pathname.replace(/\//g, "__").replace(".html", "_html").replace(/-/g, "_");
             var prefix = toname + ' = function() {/*';
             var suffix = '*/}'
             contents = prefix + contents + suffix;
@@ -138,9 +138,9 @@ gulp.task('views:js', function() {
             var dir = path.dirname(file.path);
             console.log(file.path);
             var contents = file.contents.toString();
-            var pos = file.path.indexOf("views/");
+            var pos = file.path.indexOf("views/") + 6;
             var pathname = file.path.substring(pos, file.path.length);
-            var toname = pathname.replace(".js", "").replace(/\//g, ".").replace(/-/g, "_");
+            var toname = "views." + pathname.replace(".js", "_js").replace(/\//g, "__").replace(/-/g, "_");
             var prefix = toname + ' = function() {/*<script>';
             var suffix = '</script>*/}'
             contents = prefix + contents + suffix;
@@ -215,4 +215,4 @@ gulp.task('default', ['release'], function() {
 
 gulp.task('build:zen', ['zen:copy', 'zen:js', 'zen:css', 'zen:html', 'zen:combine']);
 gulp.task('build:views', ['views:html', 'views:js', 'views:combine']);
-gulp.task('release', ['build:zen', 'build:views','release:zepto','release:jquery']);
+gulp.task('release', ['build:zen', 'build:views', 'release:zepto', 'release:jquery']);
