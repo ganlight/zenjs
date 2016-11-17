@@ -21,101 +21,9 @@ var option = {
 };
 var dist = __dirname + '/dist';
 
-gulp.task('build:zenjs', function() {
-    var banner = [
-        '/*!',
-        ' * Zenjs v<%= pkg.version %> (<%= pkg.homepage %>)',
-        ' * Author <%= pkg.author %> ',
-        ' * Licensed under the <%= pkg.license %> license',
-        ' */',
-        ''
-    ].join('\n');
-    gulp.src('dist/temp/*.js', option)
-        .pipe(sourcemaps.init())
-        .pipe(concat('zenjs.js'))
-        .pipe(header(banner, {
-            pkg: pkg
-        }))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest(dist))
-        .pipe(rename(function(path) {
-            path.basename += '.min';
-        }))
-        .pipe(gulp.dest(dist));
-});
 
-gulp.task('build:example:assets', function() {
-    gulp.src('src/example/**/*.?(png|jpg|gif|js)', option)
-        .pipe(gulp.dest(dist))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
-});
-
-gulp.task('build:example:style', function() {
-    gulp.src('src/example/example.less', option)
-        .pipe(less().on('error', function(e) {
-            console.error(e.message);
-            this.emit('end');
-        }))
-        .pipe(postcss([autoprefixer]))
-        .pipe(nano({
-            zindex: false
-        }))
-        .pipe(gulp.dest(dist))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
-});
-
-gulp.task('build:example:html', function() {
-    gulp.src('src/example/index.html', option)
-        .pipe(tap(function(file) {
-            var dir = path.dirname(file.path);
-            var contents = file.contents.toString();
-            contents = contents.replace(/<link\s+rel="import"\s+href="(.*)">/gi, function(match, $1) {
-                var filename = path.join(dir, $1);
-                var id = path.basename(filename, '.html');
-                var content = fs.readFileSync(filename, 'utf-8');
-                return '<script type="text/html" id="tpl_' + id + '">\n' + content + '\n</script>';
-            });
-            file.contents = new Buffer(contents);
-        }))
-        .pipe(gulp.dest(dist))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
-});
-
-gulp.task('build:example', ['build:example:assets', 'build:example:style', 'build:example:html']);
-
-gulp.task('release', ['build:style', 'build:example']);
-
-gulp.task('watch', ['release'], function() {
-    gulp.watch('src/style/**/*', ['build:style']);
-    gulp.watch('src/example/example.less', ['build:example:style']);
-    gulp.watch('src/example/**/*.?(png|jpg|gif|js)', ['build:example:assets']);
-    gulp.watch('src/**/*.html', ['build:example:html']);
-});
-
-
-// 参数说明
-//  -w: 实时监听
-//  -s: 启动服务器
-//  -p: 服务器启动端口，默认8080
-gulp.task('default', ['release'], function() {
-    gulp.start('zen');
-    if (yargs.s) {
-        gulp.start('zen:server');
-    }
-
-    if (yargs.w) {
-        gulp.start('zen:watch');
-    }
-});
-
-gulp.task('copy', function() {
-    return gulp.src(['src/index.html', 'src/lib/*.js', 'src/example/**/*', 'src/views/**/*'], option)
+gulp.task('zen:copy', function() {
+    return gulp.src(['src/lib/*.js', 'src/favicon.ico', 'src/index.html'], option)
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
             stream: true
@@ -125,88 +33,8 @@ gulp.task('copy', function() {
 gulp.task('zen:js', function() {
     return gulp.src(['src/js/*.js', 'src/zen/*/index.js'], option)
         .pipe(uglify())
-        .pipe(concat('common.js'))
-        .pipe(gulp.dest('dist'))
-});
-
-gulp.task('zen:views', function() {
-    var banner = [].join('\n');
-    var pos = 0;
-    gulp.src('src/views/*', option)
-        .pipe(tap(function(file) {
-            console.log(file);
-            var dir = path.dirname(file.path);
-            banner[pos] = dir;
-            console.log(pos);
-            pos = pos + 1;
-        }))
-        .pipe(header(banner, {}))
-        .pipe(concat('views1.js'))
-        .pipe(gulp.dest(dist))
-});
-
-gulp.task('zen:page', function() {
-    var html_opt = {
-        collapseWhitespace: true,
-        collapseBooleanAttributes: true,
-        removeComments: true,
-        removeEmptyAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        minifyJS: true,
-        minifyCSS: true
-    };
-    gulp.src('src/views/**/*.html', option)
-        .pipe(htmlmin(html_opt))
-        .pipe(tap(function(file) {
-            var dir = path.dirname(file.path);
-            console.log(file.path);
-            var contents = file.contents.toString();
-            var pos = file.path.indexOf("views/");
-            var pathname = file.path.substring(pos, file.path.length);
-            var toname = pathname.replace(".html", "").replace(/\//g, ".").replace(/-/g, "_");
-            var prefix = toname + ' = function() {/*';
-            var suffix = '*/}'
-            contents = prefix + contents + suffix;
-            file.contents = new Buffer(contents);
-        }))
-        .pipe(concat('views.js'))
-        .pipe(gulp.dest(dist))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
-});
-
-gulp.task('zen:page:script', function() {
-    var html_opt = {
-        collapseWhitespace: true,
-        collapseBooleanAttributes: true,
-        removeComments: true,
-        removeEmptyAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        minifyJS: true,
-        minifyCSS: true
-    };
-    gulp.src('src/views/**/*.js', option)
-        .pipe(uglify())
-        .pipe(tap(function(file) {
-            var dir = path.dirname(file.path);
-            console.log(file.path);
-            var contents = file.contents.toString();
-            var pos = file.path.indexOf("views/");
-            var pathname = file.path.substring(pos, file.path.length);
-            var toname = pathname.replace(".js", "").replace(/\//g, ".").replace(/-/g, "_");
-            var prefix = toname + ' = function() {/*<script>';
-            var suffix = '</script>*/}'
-            contents = prefix + contents + suffix;
-            file.contents = new Buffer(contents);
-        }))
-        .pipe(concat('views_script.js'))
-        .pipe(gulp.dest(dist))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
+        .pipe(concat('zen.js'))
+        .pipe(gulp.dest('dist/zen'))
 });
 
 gulp.task('zen:css', function() {
@@ -214,25 +42,71 @@ gulp.task('zen:css', function() {
         .pipe(nano({
             zindex: false
         }))
-        .pipe(concat('common.css'))
-        .pipe(gulp.dest('dist'))
+        .pipe(concat('zen.css'))
+        .pipe(gulp.dest('dist/zen'))
 });
 
 gulp.task('zen:html', function() {
+    var html_opt = {
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeComments: true,
+        removeEmptyAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        minifyJS: true,
+        minifyCSS: true
+    };
     return gulp.src('src/zen/*/index.html', option)
+        .pipe(htmlmin(html_opt))
         .pipe(concat('zen.html'))
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('dist/zen'))
 });
 
-gulp.task('zen:watch', ['release'], function() {
-    gulp.watch('src/*.html', ['zen']);
-    gulp.watch('src/css/*.css', ['zen']);
-    gulp.watch('src/js/*.js', ['zen']);
-    gulp.watch('src/views/**/*', ['zen']);
-    gulp.watch('src/zen/**/*', ['zen']);
+gulp.task('zen:combine', ['zen:js', 'zen:css', 'zen:html'], function() {
+    return gulp.src(['dist/zen/zen.js', 'dist/zen/zen.css', 'dist/zen/zen.html'], option)
+        .pipe(tap(function(file) {
+            console.log(file.path);
+            var contents = file.contents.toString();
+            var pos = file.path.indexOf("views/");
+            var pathname = file.path.substring(pos, file.path.length);
+            if (pathname.indexOf("zen.css") > -1) {
+                var toname = "Zen.css";
+                var prefix = toname + ' = function() {/*<style>';
+                var suffix = '</style>*/}';
+                contents = prefix + contents + suffix;
+                file.contents = new Buffer(contents);
+            } else if (pathname.indexOf("zen.html") > -1) {
+                var toname = "Zen.modules";
+                var prefix = toname + ' = function() {/*';
+                var suffix = '*/}';
+                contents = prefix + contents + suffix;
+                file.contents = new Buffer(contents);
+            }
+        }))
+        .pipe(concat('zenjs.min.js'))
+        .pipe(gulp.dest('dist/lib'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
 });
 
-gulp.task('zen:server', function() {
+// 参数说明
+//  -w: 实时监听
+//  -s: 启动服务器
+//  -p: 服务器启动端口，默认8080
+gulp.task('default', ['release'], function() {
+    gulp.start('release');
+    if (yargs.s) {
+        gulp.start('server');
+    }
+
+    if (yargs.w) {
+        gulp.start('watch');
+    }
+});
+
+gulp.task('server', function() {
     yargs.p = yargs.p || 40001;
     browserSync.init({
         server: {
@@ -249,4 +123,87 @@ gulp.task('zen:server', function() {
     });
 });
 
-gulp.task('zen', ['copy', 'zen:js', 'zen:css', 'zen:html', 'zen:page', 'zen:page:script']);
+gulp.task('watch', ['release'], function() {
+    gulp.watch('src/views/**/*', ['build:views']);
+    gulp.watch('src/css/*.css', ['build:zen']);
+    gulp.watch('src/js/*.js', ['build:zen']);
+    gulp.watch('src/zen/**/*', ['build:zen']);
+});
+
+
+gulp.task('build:zen', ['zen:copy', 'zen:js', 'zen:css', 'zen:html', 'zen:combine']);
+gulp.task('build:views', ['views:html', 'views:js', 'views:combine']);
+gulp.task('release', ['build:zen', 'build:views']);
+
+gulp.task('views:html', function() {
+    var html_opt = {
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeComments: true,
+        removeEmptyAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        minifyJS: true,
+        minifyCSS: true
+    };
+    return gulp.src('src/views/**/*.html', option)
+        .pipe(htmlmin(html_opt))
+        .pipe(tap(function(file) {
+            var dir = path.dirname(file.path);
+            console.log(file.path);
+            var contents = file.contents.toString();
+            var pos = file.path.indexOf("views/");
+            var pathname = file.path.substring(pos, file.path.length);
+            var toname = pathname.replace(".html", "").replace(/\//g, ".").replace(/-/g, "_");
+            var prefix = toname + ' = function() {/*';
+            var suffix = '*/}'
+            contents = prefix + contents + suffix;
+            file.contents = new Buffer(contents);
+        }))
+        .pipe(concat('views.js'))
+        .pipe(gulp.dest('dist/views'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+
+gulp.task('views:js', function() {
+    var html_opt = {
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeComments: true,
+        removeEmptyAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        minifyJS: true,
+        minifyCSS: true
+    };
+    return gulp.src('src/views/**/*.js', option)
+        .pipe(uglify())
+        .pipe(tap(function(file) {
+            var dir = path.dirname(file.path);
+            console.log(file.path);
+            var contents = file.contents.toString();
+            var pos = file.path.indexOf("views/");
+            var pathname = file.path.substring(pos, file.path.length);
+            var toname = pathname.replace(".js", "").replace(/\//g, ".").replace(/-/g, "_");
+            var prefix = toname + ' = function() {/*<script>';
+            var suffix = '</script>*/}'
+            contents = prefix + contents + suffix;
+            file.contents = new Buffer(contents);
+        }))
+        .pipe(concat('views_script.js'))
+        .pipe(gulp.dest('dist/views'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+
+gulp.task('views:combine', ['views:html', 'views:js'], function() {
+    return gulp.src(['dist/views/views.js', 'dist/views/views_script.js'], option)
+        .pipe(concat('common.js'))
+        .pipe(gulp.dest('dist'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});

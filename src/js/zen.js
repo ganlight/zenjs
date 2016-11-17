@@ -1,6 +1,18 @@
 var Zen = {
     list: [],
     init: function() {
+        if (Zen.modules) {
+            var modules = Zen.parse(Zen.modules);
+            var moudles_div = $("<div>").addClass("zen-modules");
+            moudles_div.append(modules);
+            $("body").prepend(moudles_div);
+        }
+        if (Zen.css) {
+            var css = Zen.parse(Zen.css);
+            $("title").after(css);
+        }
+    },
+    load: function() {
         var app = $("#app");
         this.load_view();
         this.load_module(app);
@@ -23,7 +35,7 @@ var Zen = {
     },
     load_view: function() {
         var app = $("#app");
-        var view = Zen.view()
+        var view = Zen.getView()
         app.html(view);
     },
     load_module: function(target) {
@@ -32,7 +44,7 @@ var Zen = {
             var _this = $(this);
             var name = $(this).attr('v-zen');
             if (!name) return;
-            var zen = $(".zen-template .c-" + name).clone();
+            var zen = $(".zen-modules .c-" + name).clone();
             _this.html(zen);
         });
     },
@@ -60,7 +72,7 @@ var Zen = {
             }
         }
     },
-    view: function() {
+    getView: function() {
         var view = "";
         var hash = Util.getHash() || "index";
         var viewname = this.pathname("views/" + hash);
@@ -71,7 +83,13 @@ var Zen = {
         //这里面主要将html和js代码转化成js函数，通过这样的方式，可以获取里面的内容
         //如果是多行文本采用下面的方式
         // return fn.toString().split('\n').slice(1, -1).join('\n') + '\n';
-        return fn.toString().slice(15, -3);
+        if (typeof fn === 'function') {
+            var string = fn.toString();
+            if (string.length > 20) {
+                return string.slice(15, -3);
+            }
+        }
+        return ;
     },
     toCamel: function(name) {
         //例如foo-style-css 变为fooStyleCss
@@ -94,7 +112,7 @@ var Zen = {
         service && service.init && service.init();
         delete Zen.current;
         Zen.current = service;
-        var page = Util.getHash()|| "index";
+        var page = Util.getHash() || "index";
         console.log("Zen page : " + page);
     }
 }

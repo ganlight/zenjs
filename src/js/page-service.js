@@ -15,12 +15,11 @@ var PageService = {
     },
     loadView: function() {
         var view = Util.getHash() || "index";
-        // CGI.getView(view);
         Zen.init();
+        Zen.load();
         $(window).on('hashchange', function() {
             var name = Util.getHash()|| "index";
-            // CGI.getView(name);
-            Zen.init()
+            Zen.load()
         });
     },
     bind: function() {
