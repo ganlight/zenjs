@@ -6,7 +6,7 @@
     },
     "description": "Zenjs framework",
     "main": "",
-    "version": "0.1.0",
+    "version": "0.3.0",
     "authors": [
         "ganlight@foxmail.com"
     ],
@@ -19,6 +19,6 @@
         "js",
         "mobile"
     ],
-    "homepage": "https://github.com/ganlight/zenjs",
+    "homepage": "https://ganlight.github.io/zenjs",
     "ignore": []
 }

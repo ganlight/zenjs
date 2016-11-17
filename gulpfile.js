@@ -2,7 +2,6 @@ var path = require('path');
 var fs = require('fs');
 var yargs = require('yargs').argv;
 var gulp = require('gulp');
-var less = require('gulp-less');
 var header = require('gulp-header');
 var tap = require('gulp-tap');
 var concat = require('gulp-concat');
@@ -20,7 +19,6 @@ var option = {
     base: 'src'
 };
 var dist = __dirname + '/dist';
-
 
 gulp.task('zen:copy', function() {
     return gulp.src(['src/lib/*.js', 'src/favicon.ico', 'src/index.html'], option)
@@ -90,50 +88,6 @@ gulp.task('zen:combine', ['zen:js', 'zen:css', 'zen:html'], function() {
             stream: true
         }));
 });
-
-// 参数说明
-//  -w: 实时监听
-//  -s: 启动服务器
-//  -p: 服务器启动端口，默认8080
-gulp.task('default', ['release'], function() {
-    gulp.start('release');
-    if (yargs.s) {
-        gulp.start('server');
-    }
-
-    if (yargs.w) {
-        gulp.start('watch');
-    }
-});
-
-gulp.task('server', function() {
-    yargs.p = yargs.p || 40001;
-    browserSync.init({
-        server: {
-            baseDir: "./dist"
-        },
-        ui: {
-            port: yargs.p + 1,
-            weinre: {
-                port: yargs.p + 2
-            }
-        },
-        port: yargs.p,
-        startPath: '/'
-    });
-});
-
-gulp.task('watch', ['release'], function() {
-    gulp.watch('src/views/**/*', ['build:views']);
-    gulp.watch('src/css/*.css', ['build:zen']);
-    gulp.watch('src/js/*.js', ['build:zen']);
-    gulp.watch('src/zen/**/*', ['build:zen']);
-});
-
-
-gulp.task('build:zen', ['zen:copy', 'zen:js', 'zen:css', 'zen:html', 'zen:combine']);
-gulp.task('build:views', ['views:html', 'views:js', 'views:combine']);
-gulp.task('release', ['build:zen', 'build:views']);
 
 gulp.task('views:html', function() {
     var html_opt = {
@@ -207,3 +161,46 @@ gulp.task('views:combine', ['views:html', 'views:js'], function() {
             stream: true
         }));
 });
+
+gulp.task('server', function() {
+    yargs.p = yargs.p || 40001;
+    browserSync.init({
+        server: {
+            baseDir: "./dist"
+        },
+        ui: {
+            port: yargs.p + 1,
+            weinre: {
+                port: yargs.p + 2
+            }
+        },
+        port: yargs.p,
+        startPath: '/'
+    });
+});
+
+gulp.task('watch', ['release'], function() {
+    gulp.watch('src/views/**/*', ['build:views']);
+    gulp.watch('src/css/*.css', ['build:zen']);
+    gulp.watch('src/js/*.js', ['build:zen']);
+    gulp.watch('src/zen/**/*', ['build:zen']);
+});
+
+// 参数说明
+//  -w: 实时监听
+//  -s: 启动服务器
+//  -p: 服务器启动端口，默认8080
+gulp.task('default', ['release'], function() {
+    gulp.start('release');
+    if (yargs.s) {
+        gulp.start('server');
+    }
+
+    if (yargs.w) {
+        gulp.start('watch');
+    }
+});
+
+gulp.task('build:zen', ['zen:copy', 'zen:js', 'zen:css', 'zen:html', 'zen:combine']);
+gulp.task('build:views', ['views:html', 'views:js', 'views:combine']);
+gulp.task('release', ['build:zen', 'build:views']);
