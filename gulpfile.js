@@ -106,8 +106,9 @@ gulp.task('views:html', function() {
             var dir = path.dirname(file.path);
             console.log(file.path);
             var contents = file.contents.toString();
-            var pos = file.path.indexOf("views/") + 6;
-            var pathname = file.path.substring(pos, file.path.length);
+            var _path = file.path.replace(/\\/g, "/");
+            var pos = _path.indexOf("views/") + 6;
+            var pathname = _path.substring(pos, _path.length);
             var toname = "views." + pathname.replace(/\//g, "__").replace(".html", "_html").replace(/-/g, "_");
             var prefix = toname + ' = function() {/*';
             var suffix = '*/}'
@@ -138,8 +139,9 @@ gulp.task('views:js', function() {
             var dir = path.dirname(file.path);
             console.log(file.path);
             var contents = file.contents.toString();
-            var pos = file.path.indexOf("views/") + 6;
-            var pathname = file.path.substring(pos, file.path.length);
+            var _path = file.path.replace(/\\/g, "/");
+            var pos = _path.indexOf("views/") + 6;
+            var pathname = _path.substring(pos, _path.length);
             var toname = "views." + pathname.replace(".js", "_js").replace(/\//g, "__").replace(/-/g, "_");
             var prefix = toname + ' = function() {/*<script>';
             var suffix = '</script>*/}'
