@@ -14,30 +14,57 @@ var Zen = {
     },
     load: function() {
         var app = $("#app");
-        this.load_view();
+        this.load_html();
+        this.load_css();
         this.load_module(app);
         this.load_script();
+        this.load_js();
     },
     load_view: function() {
-        var app = $("#app");
-        var view = Zen.getView();
-        app.html(view);
+        // var app = $("#app");
+        // var view = Zen.getView();
+        // app.html(view);
+        this.load_html();
+        this.load_css();
+        this.load_js();
+    },
+    getModule: function(type) {
+        var module = "";
+        var hash = Util.getHash() || "index";
+        var name = "views." + this.pathname(hash) + "_" + type;
+        var name_index = "views." + this.pathname(hash) + "__index_" + type;
+        if (eval(name)) {
+            module = this.parse(eval(name));
+            return module;
+        }
+        if (eval(name_index)) {
+            module = this.parse(eval(name_index));
+            return module;
+        }
+    },
+    load_html: function() {
+        var html = "";
+        var page = $("#app");
+        html = this.getModule("html");
+        if (html) {
+            page.html(html);
+        }
     },
     load_css: function() {
         var css = "";
         var page = $("#app .zen-page");
-        var hash = Util.getHash() || "index";
-        var cssname = "views." + this.pathname(hash) + "_css";
-        css = this.parse(eval(cssname));
-        page.prepend(css);
+        css = this.getModule("css");
+        if (css) {
+            page.prepend(css);
+        }
     },
     load_js: function() {
         var js = "";
         var page = $("#app .zen-page");
-        var hash = Util.getHash() || "index";
-        var jsname = "views." + this.pathname(hash) + "_js";
-        js = this.parse(eval(jsname));
-        page.append(js);
+        js = this.getModule("js");
+        if (js) {
+            page.append(js);
+        }
     },
     load_module: function(target) {
         target.find('*[v-zen]').each(function() {
@@ -48,8 +75,10 @@ var Zen = {
             var zen = $(".zen-modules .c-" + name).clone();
             _this.html(zen);
         });
+        $(".zen-page").attr("data-ready", "ready");
     },
     load_script: function(href) {
+        //用于加载外部引用的script脚本
         var head = $('head');
         head.find("*[data-type='page-script']").remove();
         //默认只加载一个脚本
@@ -69,6 +98,7 @@ var Zen = {
                     script = this.parse(eval(script_name));
                     var app = $("#app");
                     app.append(script);
+                    item.remove();
                 }
             }
         }
@@ -85,6 +115,7 @@ var Zen = {
         //如果是多行文本采用下面的方式
         // return fn.toString().split('\n').slice(1, -1).join('\n') + '\n';
         if (typeof fn === 'function') {
+            // console.log("Zen function : " + fn.name);
             var string = fn.toString();
             if (string.length > 20) {
                 return string.slice(15, -3);
@@ -110,13 +141,27 @@ var Zen = {
         var pathname = path.replace(".js", "_js").replace(".html", "_html").replace(/-/g, "_").replace(/\//g, "__");
         return pathname;
     },
+    delay: function(fn) {
+        if ($(".zen-page").attr("data-ready") == "ready") {
+            fn && fn();
+            return;
+        } else {
+            console.log("Zen delay : 100ms");
+            setTimeout(function() {
+                Zen.delay(fn)
+            }, 100)
+        }
+    },
     ready: function(service) {
         //用于引导页面，并且便于获取调试信息
         var page = Util.getHash() || "index";
         console.log("Zen enter : " + page);
-        service && service.init && service.init();
-        delete Zen.current;
-        Zen.current = service;
-        console.log("Zen ready : " + page);
+        //如果前面的zen-module沒有渲染好，需要等待
+        this.delay(function() {
+            service && service.init && service.init();
+            delete Zen.current;
+            Zen.current = service;
+            console.log("Zen ready : " + page);
+        });
     }
 }
