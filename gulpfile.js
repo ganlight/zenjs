@@ -21,7 +21,7 @@ var option = {
 var dist = __dirname + '/dist';
 
 gulp.task('zen:copy', function() {
-    return gulp.src(['src/lib/*.js', 'src/favicon.ico', 'src/index.html'], option)
+    return gulp.src(['src/lib/*', 'src/favicon.ico', 'src/index.html'], option)
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
             stream: true
@@ -32,7 +32,7 @@ gulp.task('zen:js', function() {
     return gulp.src(['src/zen-js/*.js', 'src/zen-module/*/index.js'], option)
         .pipe(uglify())
         .pipe(concat('zen.js'))
-        .pipe(gulp.dest('dist/zen'))
+        .pipe(gulp.dest('tmp/zen'))
 });
 
 gulp.task('zen:css', function() {
@@ -41,7 +41,7 @@ gulp.task('zen:css', function() {
             zindex: false
         }))
         .pipe(concat('zen.css'))
-        .pipe(gulp.dest('dist/zen'))
+        .pipe(gulp.dest('tmp/zen'))
 });
 
 gulp.task('zen:html', function() {
@@ -58,11 +58,11 @@ gulp.task('zen:html', function() {
     return gulp.src('src/zen-module/*/index.html', option)
         .pipe(htmlmin(html_opt))
         .pipe(concat('zen.html'))
-        .pipe(gulp.dest('dist/zen'))
+        .pipe(gulp.dest('tmp/zen'))
 });
 
 gulp.task('zen:combine', ['zen:js', 'zen:css', 'zen:html'], function() {
-    return gulp.src(['dist/zen/zen.js', 'dist/zen/zen.css', 'dist/zen/zen.html'], option)
+    return gulp.src(['tmp/zen/zen.js', 'tmp/zen/zen.css', 'tmp/zen/zen.html'], option)
         .pipe(tap(function(file) {
             console.log(file.path);
             var contents = file.contents.toString();
@@ -116,7 +116,7 @@ gulp.task('views:html', function() {
             file.contents = new Buffer(contents);
         }))
         .pipe(concat('views_html.js'))
-        .pipe(gulp.dest('dist/views'))
+        .pipe(gulp.dest('tmp/views'))
         .pipe(browserSync.reload({
             stream: true
         }));
@@ -139,7 +139,7 @@ gulp.task('views:js', function() {
             file.contents = new Buffer(contents);
         }))
         .pipe(concat('views_js.js'))
-        .pipe(gulp.dest('dist/views'))
+        .pipe(gulp.dest('tmp/views'))
         .pipe(browserSync.reload({
             stream: true
         }));
@@ -164,14 +164,14 @@ gulp.task('views:css', function() {
             file.contents = new Buffer(contents);
         }))
         .pipe(concat('views_css.js'))
-        .pipe(gulp.dest('dist/views'))
+        .pipe(gulp.dest('tmp/views'))
         .pipe(browserSync.reload({
             stream: true
         }));
 });
 
 gulp.task('views:combine', ['views:html', 'views:js', 'views:css'], function() {
-    return gulp.src(['dist/views/views_html.js', 'dist/views/views_js.js', 'dist/views/views_css.js'], option)
+    return gulp.src(['tmp/views/views_html.js', 'tmp/views/views_js.js', 'tmp/views/views_css.js'], option)
         .pipe(concat('common.js'))
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
