@@ -14,18 +14,11 @@ var Zen = {
     },
     load: function() {
         var app = $("#app");
-        this.load_html();
+        app.empty();
         this.load_css();
+        this.load_html();
         this.load_module(app);
         this.load_script();
-        this.load_js();
-    },
-    load_view: function() {
-        // var app = $("#app");
-        // var view = Zen.getView();
-        // app.html(view);
-        this.load_html();
-        this.load_css();
         this.load_js();
     },
     getModule: function(type) {
@@ -47,20 +40,20 @@ var Zen = {
         var page = $("#app");
         html = this.getModule("html");
         if (html) {
-            page.html(html);
+            page.append(html);
         }
     },
     load_css: function() {
         var css = "";
-        var page = $("#app .zen-page");
+        var page = $("#app");
         css = this.getModule("css");
         if (css) {
-            page.prepend(css);
+            page.append(css);
         }
     },
     load_js: function() {
         var js = "";
-        var page = $("#app .zen-page");
+        var page = $("#app");
         js = this.getModule("js");
         if (js) {
             page.append(js);
