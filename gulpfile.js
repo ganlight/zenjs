@@ -115,7 +115,7 @@ gulp.task('views:html', function() {
             contents = prefix + contents + suffix;
             file.contents = new Buffer(contents);
         }))
-        .pipe(concat('views.js'))
+        .pipe(concat('views_html.js'))
         .pipe(gulp.dest('dist/views'))
         .pipe(browserSync.reload({
             stream: true
@@ -123,16 +123,6 @@ gulp.task('views:html', function() {
 });
 
 gulp.task('views:js', function() {
-    var html_opt = {
-        collapseWhitespace: true,
-        collapseBooleanAttributes: true,
-        removeComments: true,
-        removeEmptyAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        minifyJS: true,
-        minifyCSS: true
-    };
     return gulp.src('src/views/**/*.js', option)
         .pipe(uglify())
         .pipe(tap(function(file) {
@@ -148,15 +138,40 @@ gulp.task('views:js', function() {
             contents = prefix + contents + suffix;
             file.contents = new Buffer(contents);
         }))
-        .pipe(concat('views_script.js'))
+        .pipe(concat('views_js.js'))
         .pipe(gulp.dest('dist/views'))
         .pipe(browserSync.reload({
             stream: true
         }));
 });
 
-gulp.task('views:combine', ['views:html', 'views:js'], function() {
-    return gulp.src(['dist/views/views.js', 'dist/views/views_script.js'], option)
+gulp.task('views:css', function() {
+    return gulp.src('src/views/**/*.css', option)
+        .pipe(nano({
+            zindex: false
+        }))
+        .pipe(tap(function(file) {
+            var dir = path.dirname(file.path);
+            console.log(file.path);
+            var contents = file.contents.toString();
+            var _path = file.path.replace(/\\/g, "/");
+            var pos = _path.indexOf("views/") + 6;
+            var pathname = _path.substring(pos, _path.length);
+            var toname = "views." + pathname.replace(".css", "_css").replace(/\//g, "__").replace(/-/g, "_");
+            var prefix = toname + ' = function() {/*<style>';
+            var suffix = '</style>*/}'
+            contents = prefix + contents + suffix;
+            file.contents = new Buffer(contents);
+        }))
+        .pipe(concat('views_css.js'))
+        .pipe(gulp.dest('dist/views'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+
+gulp.task('views:combine', ['views:html', 'views:js', 'views:css'], function() {
+    return gulp.src(['dist/views/views_html.js', 'dist/views/views_js.js', 'dist/views/views_css.js'], option)
         .pipe(concat('common.js'))
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
@@ -216,5 +231,5 @@ gulp.task('default', ['release'], function() {
 });
 
 gulp.task('build:zen', ['zen:copy', 'zen:js', 'zen:css', 'zen:html', 'zen:combine']);
-gulp.task('build:views', ['views:html', 'views:js', 'views:combine']);
+gulp.task('build:views', ['views:html', 'views:js', 'views:css', 'views:combine']);
 gulp.task('release', ['build:zen', 'build:views', 'release:zepto', 'release:jquery']);
