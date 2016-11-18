@@ -18,25 +18,26 @@ var Zen = {
         this.load_module(app);
         this.load_script();
     },
-    _init: function() {
-        var head = $('head');
-        head.find("*[data-type='page-script']").remove();
-        var script = $('<script>').attr("type", "text/javascript");
-        var app = $("#app");
-        this.load(app);
-        //默认只加载一个脚本
-        var ele_script = $('*[v-script]').eq(0);
-        var page_script = ele_script.attr("v-script");
-        if (ele_script.length > 0 && page_script) {
-            script.attr("src", page_script);
-            script.attr("data-type", 'page-script');
-            head.append(script);
-        }
-    },
     load_view: function() {
         var app = $("#app");
-        var view = Zen.getView()
+        var view = Zen.getView();
         app.html(view);
+    },
+    load_css: function() {
+        var css = "";
+        var page = $("#app .zen-page");
+        var hash = Util.getHash() || "index";
+        var cssname = "views." + this.pathname(hash) + "_css";
+        css = this.parse(eval(cssname));
+        page.prepend(css);
+    },
+    load_js: function() {
+        var js = "";
+        var page = $("#app .zen-page");
+        var hash = Util.getHash() || "index";
+        var jsname = "views." + this.pathname(hash) + "_js";
+        js = this.parse(eval(jsname));
+        page.append(js);
     },
     load_module: function(target) {
         target.find('*[v-zen]').each(function() {
