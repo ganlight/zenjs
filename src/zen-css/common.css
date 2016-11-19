@@ -461,59 +461,6 @@ i.safe {
 
 
 /*----------------------------------------------*/
-
-
-/* 0. page-common-block Styles
-----------------------------------------------*/
-
-.c-navmenu-banner .title {
-    font-size: 1.6rem;
-    color: #FFF;
-}
-.c-navmenu-banner .menu {
-    cursor: pointer;
-}
-
-.c-navmenu-banner>div {
-    position: relative;
-    padding: 1.1rem 1.5rem;
-    font-size: 2rem;
-    background: #7cc854;
-}
-.role-coach .c-navmenu-banner>div{
-    background: #03a3fc;
-}
-.role-coach .c-btn{
-    background: #03a3fc;
-}
-.role-coach .green{
-    color: #03a3fc;
-}
-.role-coach .c-page-tips .ico i{
-    color: #03a3fc;
-}
-
-.role-coach .c-tabs .tab-item.selected>span {
-    border-bottom: .2rem solid #03a3fc;
-    display: inline-block;
-    color: #03a3fc;
-}
-.nav-trainee{
-  display: block;
-}
-.nav-coach{
-  display: none;
-}
-.role-coach .nav-trainee{
-  display: none;
-}
-.role-coach .nav-coach{
-  display: block;
-}
-.role-coach .sidenav{
-  background: #0f7bb7;
-}
-
 .c-page-tips {
     position: relative;
     text-align: center;

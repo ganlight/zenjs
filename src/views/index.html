@@ -1,35 +1,66 @@
 <style>
-    .index-page {
-        position: absolute;
-        width: 100%;
-        height: 100%;
+    .c-navmenu-banner .title {
+        font-size: 1.6rem;
+        color: #FFF;
     }
 
-    .index-page .page-list {
+    .c-navmenu-banner .menu {
+        cursor: pointer;
+    }
+
+    .c-navmenu-banner>div {
+        position: relative;
+        padding: 1.1rem 1.5rem;
+        font-size: 2rem;
+    }
+
+    ul {
         list-style: none;
         margin: 0;
         padding: 0;
     }
 
-    .index-page .list-item {
-        list-style: none;
-        padding: 10px 15px;
-        border-bottom: 1px solid #eee;
+    .link-item {
+        height: 100px;
+        width: 64px;
     }
-
-    .index-page .list-item .name {
-        padding-bottom: 5px;
+    .link-item i{
+        font-size:2.4rem;
+    }
+    .link-item .name{
+        line-height: 3rem;
+        font-size: 1.4rem;
+    }
+    .link-item .white-line{
+        height: .1rem;
+        background: #FFF;
     }
 </style>
-<div class="zen-page index-page">
-    <ul class="page-list" id="page-list">
-    </ul>
-    <div class="page-template hide">
-        <li class="list-item inline clearfix">
-            <div class="font20 name"></div>
-            <div class="font16 href action"></div>
-        </li>
+<div class="zen-page v-center">
+    <div class="c-navmenu-banner fix-top">
+        <div class="text-center clearfix">
+            <span class="logo fl" v-link="/"><i class="fa fa-paper-plane fa-fw white" ></i></span>
+            <span class="title"></span>
+            <span class="fr menu"><i class="fa fa-bars fa-fw white" ></i></span>
+        </div>
     </div>
+    <ul class="link-list">
+        <li class="link-item text-center" v-link="#example/index">
+            <div class=""><i class="fa fa-paper-plane fa-fw white"></i></div>
+            <div class="name ">VIEWS</div>
+            <div class="white-line"></div>
+        </li>
+        <li class="link-item text-center" v-link="#front/green">
+            <div class=""><i class="fa fa-paper-plane fa-fw white font32"></i></div>
+            <div class="name">MODULES</div>
+            <div class="white-line"></div>
+        </li>
+        <li class="link-item text-center" v-link="#about">
+            <div class=""><i class="fa fa-paper-plane fa-fw white font32"></i></div>
+            <div class="name">ZENJS</div>
+            <div class="white-line"></div>
+        </li>
+    </ul>
 </div>
 <script>
     $(function() {
@@ -39,13 +70,13 @@
         }, {
             "name": "multi-select",
             "href": "#example/multi-select"
-        },{
+        }, {
             "name": "single-page toggle-group",
             "href": "#example/single-page/toggle-group"
         }, {
             "name": "single-page multi-select",
             "href": "#example/single-page/multi-select"
-        },  {
+        }, {
             "name": "alert",
             "action": "Message.alert('Light Zen')"
         }, {
@@ -54,19 +85,19 @@
         }, {
             "name": "confirm",
             "action": "Message.confirm('Light Zen')"
-        },{
+        }, {
             "name": "toggle-group",
             "href": "#example/toggle-group"
         }, {
             "name": "multi-select",
             "href": "#example/multi-select"
-        },{
+        }, {
             "name": "single-page toggle-group",
             "href": "#example/single-page/toggle-group"
         }, {
             "name": "single-page multi-select",
             "href": "#example/single-page/multi-select"
-        },  {
+        }, {
             "name": "alert",
             "action": "Message.alert('Light Zen')"
         }, {
