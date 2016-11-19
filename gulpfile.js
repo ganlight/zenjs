@@ -170,8 +170,35 @@ gulp.task('views:css', function() {
         }));
 });
 
-gulp.task('views:combine', ['views:html', 'views:js', 'views:css'], function() {
-    return gulp.src(['tmp/views/views_html.js', 'tmp/views/views_js.js', 'tmp/views/views_css.js'], option)
+gulp.task('common:css', function() {
+    return gulp.src('src/assets/css/*.css', option)
+        .pipe(concat('common_css.js'))
+        .pipe(tap(function(file) {
+            console.log(file.path);
+            var contents = file.contents.toString();
+            var prefix = "views.common_css" + ' = function() {/*<style>';
+            var suffix = '</style>*/}'
+            contents = prefix + contents + suffix;
+            file.contents = new Buffer(contents);
+        }))
+        .pipe(gulp.dest('tmp/views'))
+});
+gulp.task('common:js', function() {
+    return gulp.src('src/assets/js/*.js', option)
+        .pipe(concat('common_js.js'))
+        .pipe(tap(function(file) {
+            console.log(file.path);
+            var contents = file.contents.toString();
+            var prefix = "views.common_js" + ' = function() {/*<script>';
+            var suffix = '</script>*/}'
+            contents = prefix + contents + suffix;
+            file.contents = new Buffer(contents);
+        }))
+        .pipe(gulp.dest('tmp/views'))
+});
+
+gulp.task('views:combine', ['common:css','common:js','views:html', 'views:js', 'views:css'], function() {
+    return gulp.src(['tmp/views/common_css.js', 'tmp/views/common_js.js','tmp/views/views_html.js', 'tmp/views/views_js.js', 'tmp/views/views_css.js'], option)
         .pipe(concat('common.js'))
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
@@ -232,5 +259,5 @@ gulp.task('default', ['release'], function() {
 });
 
 gulp.task('build:zen', ['zen:copy', 'zen:js', 'zen:css', 'zen:html', 'zen:combine']);
-gulp.task('build:views', ['views:html', 'views:js', 'views:css', 'views:combine']);
+gulp.task('build:views', ['common:css','common:js','views:html', 'views:js', 'views:css', 'views:combine']);
 gulp.task('release', ['build:zen', 'build:views', 'release:zepto', 'release:jquery']);

@@ -925,6 +925,14 @@ var Zen = {
             var css = Zen.parse(Zen.css);
             $("title").after(css);
         }
+        if (views.common_css) {
+            var common_css = Zen.parse(views.common_css);
+            $("head").append(common_css);
+        }
+        if (views.common_js) {
+            var common_js = Zen.parse(views.common_js);
+            $("head").append(common_js);
+        }
     },
     load: function() {
         var page = Util.getHash() || "index";
