@@ -13,13 +13,11 @@ var Zen = {
         }
     },
     load: function() {
-        var app = $("#app");
-        app.empty();
-        this.load_css();
-        this.load_html();
-        this.load_module(app);
+        var page = Util.getHash() || "index";
+        console.log("###Zen enter : " + page);
+        this.load_view();
+        this.load_module();
         this.load_script();
-        this.load_js();
     },
     getModule: function(type) {
         var module = "";
@@ -28,39 +26,40 @@ var Zen = {
         var name_index = "views." + this.pathname(hash) + "__index_" + type;
         if (eval(name)) {
             module = this.parse(eval(name));
+            console.log("Zen module : " + name);
             return module;
         }
         if (eval(name_index)) {
             module = this.parse(eval(name_index));
+            console.log("Zen module : " + name);
             return module;
         }
+        return;
     },
-    load_html: function() {
-        var html = "";
+    load_view: function() {
+        var view = "",
+            css, html, js;
         var page = $("#app");
-        html = this.getModule("html");
-        if (html) {
-            page.append(html);
-        }
-    },
-    load_css: function() {
-        var css = "";
-        var page = $("#app");
+        page.empty();
         css = this.getModule("css");
-        if (css) {
-            page.append(css);
-        }
-    },
-    load_js: function() {
-        var js = "";
-        var page = $("#app");
+        html = this.getModule("html");
         js = this.getModule("js");
+        if (css) {
+            view += css;
+        }
+        if (html) {
+            view += html;
+        }
         if (js) {
-            page.append(js);
+            view += js;
+        }
+        if (view) {
+            page.append(view);
         }
     },
-    load_module: function(target) {
-        target.find('*[v-zen]').each(function() {
+    load_module: function() {
+        var app = $("#app");
+        app.find('*[v-zen]').each(function() {
             //对包含v-slot的加载特定id的代码块
             var _this = $(this);
             var name = $(this).attr('v-zen');
@@ -129,7 +128,6 @@ var Zen = {
         return name;
     },
     pathname: function(path) {
-        console.log("Zen path : " + path);
         // var pathname = path.replace(".html", "").replace(/-/g, "_").replace(/\//g, ".");
         var pathname = path.replace(".js", "_js").replace(".html", "_html").replace(/-/g, "_").replace(/\//g, "__");
         return pathname;
@@ -139,22 +137,21 @@ var Zen = {
             fn && fn();
             return;
         } else {
-            console.log("Zen delay : 100ms");
+            console.log("Zen delay : 10ms");
             setTimeout(function() {
                 Zen.delay(fn)
-            }, 100)
+            }, 10)
         }
     },
     ready: function(service) {
         //用于引导页面，并且便于获取调试信息
         var page = Util.getHash() || "index";
-        console.log("Zen enter : " + page);
         //如果前面的zen-module沒有渲染好，需要等待
         this.delay(function() {
             service && service.init && service.init();
             delete Zen.current;
             Zen.current = service;
-            console.log("Zen ready : " + page);
+            console.log("***Zen ready : " + page);
         });
     }
 }

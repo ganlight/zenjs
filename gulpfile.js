@@ -30,7 +30,7 @@ gulp.task('zen:copy', function() {
 
 gulp.task('zen:js', function() {
     return gulp.src(['src/zen-js/*.js', 'src/zen-module/*/index.js'], option)
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(concat('zen.js'))
         .pipe(gulp.dest('tmp/zen'))
 });
