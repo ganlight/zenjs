@@ -21,7 +21,7 @@ var option = {
 var dist = __dirname + '/dist';
 
 gulp.task('zen:copy', function() {
-    return gulp.src(['src/lib/*', 'src/favicon.ico', 'src/index.html'], option)
+    return gulp.src(['src/assets/**/*', 'src/lib/**/*', 'src/favicon.ico', 'src/index.html'], option)
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
             stream: true
