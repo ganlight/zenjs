@@ -7,6 +7,7 @@
 .zen-page {
     position: relative;
     height: 100%;
+    overflow-y: scroll;
 }
 
 .zen-module{

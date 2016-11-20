@@ -171,22 +171,17 @@ Message.close = function() {
 }
 
 var PageService = {
-    isLogin: false,
-    key: null,
     init: function() {
         // Util.resize();
         Util._date();
         this.ready();
-        //zepto的data问题
     },
     ready: function() {
         $(document).ready(function() {
-            PageService.bind();
             PageService.loadView();
         });
     },
     loadView: function() {
-        var view = Util.getHash() || "index";
         Zen.init();
         Zen.load();
         $(window).on('hashchange', function() {
@@ -194,115 +189,11 @@ var PageService = {
             Zen.load()
         });
     },
-    bind: function() {
-        $('*[v-insert]').each(function() {
-            //对包含v-insert的加载html
-            var _this = $(this);
-            var _insert = $(this).attr('v-insert');
-            if (!_insert) return;
-            var url = _insert + ".html";
-            $.ajax({
-                url: url,
-                type: 'get',
-                async: false,
-                dataType: 'html',
-                success: function(data) {
-                    _this.html(data);
-                }
-            });
-        });
-        $('*[v-slot]').each(function() {
-            //对包含v-slot的加载特定id的代码块
-            var _this = $(this);
-            var _slot = $(this).attr('v-slot');
-            if (!_slot) return;
-            _this.html($("#" + _slot));
-        });
-        $('*[v-send]').click(function() {
-            //对包含v-send相关的控件，直接进行发送短信或语音验证码
-            //这里包含多个参数例如，regist,sms,fn
-            var _send = $(this).attr('v-send');
-            if (!_send) return;
-            var _para = _send.split(',')
-            Message.send(_para[0], _para[1], _para[2]);
-        });
-        $('*[v-select]').click(function() {
-            //对包含v-send相关的控件，直接进行发送短信或语音验证码
-            //这里包含多个参数例如，regist,sms
-            var _select = $(this).attr('v-select');
-            if (!_select) return;
-            Message.select('', _select);
-        });
-        $('*[v-toggle]').click(function() {
-            //对包含v-toggle相关的控件，直接进行绑定操作
-            var _toggle = $(this).attr('v-toggle');
-            if (!_toggle) return;
-            $("#" + _toggle).toggle();
-            $(this).toggleClass("selected");
-        });
-        $('*[v-link]').click(function() {
-            //对包含v-link相关的地址，直接绑定事件跳转
-            var _link = $(this).attr('v-link');
-            if (!_link) return;
-            window.location.href = _link;
-        });
-    },
     hideNavMenu: function() {
         $('#nav-menu').hide();
     },
     setTitle: function(title) {
         $('.c-navmenu-banner .title').text(title);
-    },
-    status: function() {
-        var _url = CGI.URL('USER', 'STATUS');
-        CGI.ajaxModule(_url, '', function(json) {
-            if (json && json.code == "00000") {
-                PageService.isLogin = true;
-            } else {
-                PageService.isLogin = false;
-            }
-            PageService.key = json;
-        });
-    },
-    mustLogin: function(via) {
-        var _url = CGI.URL('USER', 'STATUS');
-        CGI.ajaxModule(_url, '', function(json) {
-            if (json && json.code == "50000") {
-                if (via) {
-                    Store.sLocal("VIA", via);
-                } else {
-                    Store.sLocal("VIA", window.location.href);
-                }
-                window.location.href = "/user/login.html";
-                return false;
-            }
-        });
-    },
-    token: function() {
-        var _url = CGI.URL('FRONT', 'TOKEN_GET');
-        CGI.ajaxModule(_url, '', function(json) {
-            if (json && json.code != "00000") {
-                Message.toast(json.message);
-            }
-        });
-    },
-    loginAction: function(dofun, undofun) {
-        var _url = CGI.URL('USER', 'STATUS');
-        CGI.ajax(_url, '', function(json) {
-            if (json && json.code == "00000") {
-                dofun && dofun();
-            } else {
-                undofun && undofun();
-            }
-        });
-    },
-    logout: function() {
-        var _url = CGI.URL('USER', 'LOGOUT');
-        CGI.ajax(_url, '', function(json) {
-            if (json && json.code == "00000") {
-                window.location.href = "/index.html";
-            }
-        });
     }
 }
 
@@ -441,223 +332,6 @@ var Store = {
             redirect_url = '/';
         }
         return redirect_url;
-    }
-}
-
-var User = {
-    key: null,
-    isLogin: false,
-    need_verify_code: false,
-    baseinfo: null,
-    spread_code: null,
-    init: function() {
-        User.getKey();
-        User.isLogin = PageService.isLogin;
-        return this;
-    },
-    getKey: function() {
-        var modulus = PageService.key.modulus;
-        var exponent = PageService.key.public_exponent;
-        if (exponent != undefined) {
-            var key = RSAUtils.getKeyPair(exponent, '', modulus);
-            console.log(key);
-            User.key = key;
-            User.need_verify_code = PageService.key.need_verify_code;
-        }
-    },
-    getBaseInfo: function() {
-        if (PageService.isLogin) {
-            var _url = CGI.URL('USER', 'BASE_INFO');
-            CGI.ajaxModule(_url, '', function(json) {
-                if (json && json.code == "00000") {
-                    User.baseinfo = json.result;
-                }
-            });
-        }
-    },
-    getSpreadCode: function() {
-        if (PageService.isLogin) {
-            var _url = CGI.URL('USER', 'SPREAD_CODE');
-            CGI.ajaxModule(_url, '', function(json) {
-                if (json && json.code == "00000") {
-                    User.spread_code = json.result.spread_code;
-                }
-            });
-        }
-    },
-    checkIdentity: function() {
-        //加载用户基本信息，检查用户是否实名
-        User.getBaseInfo();
-        Identity.init();
-        if (Identity.status == 'BTG') {
-            //如果未实名认证
-            window.location.href = "/bid/identity.html?return_url=" + window.location.href;
-            return;
-        }
-        if (User.baseinfo) {
-            //如果有余额
-            $('.user-account').text(User.baseinfo.balance)
-        }
-    },
-    checkBankcard: function() {
-        //加载银行卡信息，如果没有银行卡则显示绑卡
-        BankCard.getBind();
-        if (BankCard.card) {
-            //如果没有卡
-            $('.methods-field').show();
-            $('.identity-field').hide();
-        } else {
-            $('.methods-field').hide();
-            $('.identity-field').show();
-            BankCard.init();
-        }
-    },
-    isIdentity: function(fn) {
-        if (User.isLogin) {
-            var _url = CGI.URL('PAY', 'GET_ID_CARD');
-            CGI.ajaxModule(_url, '', function(json) {
-                if (json.code != "00000") {
-                    return;
-                };
-                if (json.result.status == "TG") {
-                    //认证通过,直接下一步
-                    fn && fn();
-                } else {
-                    //认证未通过,采用国政通认证
-                    Message.alert("为了您的资金安全，您需要实名认证。", function() {
-                        window.location.href = '/pay/wxidentity.html';
-                    });
-                };
-            });
-        }
-    },
-    initPicCode: function() {
-        if (User.need_verify_code) {
-            $('.pic-code').show();
-            var pic_code = $(".pic-code .code-img");
-            pic_code.attr("src", '/userx/get_verify_code?' + Math.random() + '&verify_type=login');
-        } else {
-            $('.pic-code').hide();
-        }
-    },
-    loginData: function() {
-        var data = {};
-        if (User.key) {
-            var key = User.key;
-            if ($('.pic-code').css('display') == 'none') {
-                data = {
-                    "username": RSAUtils.encryptedString(key, $(".username").val()),
-                    "password": RSAUtils.encryptedString(key, $(".password").val())
-                }
-            } else {
-                data = {
-                    "username": RSAUtils.encryptedString(key, $(".username").val()),
-                    "password": RSAUtils.encryptedString(key, $(".password").val()),
-                    "verify_code": $("input[name='piccode']").val()
-                }
-            };
-            return data;
-        } else {
-            Message.alert("您的信息有误，请重新登录！");
-        }
-    },
-    login: function(para) {
-        var _url = CGI.URL('USER', 'LOGIN');
-        CGI.ajax(_url, para, function(json) {
-            if (json.code == "00000") {
-                var return_url = Util.getPar("return_url") || Store.gLocal("VIA");
-                if (return_url) {
-                    window.location.href = return_url;
-                } else {
-                    window.location.href = "/index.html";
-                }
-            } else if (json && (json.code == "50008" || json.code == "50002" || json.code == "50012")) {
-                User.need_verify_code = true;
-                User.initPicCode();
-                Message.toast(json.message);
-            } else {
-                User.initPicCode();
-                Message.toast(json.message);
-            }
-        });
-    },
-    registData: function() {
-        var data = {};
-        if (User.key) {
-            var key = User.key;
-            data = {
-                "username": RSAUtils.encryptedString(key, $(".username").val()),
-                "password": RSAUtils.encryptedString(key, $(".password").val()),
-                "verify_code": $("input[name='verify_code']").val(),
-                "invitation_code": $("input[name='invitation_code']").val()
-            }
-            return data;
-        } else {
-            Message.alert("您的信息有误，请重新注册！");
-        }
-    },
-    regist: function(para) {
-        var _url = CGI.URL('USER', 'REGIST');
-        CGI.ajax(_url, para, function(json) {
-            if (json.code == "00000") {
-                window.location.href = "/index.html?type=newuser";
-            } else if (json && json.code == "50000") {
-                var return_url = window.location.pathname + window.location.search;
-                window.location.href = '/user/login.html?return_url=' + return_url;
-            } else {
-                Message.alert(json.message);
-            }
-        });
-    },
-    changeData: function() {
-        var data = {};
-        if (User.key) {
-            var key = User.key;
-            data = {
-                "old_password": RSAUtils.encryptedString(key, $("input[name='password']").val()),
-                "new_password": RSAUtils.encryptedString(key, $("input[name='new_password']").val())
-            }
-            return data;
-        } else {
-            Message.alert("您的信息有误，请重新输入！");
-        }
-    },
-    resetData: function() {
-        var data = {};
-        if (User.key) {
-            var key = User.key;
-            data = {
-                "verify_code": $("input[name='verify_code']").val(),
-                "password": RSAUtils.encryptedString(key, $("input[name='new_password']").val())
-            }
-            return data;
-        } else {
-            Message.alert("您的信息有误，请重新输入！");
-        }
-    },
-    resetPassword: function(para) {
-        var _url = CGI.URL('USER', 'RESET_PASSWORD');
-        CGI.ajax(_url, para, function(json) {
-            if (json.code == "00000") {
-                Message.alert("密码找回成功,请用新密码登录", function() {
-                    window.location.href = "/user/login.html";
-                });
-            } else {
-                Message.alert(json.message);
-            }
-        });
-    },
-    changePassword: function(para) {
-        var _url = CGI.URL('USER', 'CHANGE_PASSWORD');
-        CGI.ajax(_url, para, function(json) {
-            if (json.code == "00000") {
-                Message.alert("密码修改成功,请用新密码登录", function() {
-                    window.location.href = "/user/login.html";
-                });
-            } else {
-                Message.alert(json.message);
-            }
-        });
     }
 }
 

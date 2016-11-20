@@ -1,0 +1,61 @@
+/*----------------------------------------------*/
+
+
+/* 0. common-color Styles
+----------------------------------------------*/
+
+.white {
+    color: #FFF;
+}
+
+.green {
+    color: #7cc854;
+}
+
+.red {
+    color: #ff663d;
+}
+
+.yellow {
+    color: #ff663d;
+}
+
+.dark-gray {
+    color: #9b9b9c;
+}
+
+.font-gray {
+    color: #333333;
+}
+
+.gray {
+    color: #666666;
+}
+
+.blue {
+    color: #03a3fc;
+}
+
+.bg-blue {
+    background: #03a3fc;
+}
+
+.beige {
+    color: beige;
+}
+
+.bg-beige {
+    background: beige;
+}
+
+.bg-white {
+    background-color: #FFF;
+}
+
+.bg-gray {
+    background-color: #eeeef1;
+}
+
+.bg-green {
+    background-color: #7cc854;
+}
