@@ -70,8 +70,8 @@
                 this.init_sidenav();
             },
             init_sidenav: function() {
-                $(".c-side-nav").show();
                 $(".c-navmenu-banner .menu").click(function() {
+                    $(".c-side-nav").show();
                     $("#app").toggleClass("nav-on");
                 });
                 $(".c-side-nav li").click(function() {
