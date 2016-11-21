@@ -1,21 +1,27 @@
-#app{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow-y: hidden;
+body {
+    -webkit-overflow-scrolling: touch;
 }
+
+#app {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    overflow-y: auto;
+}
+
 .zen-page {
     position: relative;
-    height: 100%;
-    overflow-y: scroll;
+    min-height: 100%;
+    /*-webkit-overflow-scrolling: touch;*/
+    /*overflow-y: scroll;*/
 }
 
-.zen-module{
-  display: none;
+.zen-module {
+    display: none;
 }
 
-.zen-module.show{
-  display: block;
+.zen-module.show {
+    display: block;
 }
 
 .c-card {
@@ -24,4 +30,8 @@
     margin: 1.5rem 1.5rem 0 1.5rem;
     border-radius: .3rem;
     padding: 1.5rem;
+}
+
+.c-card:active {
+    background: #EEE;
 }

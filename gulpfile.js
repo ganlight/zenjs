@@ -238,9 +238,9 @@ gulp.task('server', function() {
 gulp.task('watch', ['release'], function() {
     gulp.watch('src/assets/**/*', ['build:zen']);
     gulp.watch('src/views/**/*', ['build:views']);
-    gulp.watch('src/zen-css/*.css', ['build:zen']);
-    gulp.watch('src/zen-js/*.js', ['build:zen']);
-    gulp.watch('src/zen-module/**/*', ['build:zen']);
+    gulp.watch('src/zen-css/*.css', ['build:zen', 'release:zepto']);
+    gulp.watch('src/zen-js/*.js', ['build:zen', 'release:zepto']);
+    gulp.watch('src/zen-module/**/*', ['build:zen', 'release:zepto']);
 });
 
 // 参数说明
