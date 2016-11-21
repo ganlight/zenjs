@@ -36,18 +36,18 @@
 <div class="zen-page v-center">
     <div class="c-navmenu-banner fix-top">
         <div class="text-center clearfix">
-            <span class="logo fl" v-link="/"><i class="fa fa-paper-plane fa-fw white" ></i></span>
+            <span class="logo fl" v-link="#index"><i class="fa fa-paper-plane fa-fw white" ></i></span>
             <span class="title"></span>
             <span class="fr menu"><i class="fa fa-bars fa-fw white" ></i></span>
         </div>
     </div>
     <ul class="link-list">
-        <li class="link-item text-center" v-link="#example/index">
+        <li class="link-item text-center" v-link="#front/green">
             <div class=""><i class="fa fa-gift fa-fw white"></i></div>
             <div class="name ">VIEWS</div>
             <div class="white-line"></div>
         </li>
-        <li class="link-item text-center" v-link="#front/green">
+        <li class="link-item text-center" v-link="#example/index">
             <div class=""><i class="fa fa-tree fa-fw white font32"></i></div>
             <div class="name">MODULES</div>
             <div class="white-line"></div>
@@ -59,3 +59,14 @@
         </li>
     </ul>
 </div>
+<script type="text/javascript">
+$(function(){
+  $(".c-navmenu-banner .menu").click(function() {
+      $("#app").toggleClass("nav-on");
+  });
+  $(".c-side-nav li").click(function() {
+      $("#app").removeClass("nav-on");
+  });
+})
+
+</script>
