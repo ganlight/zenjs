@@ -207,7 +207,7 @@ gulp.task('views:combine', ['common:css','common:js','views:html', 'views:js', '
 });
 
 gulp.task('release:zepto', ['build:zen'], function() {
-    return gulp.src(['dist/lib/zepto.min.js', 'dist/lib/zenjs.min.js'], option)
+    return gulp.src(['dist/lib/zepto.min.js', 'dist/lib/fastclick.min.js', 'dist/lib/zenjs.min.js'], option)
         .pipe(concat('zenjs-zepto.min.js'))
         .pipe(gulp.dest('dist/lib'))
 });

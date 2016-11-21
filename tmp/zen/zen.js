@@ -178,6 +178,9 @@ var PageService = {
     },
     ready: function() {
         $(document).ready(function() {
+            if (FastClick) {
+                FastClick.attach(document.body);
+            }
             PageService.loadView();
         });
     },
@@ -185,7 +188,7 @@ var PageService = {
         Zen.init();
         Zen.load();
         $(window).on('hashchange', function() {
-            var name = Util.getHash()|| "index";
+            var name = Util.getHash() || "index";
             Zen.load()
         });
     },
