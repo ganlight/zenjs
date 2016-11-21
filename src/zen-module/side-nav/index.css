@@ -9,6 +9,7 @@
     margin: 0;
     padding-top: 3rem;
     transition: all 0.2s;
+    z-index: -1;
     /*transform: translateX(15rem);
     -webkit-transform: translateX(15rem);
     -moz-transform: translateX(15rem);*/

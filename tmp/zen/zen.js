@@ -596,7 +596,7 @@ var Zen = {
             var modules = Zen.parse(Zen.modules);
             var moudles_div = $("<div>").addClass("zen-modules");
             moudles_div.append(modules);
-            $("body").prepend(moudles_div);
+            $("body").append(moudles_div);
         }
         if (Zen.css) {
             var css = Zen.parse(Zen.css);
