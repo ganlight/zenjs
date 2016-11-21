@@ -2,10 +2,9 @@
 **  c-toggle-group
 **/
 .c-toggle-group .toggle-item {
-    font-size: 14px;
     display: inline-block;
     line-height: 40px;
     text-align: center;
-    width: 100px;
+    min-width: 80px;
     margin: 5px;
 }
