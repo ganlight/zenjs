@@ -39,7 +39,7 @@
 <div class="zen-page v-center">
     <div class="c-navmenu-banner fix-top">
         <div class="text-center clearfix">
-            <span class="logo fl" v-link="https://github.com/ganlight/zenjs"><i class="fa fa-paper-plane fa-fw white" ></i><span class="white ml10 font16">ZENJS</span></span>
+            <span class="logo fl"><i class="fa fa-paper-plane fa-fw white" ></i><span class="white ml10 font16">ZENJS</span></span>
             <span class="title white"></span>
             <span class="fr menu"><i class="fa fa-bars fa-fw white" ></i></span>
         </div>
@@ -64,18 +64,19 @@
 </div>
 <script type="text/javascript">
     $(function() {
-
         var Service = {
             init: function() {
                 this.init_sidenav();
             },
             init_sidenav: function() {
                 $(".c-navmenu-banner .menu").click(function() {
-                    $(".c-side-nav").show();
-                    $("#app").toggleClass("nav-on");
+                    SideNav.toggle("right");
                 });
-                $(".c-side-nav li").click(function() {
-                    $("#app").removeClass("nav-on");
+                $(".c-navmenu-banner .logo").click(function() {
+                    SideNav.toggle("top");
+                });
+                $(".c-side-nav").click(function() {
+                    SideNav.close();
                 });
             }
         }
