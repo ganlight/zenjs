@@ -612,11 +612,13 @@ var Zen = {
         }
     },
     load: function() {
+        console.time("load");
         var page = Util.getHash() || "index";
         console.log("###Zen enter : " + page);
         this.load_view();
         this.load_module();
         this.load_script();
+        console.timeEnd("load");
     },
     getModule: function(type) {
         var module = "";
@@ -636,6 +638,7 @@ var Zen = {
         return;
     },
     load_view: function() {
+        console.time("load_view");
         var view = "",
             css, html, js;
         var page = $("#app");
@@ -655,8 +658,10 @@ var Zen = {
         if (view) {
             page.append(view);
         }
+        console.timeEnd("load_view");
     },
     load_module: function() {
+        console.time("load_module");
         var app = $("#app");
         app.find('*[v-zen]').each(function() {
             //对包含v-slot的加载特定id的代码块
@@ -718,6 +723,7 @@ var Zen = {
             window.location.href = _link;
         });
         $(".zen-page").attr("data-ready", "ready");
+        console.timeEnd("load_module");
     },
     load_script: function(href) {
         //用于加载外部引用的script脚本
@@ -786,6 +792,7 @@ var Zen = {
         }
     },
     ready: function(service) {
+        console.time("ready");
         //用于引导页面，并且便于获取调试信息
         var page = Util.getHash() || "index";
         //如果前面的zen-module沒有渲染好，需要等待
@@ -795,6 +802,7 @@ var Zen = {
             Zen.current = service;
             console.log("***Zen ready : " + page);
         });
+        console.timeEnd("ready");
     }
 }
 //此处在最后拼接，所以用zen.js放到最后拼接
