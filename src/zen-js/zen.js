@@ -206,3 +206,5 @@ var Zen = {
         });
     }
 }
+//此处在最后拼接，所以用zen.js放到最后拼接
+PageService.init();
