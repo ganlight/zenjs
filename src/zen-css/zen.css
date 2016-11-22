@@ -16,6 +16,10 @@ body {
 .zen-page {
     position: relative;
     min-height: 100%;
+    transition: all 0.2s;
+    /*transform: translate3d(100%, 0, 0);
+    -webkit-transform: translate3d(100%, 0, 0);
+    -moz-transform: translate3d(100%, 0, 0);*/
     /*-webkit-overflow-scrolling: touch;*/
     /*overflow-y: scroll;*/
 }
@@ -42,33 +46,33 @@ body {
 
 @keyframes slideIn {
     from {
-        transform: translate3d(100%, 0, 0);
+        transform: translateX(100%);
         opacity: 0;
     }
     to {
-        transform: translate3d(0, 0, 0);
+        transform: translateX(0);
         opacity: 1;
     }
 }
 
 @-webkit-keyframes slideIn {
     from {
-        -webkit-transform: translate3d(100%, 0, 0);
+        -webkit-transform: translateX(100%);
         opacity: 0;
     }
     to {
-        -webkit-transform: translate3d(0, 0, 0);
+        -webkit-transform: translateX(0);
         opacity: 1;
     }
 }
 
 @-moz-keyframes slideIn {
     from {
-        -moz-transform: translate3d(100%, 0, 0);
+        -moz-transform: translateX(100%);
         opacity: 0;
     }
     to {
-        -moz-transform: translate3d(0, 0, 0);
+        -moz-transform: translateX(0);
         opacity: 1;
     }
 }
@@ -88,6 +92,9 @@ body {
     animation: slideIn .2s forwards;
     -webkit-animation: slideIn .2s forwards;
     -moz-animation: slideIn .2s forwards;
+    /*transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);*/
 }
 
 .zen-page.slideOut {

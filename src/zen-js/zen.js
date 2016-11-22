@@ -68,7 +68,7 @@ var Zen = {
             if (view) {
                 page.append(view);
             }
-            $(".zen-page").addClass("slideIn");
+            // $(".zen-page").addClass("slideIn");
             console.timeEnd("load_view");
         },
         load_module: function() {
