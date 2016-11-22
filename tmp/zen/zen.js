@@ -809,16 +809,6 @@ var Zen = {
     //此处在最后拼接，所以用zen.js放到最后拼接
 PageService.init();
 
-Message.alert = function(message, fn) {
-    var $toast = $(".c-alert");
-    $(".c-alert .message-text").html(message);
-    $toast.show(300);
-    $(".c-alert .alert-ok").unbind('click').click(function() {
-        fn && fn();
-        Message.close();
-    });
-}
-
 Message.confirm = function(message, fn) {
     var $toast = $(".c-confirm");
     $(".c-confirm .message-text").html(message);
@@ -831,6 +821,16 @@ Message.confirm = function(message, fn) {
         Message.close();
     });
     $(".c-confirm .mask").unbind('click').click(function() {
+        Message.close();
+    });
+}
+
+Message.alert = function(message, fn) {
+    var $toast = $(".c-alert");
+    $(".c-alert .message-text").html(message);
+    $toast.show(300);
+    $(".c-alert .alert-ok").unbind('click').click(function() {
+        fn && fn();
         Message.close();
     });
 }
