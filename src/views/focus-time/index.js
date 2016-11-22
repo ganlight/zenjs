@@ -1,7 +1,7 @@
 $(function() {
     var tomato = {
         work: 25,
-        break: 5,
+        rest: 5,
         times: 4
     }
     var Task = function() {
@@ -33,14 +33,26 @@ $(function() {
             var self = this;
             this.begin_time = new Date().getTime();
             this.status = "BEGIN";
-            this.interval = setInterval(function() {
-                self.refresh();
-            }, 1000);
+            if (!this.interval) {
+              this.interval = setInterval(function() {
+                  self.refresh();
+              }, 1000);
+            }
+        },
+        rest: function() {
+            var self = this;
+            this.begin_time = new Date().getTime();
+            this.status = "REST";
+            if (!this.interval) {
+              this.interval = setInterval(function() {
+                  self.refresh();
+              }, 1000);
+            }
         },
         stop: function() {
             this.end_time = new Date().getTime();
             this.used_time = this.end_time - this.begin_time;
-            if (this.format(this.used_time).min >= 30) {
+            if (this.format(this.used_time).min >= tomato.work) {
                 this.status = "FINISH";
             } else {
                 this.status = "STOP";
@@ -53,8 +65,21 @@ $(function() {
                 var current_time = new Date().getTime();
                 self.used_time = current_time - self.begin_time;
                 var remain_time = tomato.work * 60000 - self.used_time;
-                if (self.format(self.used_time).min >= 30) {
+                if (self.format(self.used_time).min >= tomato.work) {
                     self.status = "FINISH";
+                    $(".remain-time").text("25:00");
+                    clearInterval(self.interval);
+                } else {
+                    var str = self.format(remain_time).str;
+                    $(".remain-time").text(str);
+                }
+            }
+            if (self.status == "REST") {
+                var current_time = new Date().getTime();
+                self.used_time = current_time - self.begin_time;
+                var remain_time = tomato.rest * 60000 - self.used_time;
+                if (self.format(self.used_time).min >= tomato.rest) {
+                    self.status = "INIT";
                     $(".remain-time").text("25:00");
                     clearInterval(self.interval);
                 } else {
@@ -85,6 +110,9 @@ $(function() {
             });
             $(".stop-btn").click(function() {
                 self.task.stop();
+            });
+            $(".rest-btn").click(function() {
+                self.task.rest();
             });
         }
     }

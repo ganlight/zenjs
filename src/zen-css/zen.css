@@ -36,3 +36,33 @@ body {
 .c-card:active {
     background: #EEE;
 }
+
+@keyframes slideIn {
+    from {
+        transform: translate3d(100%, 0, 0);
+        opacity: 0;
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+    to {
+        transform: translate3d(100%, 0, 0);
+        opacity: 0;
+    }
+}
+
+.zen-page.slideIn {
+    animation: slideIn .2s forwards;
+}
+
+.zen-page.slideOut {
+    animation: slideOut .2s forwards;
+}
