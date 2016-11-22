@@ -11,15 +11,18 @@ var SideNav = {
         }
     },
     show: function(type) {
-        $(".c-side-nav").hide(200);
+        this.close(type);
         $(".c-side-nav.nav-" + type).show();
-        $("#app").removeClass("nav-top");
-        $("#app").removeClass("nav-right");
         $("#app").addClass("nav-" + type);
     },
-    close: function() {
-        $(".c-side-nav").hide(200);
+    close: function(type) {
         $("#app").removeClass("nav-top");
         $("#app").removeClass("nav-right");
+        setTimeout(function() {
+            $(".c-side-nav").hide(200);
+            if (type) {
+                $(".c-side-nav.nav-" + type).show();
+            }
+        }, 200);
     }
 }
