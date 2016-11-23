@@ -161,6 +161,109 @@ var Check = {
     }
 }
 
+var Filter = {
+    money: function(value) {
+        if (value == "" || isNaN(value) || value == Infinity) {
+            value = parseFloat("0").toFixed(2);
+        } else {
+            value = parseFloat(value).toFixed(2);
+        }
+        return value;
+    },
+    fmoney: function(s, n) {
+        if (n < 0 || n > 20) {
+            n = 2;
+        }
+        s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+        var l = s.split(".")[0].split("").reverse(),
+            r = s.split(".")[1];
+        t = "";
+        len = l.length;
+        if (l[len - 1] == '-') {
+            len = len - 1;
+        }
+        for (i = 0; i < len; i++) {
+            t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != len ? "," : "");
+        }
+        if (l[len] == '-') {
+            t += '-';
+        }
+        if (n == 0) {
+            return t.split("").reverse().join("");
+        }
+        return t.split("").reverse().join("") + "." + r;
+    },
+    times: function(datepicker1, datepicker2) {
+        var _times = "";
+        if ($('#' + datepicker1).length && $('#' + datepicker2).length) {
+            var start_time = $('#' + datepicker1).val().replace(/\//g, '');
+            var end_time = $('#' + datepicker2).val().replace(/\//g, '');
+            if (start_time) {
+                _times = start_time + '-';
+            } else {
+                _times = '-';
+            }
+            if (end_time) {
+                _times += end_time;
+            } else {
+                end_time = '';
+            }
+        }
+        return _times;
+    },
+    time: function(time, type, fm) {
+        if (!time) {
+            return "";
+        }
+        var date = new Date();
+        date.setTime(time);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? '0' + m : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var mm = date.getMinutes();
+        mm = mm < 10 ? ('0' + mm) : mm;
+        var s = date.getSeconds();
+        s = s < 10 ? ('0' + s) : s;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var mm = date.getMinutes();
+        mm = mm < 10 ? ('0' + mm) : mm;
+        var s = date.getSeconds();
+        s = s < 10 ? ('0' + s) : s;
+        if (type) {
+            return y + '-' + m + '-' + d;
+        }
+        if (fm) {
+            return y + '/' + m + '/' + d + " " + h + ":" + mm + ":" + s;
+        }
+        return y + '-' + m + '-' + d + " " + h + ":" + mm + ":" + s;
+    },
+    date: function(time) {
+        var date = new Date();
+        date.setTime(time);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? '0' + m : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        return y + '/' + m + '/' + d;
+    },
+    datestr: function(time) {
+        var date = new Date();
+        date.setTime(time);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? '0' + m : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        return y + '' + m + '' + d;
+    }
+}
+
 var Message = {};
 Message.close = function() {
     $(".c-confirm").hide(300);
@@ -168,36 +271,6 @@ Message.close = function() {
     $(".c-select").hide(300);
     $(".c-dropdown").hide(300);
     $(".custom-confirm").hide(300);
-}
-
-var PageService = {
-    init: function() {
-        // Util.resize();
-        Util._date();
-        this.ready();
-    },
-    ready: function() {
-        $(document).ready(function() {
-            if (FastClick) {
-                FastClick.attach(document.body);
-            }
-            PageService.loadView();
-        });
-    },
-    loadView: function() {
-        Zen.init();
-        Zen.load();
-        $(window).on('hashchange', function() {
-            var name = Util.getHash() || "index";
-            Zen.load()
-        });
-    },
-    hideNavMenu: function() {
-        $('#nav-menu').hide();
-    },
-    setTitle: function(title) {
-        $('.c-navmenu-banner .title').text(title);
-    }
 }
 
 var PageTips = {
@@ -335,6 +408,40 @@ var Store = {
             redirect_url = '/';
         }
         return redirect_url;
+    }
+}
+
+var Template = {
+    select: function(data, sname) {
+        var sdata = data[sname];
+        if ($("select[name=" + sname + "]").length) {
+            for (var i in sdata) {
+                $("select[name=" + sname + "]").append('<option value="' + i + '">' + sdata[i] + '</option>');
+            }
+        }
+    },
+    input: function(sname) {
+        var input = $("input[name=" + sname + "]");
+        if (input.length && input.val()) {
+            if (sname.indexOf("date") > -1) {
+                var value = input.val();
+                var date = new Date(value).getTime();
+                return date;
+            }
+            return input.val();
+        }
+        return "";
+    },
+    values: function(item, data) {
+        for (var key in data) {
+            if (key.indexOf("times") == -1 && key.indexOf("time") > -1) {
+                item.find('.' + key).text(Filter.time(data[key]));
+            } else if (key.indexOf("date") > -1) {
+                item.find('.' + key).text(Filter.date(data[key]));
+            } else {
+                item.find('.' + key).text(data[key]);
+            }
+        }
     }
 }
 
@@ -590,224 +697,238 @@ var views = {
 }
 
 var Zen = {
-        list: [],
-        init: function() {
-            if (Zen.modules) {
-                var modules = Zen.parse(Zen.modules);
-                var moudles_div = $("<div>").addClass("zen-modules");
-                moudles_div.append(modules);
-                $("body").append(moudles_div);
-            }
-            if (Zen.css) {
-                var css = Zen.parse(Zen.css);
-                $("title").after(css);
-            }
-            if (views.common_css) {
-                var common_css = Zen.parse(views.common_css);
-                $("head").append(common_css);
-            }
-            if (views.common_js) {
-                var common_js = Zen.parse(views.common_js);
-                $("head").append(common_js);
-            }
-        },
-        load: function() {
-            console.time("load");
-            delete Zen.current;
-            var page = Util.getHash() || "index";
-            console.log("###Zen enter : " + page);
-            this.load_view();
-            this.load_module();
-            this.load_script();
-            console.timeEnd("load");
-        },
-        getModule: function(type) {
-            var module = "";
-            var hash = Util.getHash() || "index";
-            var name = "views." + this.pathname(hash) + "_" + type;
-            var name_index = "views." + this.pathname(hash) + "__index_" + type;
-            if (eval(name)) {
-                module = this.parse(eval(name));
-                console.log("Zen module : " + name);
-                return module;
-            }
-            if (eval(name_index)) {
-                module = this.parse(eval(name_index));
-                console.log("Zen module : " + name);
-                return module;
-            }
-            return;
-        },
-        load_view: function() {
-            console.time("load_view");
-            var view = "",
-                css, html, js;
-            var page = $("#app");
-            page.empty();
-            css = this.getModule("css");
-            html = this.getModule("html");
-            js = this.getModule("js");
-            if (css) {
-                view += css;
-            }
-            if (html) {
-                view += html;
-            }
-            if (js) {
-                view += js;
-            }
-            if (view) {
-                page.append(view);
-            }
-            // $(".zen-page").addClass("slideIn");
-            console.timeEnd("load_view");
-        },
-        load_module: function() {
-            console.time("load_module");
-            var app = $("#app");
-            app.find('*[v-zen]').each(function() {
-                //对包含v-slot的加载特定id的代码块
-                var _this = $(this);
-                var name = $(this).attr('v-zen');
-                if (!name) return;
-                var zen = $(".zen-modules .c-" + name).clone();
-                _this.html(zen);
-            });
-            $('*[v-insert]').each(function() {
-                //对包含v-insert的加载html
-                var _this = $(this);
-                var _insert = $(this).attr('v-insert');
-                if (!_insert) return;
-                var url = _insert + ".html";
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    async: false,
-                    dataType: 'html',
-                    success: function(data) {
-                        _this.html(data);
-                    }
-                });
-            });
-            $('*[v-slot]').each(function() {
-                //对包含v-slot的加载特定id的代码块
-                var _this = $(this);
-                var _slot = $(this).attr('v-slot');
-                if (!_slot) return;
-                _this.html($("#" + _slot));
-            });
-            $('*[v-send]').click(function() {
-                //对包含v-send相关的控件，直接进行发送短信或语音验证码
-                //这里包含多个参数例如，regist,sms,fn
-                var _send = $(this).attr('v-send');
-                if (!_send) return;
-                var _para = _send.split(',')
-                Message.send(_para[0], _para[1], _para[2]);
-            });
-            $('*[v-select]').click(function() {
-                //对包含v-send相关的控件，直接进行发送短信或语音验证码
-                //这里包含多个参数例如，regist,sms
-                var _select = $(this).attr('v-select');
-                if (!_select) return;
-                Message.select('', _select);
-            });
-            $('*[v-toggle]').click(function() {
-                //对包含v-toggle相关的控件，直接进行绑定操作
-                var _toggle = $(this).attr('v-toggle');
-                if (!_toggle) return;
-                $("#" + _toggle).toggle();
-                $(this).toggleClass("selected");
-            });
-            $('*[v-link]').click(function() {
-                //对包含v-link相关的地址，直接绑定事件跳转
-                var _link = $(this).attr('v-link');
-                if (!_link) return;
-                window.location.href = _link;
-            });
-            $(".zen-page").attr("data-ready", "ready");
-            console.timeEnd("load_module");
-        },
-        load_script: function(href) {
-            //用于加载外部引用的script脚本
-            var head = $('head');
-            head.find("*[data-type='page-script']").remove();
-            var items = $('*[v-script]');
-            for (var i = 0; i < items.length; i++) {
-                var item = items.eq(i);
-                var clone = $('<script>').attr("type", "text/javascript");
-                if (item && item.attr("v-script")) {
-                    var script_src = item.attr("v-script");
-                    if (script_src.indexOf("views") == -1) {
-                        clone.attr("src", script_src);
-                        clone.attr("data-type", 'page-script');
-                        head.append(clone);
-                        item.remove();
-                    } else {
-                        var script_name = this.pathname(script_src).replace("views__", "views.");
-                        script = this.parse(eval(script_name));
-                        var app = $("#app");
-                        app.append(script);
-                        item.remove();
-                    }
-                }
-            }
-        },
-        parse: function(fn) {
-            //这里面主要将html和js代码转化成js函数，通过这样的方式，可以获取里面的内容
-            //如果是多行文本采用下面的方式
-            // return fn.toString().split('\n').slice(1, -1).join('\n') + '\n';
-            if (typeof fn === 'function') {
-                // console.log("Zen function : " + fn.name);
-                var string = fn.toString();
-                if (string.length > 20) {
-                    return string.slice(15, -3);
-                }
-            }
-            return;
-        },
-        toCamel: function(name) {
-            //例如foo-style-css 变为fooStyleCss
-            var name = name.replace(/\-(\w)/g, function(all, letter) {　　　　　
-                return letter.toUpperCase();　　　　
-            });
-            return name;
-        },
-        toName: function(name) {
-            //例如fooStyleCss变为foo-style-css
-            var name = name.replace(/([A-Z])/g, "-$1").toLowerCase();
-            return name;
-        },
-        pathname: function(path) {
-            // var pathname = path.replace(".html", "").replace(/-/g, "_").replace(/\//g, ".");
-            var pathname = path.replace(".js", "_js").replace(".html", "_html").replace(/-/g, "_").replace(/\//g, "__");
-            return pathname;
-        },
-        delay: function(fn) {
-            if ($(".zen-page").attr("data-ready") == "ready") {
-                fn && fn();
-                return;
-            } else {
-                console.log("Zen delay : 5ms");
-                setTimeout(function() {
-                    Zen.delay(fn)
-                }, 5)
-            }
-        },
-        ready: function(service) {
-            console.time("ready");
-            //用于引导页面，并且便于获取调试信息
-            var page = Util.getHash() || "index";
-            //如果前面的zen-module沒有渲染好，需要等待
-            this.delay(function() {
-                service && service.init && service.init();
-                Zen.current = service || page;
-                console.log("***Zen ready : " + page);
-            });
-            console.timeEnd("ready");
+    boot: function() {
+        $(document).ready(function() {
+            Zen.init();
+            Zen.load();
+            Zen.bind();
+        });
+    },
+    bind: function() {
+        if (FastClick) {
+            FastClick.attach(document.body);
         }
+        $(window).on('hashchange', function() {
+            var name = Util.getHash() || "index";
+            Zen.load()
+        });
+    },
+    init: function() {
+        if (Zen.modules) {
+            var modules = Zen.parse(Zen.modules);
+            var moudles_div = $("<div>").addClass("zen-modules");
+            moudles_div.append(modules);
+            $("body").append(moudles_div);
+        }
+        if (Zen.css) {
+            var css = Zen.parse(Zen.css);
+            $("title").after(css);
+        }
+        if (views.common_css) {
+            var common_css = Zen.parse(views.common_css);
+            $("head").append(common_css);
+        }
+        if (views.common_js) {
+            var common_js = Zen.parse(views.common_js);
+            $("head").append(common_js);
+        }
+    },
+    load: function() {
+        console.time("load");
+        delete Zen.current;
+        var page = Util.getHash() || "index";
+        console.log("###Zen enter : " + page);
+        this.load_view();
+        this.load_module();
+        this.load_script();
+        console.timeEnd("load");
+    },
+    getModule: function(type) {
+        var module = "";
+        var hash = Util.getHash() || "index";
+        var name = "views." + this.pathname(hash) + "_" + type;
+        var name_index = "views." + this.pathname(hash) + "__index_" + type;
+        if (eval(name)) {
+            module = this.parse(eval(name));
+            console.log("Zen module : " + name);
+            return module;
+        }
+        if (eval(name_index)) {
+            module = this.parse(eval(name_index));
+            console.log("Zen module : " + name);
+            return module;
+        }
+        return;
+    },
+    load_view: function() {
+        console.time("load_view");
+        var view = "",
+            css, html, js;
+        var page = $("#app");
+        page.empty();
+        css = this.getModule("css");
+        html = this.getModule("html");
+        js = this.getModule("js");
+        if (css) {
+            view += css;
+        }
+        if (html) {
+            view += html;
+        }
+        if (js) {
+            view += js;
+        }
+        if (view) {
+            page.append(view);
+        }
+        // $(".zen-page").addClass("slideIn");
+        console.timeEnd("load_view");
+    },
+    load_module: function() {
+        console.time("load_module");
+        var app = $("#app");
+        app.find('*[v-zen]').each(function() {
+            //对包含v-slot的加载特定id的代码块
+            var _this = $(this);
+            var name = $(this).attr('v-zen');
+            if (!name) return;
+            var zen = $(".zen-modules .c-" + name).clone();
+            _this.html(zen);
+        });
+        $('*[v-insert]').each(function() {
+            //对包含v-insert的加载html
+            var _this = $(this);
+            var _insert = $(this).attr('v-insert');
+            if (!_insert) return;
+            var url = _insert + ".html";
+            $.ajax({
+                url: url,
+                type: 'get',
+                async: false,
+                dataType: 'html',
+                success: function(data) {
+                    _this.html(data);
+                }
+            });
+        });
+        $('*[v-slot]').each(function() {
+            //对包含v-slot的加载特定id的代码块
+            var _this = $(this);
+            var _slot = $(this).attr('v-slot');
+            if (!_slot) return;
+            _this.html($("#" + _slot));
+        });
+        $('*[v-send]').click(function() {
+            //对包含v-send相关的控件，直接进行发送短信或语音验证码
+            //这里包含多个参数例如，regist,sms,fn
+            var _send = $(this).attr('v-send');
+            if (!_send) return;
+            var _para = _send.split(',')
+            Message.send(_para[0], _para[1], _para[2]);
+        });
+        $('*[v-select]').click(function() {
+            //对包含v-send相关的控件，直接进行发送短信或语音验证码
+            //这里包含多个参数例如，regist,sms
+            var _select = $(this).attr('v-select');
+            if (!_select) return;
+            Message.select('', _select);
+        });
+        $('*[v-toggle]').click(function() {
+            //对包含v-toggle相关的控件，直接进行绑定操作
+            var _toggle = $(this).attr('v-toggle');
+            if (!_toggle) return;
+            $("#" + _toggle).toggle();
+            $(this).toggleClass("selected");
+        });
+        $('*[v-link]').click(function() {
+            //对包含v-link相关的地址，直接绑定事件跳转
+            var _link = $(this).attr('v-link');
+            if (!_link) return;
+            window.location.href = _link;
+        });
+        $(".zen-page").attr("data-ready", "ready");
+        console.timeEnd("load_module");
+    },
+    load_script: function(href) {
+        //用于加载外部引用的script脚本
+        var head = $('head');
+        head.find("*[data-type='page-script']").remove();
+        var items = $('*[v-script]');
+        for (var i = 0; i < items.length; i++) {
+            var item = items.eq(i);
+            var clone = $('<script>').attr("type", "text/javascript");
+            if (item && item.attr("v-script")) {
+                var script_src = item.attr("v-script");
+                if (script_src.indexOf("views") == -1) {
+                    clone.attr("src", script_src);
+                    clone.attr("data-type", 'page-script');
+                    head.append(clone);
+                    item.remove();
+                } else {
+                    var script_name = this.pathname(script_src).replace("views__", "views.");
+                    script = this.parse(eval(script_name));
+                    var app = $("#app");
+                    app.append(script);
+                    item.remove();
+                }
+            }
+        }
+    },
+    parse: function(fn) {
+        //这里面主要将html和js代码转化成js函数，通过这样的方式，可以获取里面的内容
+        //如果是多行文本采用下面的方式
+        // return fn.toString().split('\n').slice(1, -1).join('\n') + '\n';
+        if (typeof fn === 'function') {
+            // console.log("Zen function : " + fn.name);
+            var string = fn.toString();
+            if (string.length > 20) {
+                return string.slice(15, -3);
+            }
+        }
+        return;
+    },
+    toCamel: function(name) {
+        //例如foo-style-css 变为fooStyleCss
+        var name = name.replace(/\-(\w)/g, function(all, letter) {　　　　　
+            return letter.toUpperCase();　　　　
+        });
+        return name;
+    },
+    toName: function(name) {
+        //例如fooStyleCss变为foo-style-css
+        var name = name.replace(/([A-Z])/g, "-$1").toLowerCase();
+        return name;
+    },
+    pathname: function(path) {
+        // var pathname = path.replace(".html", "").replace(/-/g, "_").replace(/\//g, ".");
+        var pathname = path.replace(".js", "_js").replace(".html", "_html").replace(/-/g, "_").replace(/\//g, "__");
+        return pathname;
+    },
+    delay: function(fn) {
+        if ($(".zen-page").attr("data-ready") == "ready") {
+            fn && fn();
+            return;
+        } else {
+            console.log("Zen delay : 5ms");
+            setTimeout(function() {
+                Zen.delay(fn)
+            }, 5)
+        }
+    },
+    ready: function(service) {
+        console.time("ready");
+        //用于引导页面，并且便于获取调试信息
+        var page = Util.getHash() || "index";
+        //如果前面的zen-module沒有渲染好，需要等待
+        this.delay(function() {
+            service && service.init && service.init();
+            Zen.current = service || page;
+            console.log("***Zen ready : " + page);
+        });
+        console.timeEnd("ready");
     }
-    //此处在最后拼接，所以用zen.js放到最后拼接
-PageService.init();
+}
+Zen.boot();
 
 Message.alert = function(message, fn) {
     var $toast = $(".c-alert");
