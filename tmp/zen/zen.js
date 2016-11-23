@@ -724,7 +724,6 @@ var Zen = {
         if (view) {
             page.append(view);
         }
-        // $(".zen-page").addClass("slideIn");
         console.timeEnd("load_view");
     },
     load_module: function() {
@@ -790,6 +789,7 @@ var Zen = {
             window.location.href = _link;
         });
         $(".zen-page").attr("data-ready", "ready");
+        // $(".zen-page").addClass("slideIn");
         console.timeEnd("load_module");
     },
     load_script: function(href) {
@@ -872,6 +872,16 @@ var Zen = {
 }
 Zen.boot();
 
+Message.alert = function(message, fn) {
+    var $toast = $(".c-alert");
+    $(".c-alert .message-text").html(message);
+    $toast.show(300);
+    $(".c-alert .alert-ok").unbind('click').click(function() {
+        fn && fn();
+        Message.close();
+    });
+}
+
 Message.confirm = function(message, fn) {
     var $toast = $(".c-confirm");
     $(".c-confirm .message-text").html(message);
@@ -884,16 +894,6 @@ Message.confirm = function(message, fn) {
         Message.close();
     });
     $(".c-confirm .mask").unbind('click').click(function() {
-        Message.close();
-    });
-}
-
-Message.alert = function(message, fn) {
-    var $toast = $(".c-alert");
-    $(".c-alert .message-text").html(message);
-    $toast.show(300);
-    $(".c-alert .alert-ok").unbind('click').click(function() {
-        fn && fn();
         Message.close();
     });
 }

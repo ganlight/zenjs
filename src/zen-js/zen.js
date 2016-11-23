@@ -83,7 +83,6 @@ var Zen = {
         if (view) {
             page.append(view);
         }
-        // $(".zen-page").addClass("slideIn");
         console.timeEnd("load_view");
     },
     load_module: function() {
@@ -149,6 +148,7 @@ var Zen = {
             window.location.href = _link;
         });
         $(".zen-page").attr("data-ready", "ready");
+        // $(".zen-page").addClass("slideIn");
         console.timeEnd("load_module");
     },
     load_script: function(href) {
