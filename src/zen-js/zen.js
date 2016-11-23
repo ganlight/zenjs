@@ -181,7 +181,6 @@ var Zen = {
         //如果是多行文本采用下面的方式
         // return fn.toString().split('\n').slice(1, -1).join('\n') + '\n';
         if (typeof fn === 'function') {
-            // console.log("Zen function : " + fn.name);
             var string = fn.toString();
             if (string.length > 20) {
                 return string.slice(15, -3);
@@ -202,7 +201,7 @@ var Zen = {
         return name;
     },
     pathname: function(path) {
-        // var pathname = path.replace(".html", "").replace(/-/g, "_").replace(/\//g, ".");
+        // change path to the function name
         var pathname = path.replace(".js", "_js").replace(".html", "_html").replace(/-/g, "_").replace(/\//g, "__");
         return pathname;
     },
@@ -221,7 +220,7 @@ var Zen = {
         console.time("ready");
         //用于引导页面，并且便于获取调试信息
         var page = Util.getHash() || "index";
-        //如果前面的zen-module沒有渲染好，需要等待
+        //如果前面的zen-page沒有渲染好，需要等待
         this.delay(function() {
             service && service.init && service.init();
             Zen.current = service || page;
