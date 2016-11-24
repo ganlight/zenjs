@@ -32,8 +32,301 @@ views.example__multi_select__index_html = function() {/*<div class="zen-page"><h
 views.example__single_page__multi_select_html = function() {/*<style>.zen-page{font-size:1.6rem}</style><div class="zen-page"><h2 class="font24 white text-center normal">Multi Select</h2><ul><li class="c-card"><span class="label-txt lh40">多选择1：</span><div id="m-type" v-zen="multi-select"></div></li><br><li class="c-card"><span class="label-txt lh40">多选择2：</span><div id="m-status" v-zen="multi-select"></div></li></ul></div><script>$(function(){var e={ele:"m-type",data:[{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"},{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"},{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"}]},a={ele:"m-status",data:[{name:"状态1",value:"33"},{name:"状态2",value:"34"},{name:"状态3",value:"35"}]},l={multi_type:null,multi_status:null,init:function(){this.multi_type=new MultiSelect(e),this.multi_status=new MultiSelect(a)}};Zen.ready(l)})</script>*/}
 views.example__single_page__toggle_group_html = function() {/*<style>.zen-page{font-size:1.6rem}.c-card{position:relative;background:#FFF;margin:1.5rem 1.5rem 0 1.5rem;border-radius:.3rem;padding:1.5rem}</style><div class="zen-page"><h2 class="font24 white text-center normal">Toggle Group</h2><ul><li class="c-card"><div id="m-type" v-zen="toggle-group"></div></li><li class="c-card"><div id="m-status" v-zen="toggle-group"></div></li></ul></div><script v-script="views/example/single-page/toggle.js"></script>*/}
 views.example__toggle_group__index_html = function() {/*<style>.zen-page{font-size:1.6rem}.c-card{position:relative;background:#FFF;margin:1.5rem 1.5rem 0 1.5rem;border-radius:.3rem;padding:1.5rem}</style><div class="zen-page"><h2 class="font24 white text-center normal">Toggle Group</h2><ul><li class="c-card"><div id="m-type" v-zen="toggle-group"></div></li><li class="c-card"><div id="m-status" v-zen="toggle-group"></div></li></ul></div><script>$(function(){var e={ele:"m-type",addAction:function(e){Message.toast("选择"+e.name)},delAction:function(e){Message.toast("取消"+e.name)},data:[{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!0},{name:"例子3",value:"35",selected:!0},{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!1},{name:"例子3",value:"35",selected:!1},{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!0},{name:"例子3",value:"35",selected:!0}]},t={ele:"m-status",addAction:function(e){Message.toast("选择"+e.name)},delAction:function(e){Message.toast("取消"+e.name)},data:[{name:"状态1",value:"33",selected:!0},{name:"状态2",value:"34",selected:!1},{name:"状态3",value:"35",selected:!0}]},a={toggle_type:null,toggle_status:null,init:function(){this.toggle_type=new ToggleGroup(e),this.toggle_status=new ToggleGroup(t)}};Zen.ready(a)})</script>*/}
-views.focus_time__index_js = function() {/*<script>$(function(){var t={work:25,rest:5,times:4},e=function(){this.name="",this.create_time=(new Date).getTime(),this.begin_time="",this.end_time="",this.used_time="",this.remain_time="",this.status="INIT",this.interval=null,$(".remain-time").text("25:00")};e.prototype={format:function(t){var e={min:"00",sec:"00",str:"00:00"},i=t/1e3;return e.min=parseInt(i/60)>9?parseInt(i/60):"0"+parseInt(i/60),e.sec=parseInt(i%60)>9?parseInt(i%60):"0"+parseInt(i%60),e.str=e.min+":"+e.sec,e},start:function(){var t=this;this.begin_time=(new Date).getTime(),this.status="BEGIN",this.interval||(this.interval=setInterval(function(){t.refresh()},1e3))},rest:function(){var t=this;this.begin_time=(new Date).getTime(),this.status="REST",this.interval||(this.interval=setInterval(function(){t.refresh()},1e3))},stop:function(){this.end_time=(new Date).getTime(),this.used_time=this.end_time-this.begin_time,this.format(this.used_time).min>=t.work?this.status="FINISH":(this.status="STOP",clearInterval(self.interval))},refresh:function(){var e=this;if("BEGIN"==e.status){var i=(new Date).getTime();e.used_time=i-e.begin_time;var s=6e4*t.work-e.used_time;if(e.format(e.used_time).min>=t.work)e.status="FINISH",$(".remain-time").text("25:00"),clearInterval(e.interval);else{var n=e.format(s).str;$(".remain-time").text(n)}}if("REST"==e.status){var i=(new Date).getTime();e.used_time=i-e.begin_time;var s=6e4*t.rest-e.used_time;if(e.format(e.used_time).min>=t.rest)e.status="INIT",$(".remain-time").text("25:00"),clearInterval(e.interval);else{var n=e.format(s).str;$(".remain-time").text(n)}}}};var i={task:null,init:function(){this.task=new e,this.bind()},bind:function(){var t=this;$(".start-btn").click(function(){t.task.start()}),$(".stop-btn").click(function(){t.task.stop()}),$(".rest-btn").click(function(){t.task.rest()})}};Zen.ready(i)});</script>*/}
-views.example__multi_select__index_js = function() {/*<script>$(function(){var e={ele:"m-type",data:[{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"},{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"},{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"}]},a={ele:"m-status",data:[{name:"状态1",value:"33"},{name:"状态2",value:"34"},{name:"状态3",value:"35"}]},l={multi_type:null,multi_status:null,init:function(){this.multi_type=new MultiSelect(e),this.multi_status=new MultiSelect(a)}};Zen.ready(l)});</script>*/}
-views.example__single_page__toggle_js = function() {/*<script>$(function(){var e={ele:"m-type",addAction:function(e){Message.toast("选择"+e.name)},delAction:function(e){Message.toast("取消"+e.name)},data:[{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!0},{name:"例子3",value:"35",selected:!0},{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!1},{name:"例子3",value:"35",selected:!1},{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!0},{name:"例子3",value:"35",selected:!0}]},t={ele:"m-status",addAction:function(e){Message.toast("选择"+e.name)},delAction:function(e){Message.toast("取消"+e.name)},data:[{name:"状态1",value:"33",selected:!0},{name:"状态2",value:"34",selected:!1},{name:"状态3",value:"35",selected:!0}]},a={toggle_type:null,toggle_status:null,init:function(){this.toggle_type=new ToggleGroup(e),this.toggle_status=new ToggleGroup(t)}};Zen.ready(a)});</script>*/}
+views.focus_time__index_js = function() {/*<script>$(function() {
+    var tomato = {
+        work: 25,
+        rest: 5,
+        times: 4
+    }
+    var Task = function(task) {
+        var self = this;
+        this.data = {};
+        if (task) {
+            this.data = task;
+            if (task.status == "BEGIN") {
+                this.data.interval = setInterval(function() {
+                    self.refresh();
+                }, 1000);
+            }
+            var current_time = new Date().getTime();
+            task.used_time = current_time - task.begin_time;
+            var remain_time = tomato.work * 60000 - task.used_time;
+            var str = self.format(remain_time).str;
+            $(".remain-time").text(str);
+
+        } else {
+            this.data.name = "";
+            this.data.create_time = new Date().getTime();
+            this.data.begin_time = "";
+            this.data.end_time = "";
+            this.data.used_time = "";
+            this.data.remain_time = "";
+            this.data.status = "INIT";
+            this.data.interval = null;
+            $(".remain-time").text("25:00");
+        }
+        return this;
+    }
+
+    Task.prototype = {
+        format: function(num) {
+            var time = {
+                min: "00",
+                sec: "00",
+                str: "00:00"
+            }
+            var seconds = num / 1000;
+            time.min = parseInt(seconds / 60) > 9 ? parseInt(seconds / 60) : "0" + parseInt(seconds / 60)
+            time.sec = parseInt(seconds % 60) > 9 ? parseInt(seconds % 60) : "0" + parseInt(seconds % 60);
+            time.str = time.min + ":" + time.sec;
+            return time;
+        },
+        start: function() {
+            var self = this;
+            var props = self.data;
+            props.begin_time = new Date().getTime();
+            props.status = "BEGIN";
+            if (!props.interval) {
+                props.interval = setInterval(function() {
+                    self.refresh();
+                }, 1000);
+            }
+            Store.setLocal("FOCUS_TIME_CURRENT", this.data);
+        },
+        rest: function() {
+            var self = this;
+            var props = self.data;
+            props.begin_time = new Date().getTime();
+            props.status = "REST";
+            if (!props.interval) {
+                props.interval = setInterval(function() {
+                    self.refresh();
+                }, 1000);
+            }
+            Store.setLocal("FOCUS_TIME_CURRENT", this.data);
+        },
+        stop: function() {
+            var self = this;
+            var props = self.data;
+            props.end_time = new Date().getTime();
+            props.used_time = props.end_time - props.begin_time;
+            if (self.format(props.used_time).min >= tomato.work) {
+                props.status = "FINISH";
+            } else {
+                props.status = "STOP";
+                clearInterval(props.interval);
+            }
+            Store.setLocal("FOCUS_TIME_CURRENT", this.data);
+        },
+        refresh: function() {
+            var self = this;
+            var props = self.data;
+            if (props.status == "BEGIN") {
+                var current_time = new Date().getTime();
+                props.used_time = current_time - props.begin_time;
+                var remain_time = tomato.work * 60000 - props.used_time;
+                if (self.format(self.used_time).min >= tomato.work) {
+                    props.status = "FINISH";
+                    $(".remain-time").text("25:00");
+                    clearInterval(props.interval);
+                    Store.setLocal("FOCUS_TIME_CURRENT", "");
+                    Message.alert("哇，你很棒哦，又完成了一项工作！");
+                } else {
+                    var str = self.format(remain_time).str;
+                    $(".remain-time").text(str);
+                }
+            }
+            if (props.status == "REST") {
+                var current_time = new Date().getTime();
+                props.used_time = current_time - props.begin_time;
+                var remain_time = tomato.rest * 60000 - props.used_time;
+                if (self.format(props.used_time).min >= tomato.rest) {
+                    props.status = "INIT";
+                    $(".remain-time").text("25:00");
+                    clearInterval(props.interval);
+                    Message.alert("休息完成，继续开始工作吧！");
+                } else {
+                    var str = self.format(remain_time).str;
+                    $(".remain-time").text(str);
+                }
+            }
+
+        }
+    }
+
+    var TaskList = {
+        current: null,
+        init: function() {
+            var task = Store.getLocal("FOCUS_TIME_CURRENT");
+            if (task) {
+                this.current = new Task(task);
+            } else {
+                this.current = new Task();
+            }
+        }
+    }
+
+    var Service = {
+        task: null,
+        init: function() {
+            console.log("focus-time");
+            TaskList.init();
+            this.task = TaskList.current;
+            this.bind();
+        },
+        bind: function() {
+            var self = this;
+            $(".start-btn").click(function() {
+                self.task.start();
+            });
+            $(".stop-btn").click(function() {
+                self.task.stop();
+            });
+            $(".rest-btn").click(function() {
+                self.task.rest();
+            });
+        }
+    }
+    Zen.ready(Service);
+})
+</script>*/}
+views.example__multi_select__index_js = function() {/*<script>$(function() {
+    var config_type = {
+        ele: "m-type",
+        data: [{
+            name: "例子1",
+            value: "33"
+        }, {
+            name: "例子2",
+            value: "34"
+        }, {
+            name: "例子3",
+            value: "35"
+        }, {
+            name: "例子1",
+            value: "33"
+        }, {
+            name: "例子2",
+            value: "34"
+        }, {
+            name: "例子3",
+            value: "35"
+        }, {
+            name: "例子1",
+            value: "33"
+        }, {
+            name: "例子2",
+            value: "34"
+        }, {
+            name: "例子3",
+            value: "35"
+        }]
+    }
+    var config_status = {
+        ele: "m-status",
+        data: [{
+            name: "状态1",
+            value: "33"
+        }, {
+            name: "状态2",
+            value: "34"
+        }, {
+            name: "状态3",
+            value: "35"
+        }]
+    }
+
+    var Service = {
+        multi_type:null,
+        multi_status:null,
+        init: function() {
+            this.multi_type = new MultiSelect(config_type);
+            this.multi_status = new MultiSelect(config_status);
+        }
+    }
+    Zen.ready(Service);
+})
+</script>*/}
+views.example__single_page__toggle_js = function() {/*<script>$(function() {
+    var config_type = {
+        ele: "m-type",
+        addAction: function(item) {
+            Message.toast("选择"+item.name);
+        },
+        delAction: function(item) {
+            Message.toast("取消"+item.name);
+        },
+        data: [{
+            name: "例子1",
+            value: "33",
+            selected: true
+        }, {
+            name: "例子2",
+            value: "34",
+            selected: true
+        }, {
+            name: "例子3",
+            value: "35",
+            selected: true
+        }, {
+            name: "例子1",
+            value: "33",
+            selected: true
+        }, {
+            name: "例子2",
+            value: "34",
+            selected: false
+        }, {
+            name: "例子3",
+            value: "35",
+            selected: false
+        }, {
+            name: "例子1",
+            value: "33",
+            selected: true
+        }, {
+            name: "例子2",
+            value: "34",
+            selected: true
+        }, {
+            name: "例子3",
+            value: "35",
+            selected: true
+        }]
+    }
+    var config_status = {
+        ele: "m-status",
+        addAction: function(item) {
+            Message.toast("选择"+item.name);
+        },
+        delAction: function(item) {
+            Message.toast("取消"+item.name);
+        },
+        data: [{
+            name: "状态1",
+            value: "33",
+            selected: true
+        }, {
+            name: "状态2",
+            value: "34",
+            selected: false
+        }, {
+            name: "状态3",
+            value: "35",
+            selected: true
+        }]
+    }
+
+    var Service = {
+        toggle_type:null,
+        toggle_status:null,
+        init: function() {
+          this.toggle_type = new ToggleGroup(config_type);
+          this.toggle_status = new ToggleGroup(config_status);
+        }
+    }
+    Zen.ready(Service);
+})
+</script>*/}
 views.focus_time__index_css = function() {/*<style>::-webkit-scrollbar-track-piece{background:#f5f5f5;border-left:1px solid #d2d2d2}::-webkit-scrollbar{width:13px;height:13px}::-webkit-scrollbar-thumb{background:#c2c2c2;background-clip:padding-box;border:1px solid #979797;min-height:28px}::-webkit-scrollbar-thumb:hover{border:1px solid #636363;background:#929292}body{font-family:Tahoma,Arial,MS Trebuchet,sans-serif;font-size:14px}button,input,label{display:block;margin:10px auto}#title{margin:10px auto;width:500px;text-align:center;font-size:60px}#remainTime{text-align:center;font-size:180px}#progressBar,#progressBarBorder{width:500px;height:15px;overflow:hidden}#progressBarBorder{display:block;margin:10px auto;border:1px solid #fff;box-shadow:1px 1px 15px #000}#progressBar{background:blue}#control{margin:10px auto;width:500px}.taskLeave{background:#ff0}.taskDone{background:blue}.taskStop{background:red}.copyright{margin:50px auto;text-align:center}</style>*/}
 views.example__multi_select__index_css = function() {/*<style>.zen-page{font-size:1.6rem}</style>*/}

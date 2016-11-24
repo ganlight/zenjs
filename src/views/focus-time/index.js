@@ -4,16 +4,34 @@ $(function() {
         rest: 5,
         times: 4
     }
-    var Task = function() {
-        this.name = "";
-        this.create_time = new Date().getTime();
-        this.begin_time = "";
-        this.end_time = "";
-        this.used_time = "";
-        this.remain_time = "";
-        this.status = "INIT";
-        this.interval = null;
-        $(".remain-time").text("25:00");
+    var Task = function(task) {
+        var self = this;
+        this.data = {};
+        if (task) {
+            this.data = task;
+            if (task.status == "BEGIN") {
+                this.data.interval = setInterval(function() {
+                    self.refresh();
+                }, 1000);
+            }
+            var current_time = new Date().getTime();
+            task.used_time = current_time - task.begin_time;
+            var remain_time = tomato.work * 60000 - task.used_time;
+            var str = self.format(remain_time).str;
+            $(".remain-time").text(str);
+
+        } else {
+            this.data.name = "";
+            this.data.create_time = new Date().getTime();
+            this.data.begin_time = "";
+            this.data.end_time = "";
+            this.data.used_time = "";
+            this.data.remain_time = "";
+            this.data.status = "INIT";
+            this.data.interval = null;
+            $(".remain-time").text("25:00");
+        }
+        return this;
     }
 
     Task.prototype = {
@@ -31,76 +49,95 @@ $(function() {
         },
         start: function() {
             var self = this;
-            this.begin_time = new Date().getTime();
-            this.status = "BEGIN";
-            if (!this.interval) {
-              this.interval = setInterval(function() {
-                  self.refresh();
-              }, 1000);
+            var props = self.data;
+            props.begin_time = new Date().getTime();
+            props.status = "BEGIN";
+            if (!props.interval) {
+                props.interval = setInterval(function() {
+                    self.refresh();
+                }, 1000);
             }
+            Store.setLocal("FOCUS_TIME_CURRENT", this.data);
         },
         rest: function() {
             var self = this;
-            this.begin_time = new Date().getTime();
-            this.status = "REST";
-            if (!this.interval) {
-              this.interval = setInterval(function() {
-                  self.refresh();
-              }, 1000);
+            var props = self.data;
+            props.begin_time = new Date().getTime();
+            props.status = "REST";
+            if (!props.interval) {
+                props.interval = setInterval(function() {
+                    self.refresh();
+                }, 1000);
             }
+            Store.setLocal("FOCUS_TIME_CURRENT", this.data);
         },
         stop: function() {
-            this.end_time = new Date().getTime();
-            this.used_time = this.end_time - this.begin_time;
-            if (this.format(this.used_time).min >= tomato.work) {
-                this.status = "FINISH";
+            var self = this;
+            var props = self.data;
+            props.end_time = new Date().getTime();
+            props.used_time = props.end_time - props.begin_time;
+            if (self.format(props.used_time).min >= tomato.work) {
+                props.status = "FINISH";
             } else {
-                this.status = "STOP";
-                clearInterval(self.interval);
+                props.status = "STOP";
+                clearInterval(props.interval);
             }
+            Store.setLocal("FOCUS_TIME_CURRENT", this.data);
         },
         refresh: function() {
             var self = this;
-            if (self.status == "BEGIN") {
+            var props = self.data;
+            if (props.status == "BEGIN") {
                 var current_time = new Date().getTime();
-                self.used_time = current_time - self.begin_time;
-                var remain_time = tomato.work * 60000 - self.used_time;
+                props.used_time = current_time - props.begin_time;
+                var remain_time = tomato.work * 60000 - props.used_time;
                 if (self.format(self.used_time).min >= tomato.work) {
-                    self.status = "FINISH";
+                    props.status = "FINISH";
                     $(".remain-time").text("25:00");
-                    clearInterval(self.interval);
+                    clearInterval(props.interval);
+                    Store.setLocal("FOCUS_TIME_CURRENT", "");
+                    Message.alert("哇，你很棒哦，又完成了一项工作！");
                 } else {
                     var str = self.format(remain_time).str;
                     $(".remain-time").text(str);
                 }
             }
-            if (self.status == "REST") {
+            if (props.status == "REST") {
                 var current_time = new Date().getTime();
-                self.used_time = current_time - self.begin_time;
-                var remain_time = tomato.rest * 60000 - self.used_time;
-                if (self.format(self.used_time).min >= tomato.rest) {
-                    self.status = "INIT";
+                props.used_time = current_time - props.begin_time;
+                var remain_time = tomato.rest * 60000 - props.used_time;
+                if (self.format(props.used_time).min >= tomato.rest) {
+                    props.status = "INIT";
                     $(".remain-time").text("25:00");
-                    clearInterval(self.interval);
+                    clearInterval(props.interval);
+                    Message.alert("休息完成，继续开始工作吧！");
                 } else {
                     var str = self.format(remain_time).str;
                     $(".remain-time").text(str);
                 }
             }
+
         }
     }
 
     var TaskList = {
         current: null,
         init: function() {
-
+            var task = Store.getLocal("FOCUS_TIME_CURRENT");
+            if (task) {
+                this.current = new Task(task);
+            } else {
+                this.current = new Task();
+            }
         }
     }
 
     var Service = {
-        task:null,
+        task: null,
         init: function() {
-            this.task = new Task();
+            console.log("focus-time");
+            TaskList.init();
+            this.task = TaskList.current;
             this.bind();
         },
         bind: function() {

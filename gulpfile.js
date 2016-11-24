@@ -124,7 +124,7 @@ gulp.task('views:html', function() {
 
 gulp.task('views:js', function() {
     return gulp.src('src/views/**/*.js', option)
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(tap(function(file) {
             var dir = path.dirname(file.path);
             console.log(file.path);
