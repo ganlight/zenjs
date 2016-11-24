@@ -41,10 +41,12 @@ $(function() {
                 sec: "00",
                 str: "00:00"
             }
-            var seconds = num / 1000;
-            time.min = parseInt(seconds / 60) > 9 ? parseInt(seconds / 60) : "0" + parseInt(seconds / 60)
-            time.sec = parseInt(seconds % 60) > 9 ? parseInt(seconds % 60) : "0" + parseInt(seconds % 60);
-            time.str = time.min + ":" + time.sec;
+            if (num >= 0) {
+                var seconds = num / 1000;
+                time.min = parseInt(seconds / 60) > 9 ? parseInt(seconds / 60) : "0" + parseInt(seconds / 60)
+                time.sec = parseInt(seconds % 60) > 9 ? parseInt(seconds % 60) : "0" + parseInt(seconds % 60);
+                time.str = time.min + ":" + time.sec;
+            }
             return time;
         },
         start: function() {
@@ -52,11 +54,9 @@ $(function() {
             var props = self.data;
             props.begin_time = new Date().getTime();
             props.status = "BEGIN";
-            if (!props.interval) {
-                props.interval = setInterval(function() {
-                    self.refresh();
-                }, 1000);
-            }
+            props.interval = setInterval(function() {
+                self.refresh();
+            }, 1000);
             Store.setLocal("FOCUS_TIME_CURRENT", this.data);
         },
         rest: function() {
