@@ -1,0 +1,85 @@
+<style>
+    .zen-page {}
+
+    .c-navmenu-banner .title {
+        font-size: 1.6rem;
+        color: #FFF;
+    }
+
+    .c-navmenu-banner .menu {
+        cursor: pointer;
+    }
+
+    .c-navmenu-banner>div {
+        position: relative;
+        padding: 1.1rem 1.5rem;
+        font-size: 2rem;
+    }
+
+    .link-item {
+        height: 100px;
+        width: 64px;
+        color: #FFF;
+    }
+
+    .link-item i {
+        font-size: 2.4rem;
+    }
+
+    .link-item .name {
+        line-height: 3rem;
+        font-size: 1.4rem;
+    }
+
+    .link-item .white-line {
+        height: .1rem;
+        background: #FFF;
+    }
+</style>
+<div class="zen-page v-center">
+    <div class="c-navmenu-banner fix-top">
+        <div class="text-center clearfix">
+            <span class="logo fl"><i class="fa fa-paper-plane fa-fw white" ></i><span class="white ml10 font16">ZENJS</span></span>
+            <span class="title white"></span>
+            <span class="fr menu"><i class="fa fa-bars fa-fw white" ></i></span>
+        </div>
+    </div>
+    <ul class="link-list">
+        <li class="link-item text-center" v-link="#example/index">
+            <div class=""><i class="fa fa-tree fa-fw white font32"></i></div>
+            <div class="name">MODULES</div>
+            <div class="white-line"></div>
+        </li>
+        <li class="link-item text-center" v-link="https://github.com/ganlight/zenjs">
+            <div class=""><i class="fa fa-code fa-fw white"></i></div>
+            <div class="name ">GITHUB</div>
+            <div class="white-line"></div>
+        </li>
+        <li class="link-item text-center" v-link="#about">
+            <div class=""><i class="fa fa-inbox fa-fw white font32"></i></div>
+            <div class="name">ABOUT</div>
+            <div class="white-line"></div>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(function() {
+        var Service = {
+            init: function() {
+                this.init_sidenav();
+            },
+            init_sidenav: function() {
+                $(".c-navmenu-banner .menu").click(function() {
+                    SideNav.toggle("right");
+                });
+                $(".c-navmenu-banner .logo").click(function() {
+                    SideNav.toggle("top");
+                });
+                $(".c-side-nav").click(function() {
+                    SideNav.close();
+                });
+            }
+        }
+        Zen.ready(Service);
+    })
+</script>

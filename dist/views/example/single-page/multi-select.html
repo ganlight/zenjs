@@ -1,0 +1,77 @@
+<style>
+    .zen-page {
+        font-size: 1.6rem;
+    }
+</style>
+<div class="zen-page">
+    <h2 class="font24 white text-center normal">Multi Select</h2>
+    <ul>
+        <li class="c-card">
+            <span class="label-txt lh40">多选择1：</span>
+            <div id="m-type" v-zen="multi-select"></div>
+        </li>
+        <br>
+        <li class="c-card">
+            <span class="label-txt lh40">多选择2：</span>
+            <div id="m-status" v-zen="multi-select"></div>
+        </li>
+    </ul>
+</div>
+<script>
+    $(function() {
+        var config_type = {
+            ele: "m-type",
+            data: [{
+                name: "例子1",
+                value: "33"
+            }, {
+                name: "例子2",
+                value: "34"
+            }, {
+                name: "例子3",
+                value: "35"
+            }, {
+                name: "例子1",
+                value: "33"
+            }, {
+                name: "例子2",
+                value: "34"
+            }, {
+                name: "例子3",
+                value: "35"
+            }, {
+                name: "例子1",
+                value: "33"
+            }, {
+                name: "例子2",
+                value: "34"
+            }, {
+                name: "例子3",
+                value: "35"
+            }]
+        }
+        var config_status = {
+            ele: "m-status",
+            data: [{
+                name: "状态1",
+                value: "33"
+            }, {
+                name: "状态2",
+                value: "34"
+            }, {
+                name: "状态3",
+                value: "35"
+            }]
+        }
+
+        var Service = {
+            multi_type: null,
+            multi_status: null,
+            init: function() {
+                this.multi_type = new MultiSelect(config_type);
+                this.multi_status = new MultiSelect(config_status);
+            }
+        }
+        Zen.ready(Service);
+    })
+</script>

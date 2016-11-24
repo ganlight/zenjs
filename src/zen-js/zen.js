@@ -1,4 +1,5 @@
 var Zen = {
+    mode: "normal",
     boot: function() {
         $(document).ready(function() {
             Zen.init();
@@ -15,7 +16,16 @@ var Zen = {
             Zen.load()
         });
     },
+    debug: function(status) {
+        var mode = "normal";
+        if (status == "debug") {
+            mode = "debug";
+        }
+        Store.sLocal("ZEN_DEBUG", mode);
+        this.isDebug = mode;
+    },
     init: function() {
+        this.isDebug = Store.gLocal("ZEN_DEBUG") || false;
         if (Zen.modules) {
             var modules = Zen.parse(Zen.modules);
             var moudles_div = $("<div>").addClass("zen-modules");
@@ -78,7 +88,12 @@ var Zen = {
             view += html;
         }
         if (js) {
-            view += js;
+            if (this.isDebug == "debug") {
+                this.debug_script();
+            } else {
+                view += js;
+                this.debug_clear();
+            }
         }
         if (view) {
             page.append(view);
@@ -175,6 +190,20 @@ var Zen = {
                 }
             }
         }
+    },
+    debug_clear: function() {
+        var head = $('head');
+        head.find("*[data-type='debug-script']").remove();
+    },
+    debug_script: function() {
+        //用于调试单页的script脚本(模块下的index.js)
+        var href = "views/" + Util.getHash() + "/index.js";
+        var head = $('head');
+        head.find("*[data-type='debug-script']").remove();
+        var clone = $('<script>').attr("type", "text/javascript");
+        clone.attr("src", href);
+        clone.attr("data-type", 'debug-script');
+        head.append(clone);
     },
     parse: function(fn) {
         //这里面主要将html和js代码转化成js函数，通过这样的方式，可以获取里面的内容

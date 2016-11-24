@@ -1,0 +1,105 @@
+<style>
+    .zen-page{
+      font-size: 1.6rem;
+    }
+    .c-card {
+        position: relative;
+        background: #FFF;
+        margin: 1.5rem 1.5rem 0 1.5rem;
+        border-radius: .3rem;
+        padding: 1.5rem;
+    }
+</style>
+<div class="zen-page">
+    <h2 class="font24 white text-center normal">Toggle Group</h2>
+    <ul>
+        <li class="c-card">
+            <div id="m-type" v-zen="toggle-group"></div>
+        </li>
+        <li class="c-card">
+            <div id="m-status" v-zen="toggle-group"></div>
+        </li>
+    </ul>
+</div>
+<script>
+    $(function() {
+        var config_type = {
+            ele: "m-type",
+            addAction: function(item) {
+                Message.toast("选择" + item.name);
+            },
+            delAction: function(item) {
+                Message.toast("取消" + item.name);
+            },
+            data: [{
+                name: "例子1",
+                value: "33",
+                selected: true
+            }, {
+                name: "例子2",
+                value: "34",
+                selected: true
+            }, {
+                name: "例子3",
+                value: "35",
+                selected: true
+            }, {
+                name: "例子1",
+                value: "33",
+                selected: true
+            }, {
+                name: "例子2",
+                value: "34",
+                selected: false
+            }, {
+                name: "例子3",
+                value: "35",
+                selected: false
+            }, {
+                name: "例子1",
+                value: "33",
+                selected: true
+            }, {
+                name: "例子2",
+                value: "34",
+                selected: true
+            }, {
+                name: "例子3",
+                value: "35",
+                selected: true
+            }]
+        }
+        var config_status = {
+            ele: "m-status",
+            addAction: function(item) {
+                Message.toast("选择" + item.name);
+            },
+            delAction: function(item) {
+                Message.toast("取消" + item.name);
+            },
+            data: [{
+                name: "状态1",
+                value: "33",
+                selected: true
+            }, {
+                name: "状态2",
+                value: "34",
+                selected: false
+            }, {
+                name: "状态3",
+                value: "35",
+                selected: true
+            }]
+        }
+
+        var Service = {
+            toggle_type: null,
+            toggle_status: null,
+            init: function() {
+                this.toggle_type = new ToggleGroup(config_type);
+                this.toggle_status = new ToggleGroup(config_status);
+            }
+        }
+        Zen.ready(Service);
+    })
+</script>
