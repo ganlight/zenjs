@@ -642,7 +642,7 @@ var views = {
 var Zen = {
     mode: "normal",
     boot: function() {
-        this.support();
+        // this.support();
         $(document).ready(function() {
             Zen.init();
             Zen.load();
