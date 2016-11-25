@@ -40,109 +40,11 @@ body {
     overflow-x: hidden;
 }
 
-.sidenav {
-    background: rgba(67, 132, 33, 0.78);
-    width: 15rem;
-    position: absolute;
-    opacity: 1;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: 0;
-    padding-top: 3rem;
-    transition: all 0.2s;
-    /*transform: translateX(15rem);
-    -webkit-transform: translateX(15rem);
-    -moz-transform: translateX(15rem);*/
-}
-
-.sidenav ul {
-    margin: 0 auto;
-    padding: 0;
-}
-
-.sidenav li {
-    list-style-type: none;
-    padding-left: 0.5rem;
-}
-
-.sidenav a {
-    color: white;
-    text-decoration: none;
-}
-
-.sidenav b {
-    display: block;
-    opacity: 0;
-    transition: all 0.2s;
-    font-weight: normal;
-    font-weight: 1.6rem;
-    line-height: 4.5rem;
-    /*transform: translateX(5rem);
-    -webkit-transform: translateX(5rem);
-    -moz-transform: translateX(5rem);*/
-}
-
-.sidenav li i {
-    display: block;
-    width: 5rem;
-    float: left;
-    font-size: 1.6rem;
-    line-height: 4.5rem;
-    text-align: center;
-}
-
-.menu-opened.main-container {
-    transform: translateX(-15rem);
-    -webkit-transform: translateX(-15rem);
-    -moz-transform: translateX(-15rem);
-    /*overflow-y: hidden;*/
-}
-
-.sidenav.menu-opened {
-    width: 15rem;
-    opacity: 1;
-    transform: translateX(0);
-    -webkit-transform: translateX(0);
-    -moz-transform: translateX(0);
-}
-
-.sidenav.menu-opened b {
-    opacity: 1;
-    transform: translateX(0);
-    -webkit-transform: translateX(0);
-    -moz-transform: translateX(0);
-}
-
-/* 0. common-block Styles
-----------------------------------------------*/
-
-.downblank-section {
-    background: transparent;
-    height: 50px;
-}
-
 .rotate45 {
     transform: rotate(45%);
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     position: absolute;
-}
-
-.box {
-    position: relative;
-    background: #FFF;
-    margin: 1rem;
-    padding: 1rem;
-    border-radius: .3rem;
-    margin-bottom: 0;
-}
-
-.panel {
-    position: relative;
-    background: #FFF;
-    padding: 0 1.5rem;
-    margin-bottom: 1.5rem;
 }
 
 .tag {
@@ -210,36 +112,4 @@ body {
     width: 100%;
     height: .1rem;
     z-index: -1;
-}
-
-.expend {
-    display: inline-block;
-    width: 1.5rem;
-    height: 1rem;
-    background: url('/assets/img/common/expend-ico.png');
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    position: relative;
-}
-
-.selected .expend {
-    background: url('/assets/img/common/expend-s-ico.png');
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-}
-
-/*----------------------------------------------*/
-.c-page-tips {
-    position: relative;
-    text-align: center;
-    padding: 1.5rem 0;
-    margin: 0 auto;
-    display: none;
-    cursor: pointer;
-}
-
-.c-page-tips .ico i {
-    font-size: 3rem;
-    color: #7cc854;
-    margin: 1rem;
 }

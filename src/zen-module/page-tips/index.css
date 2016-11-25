@@ -1,0 +1,14 @@
+.c-page-tips {
+    position: relative;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin: 0 auto;
+    display: none;
+    cursor: pointer;
+}
+
+.c-page-tips .ico i {
+    font-size: 3rem;
+    color: #7cc854;
+    margin: 1rem;
+}
