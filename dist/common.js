@@ -29,9 +29,9 @@ views.focus_time__index_html = function() {/*<style>.remain-time{font-size:5rem;
 views.front__green_html = function() {/*<style>.bg-green{color:green;font-size:20px;width:80%;height:100px}</style><div class="zen-page"><h2 class="font24 white text-center normal">ZEN PAGE</h2><div class="c-card bg-green v-center">green</div></div><script>console.log("green page")</script>*/}
 views.front__page_html = function() {/*<style>.example-field{font-size:20px;position:absolute;width:100%;height:100%}</style><div class="zen-page example-field" v-script="views/example/js/toggle-group.js"><ul><li><div id="m-type" v-zen="toggle-group"></div></li><br><li><div id="m-status" v-zen="toggle-group"></div></li></ul></div>*/}
 views.front__red_html = function() {/*<style>.bg-red{background:red;font-size:20px;position:absolute;width:100%;height:100%}</style><div class="zen-page bg-red v-center">red</div>*/}
+views.example__multi_select__index_html = function() {/*<div class="zen-page"><h2 class="font24 white text-center normal">Multi Select</h2><ul><li class="c-card"><span class="label-txt lh40">多选择1：</span><div id="m-type" v-zen="multi-select"></div></li><br><li class="c-card"><span class="label-txt lh40">多选择2：</span><div id="m-status" v-zen="multi-select"></div></li></ul></div>*/}
 views.example__single_page__multi_select_html = function() {/*<style>.zen-page{font-size:1.6rem}</style><div class="zen-page"><h2 class="font24 white text-center normal">Multi Select</h2><ul><li class="c-card"><span class="label-txt lh40">多选择1：</span><div id="m-type" v-zen="multi-select"></div></li><br><li class="c-card"><span class="label-txt lh40">多选择2：</span><div id="m-status" v-zen="multi-select"></div></li></ul></div><script>$(function(){var e={ele:"m-type",data:[{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"},{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"},{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"}]},a={ele:"m-status",data:[{name:"状态1",value:"33"},{name:"状态2",value:"34"},{name:"状态3",value:"35"}]},l={multi_type:null,multi_status:null,init:function(){this.multi_type=new MultiSelect(e),this.multi_status=new MultiSelect(a)}};Zen.ready(l)})</script>*/}
 views.example__single_page__toggle_group_html = function() {/*<style>.zen-page{font-size:1.6rem}.c-card{position:relative;background:#FFF;margin:1.5rem 1.5rem 0 1.5rem;border-radius:.3rem;padding:1.5rem}</style><div class="zen-page"><h2 class="font24 white text-center normal">Toggle Group</h2><ul><li class="c-card"><div id="m-type" v-zen="toggle-group"></div></li><li class="c-card"><div id="m-status" v-zen="toggle-group"></div></li></ul></div><script v-script="views/example/single-page/toggle.js"></script>*/}
-views.example__multi_select__index_html = function() {/*<div class="zen-page"><h2 class="font24 white text-center normal">Multi Select</h2><ul><li class="c-card"><span class="label-txt lh40">多选择1：</span><div id="m-type" v-zen="multi-select"></div></li><br><li class="c-card"><span class="label-txt lh40">多选择2：</span><div id="m-status" v-zen="multi-select"></div></li></ul></div>*/}
 views.example__toggle_group__index_html = function() {/*<style>.zen-page{font-size:1.6rem}.c-card{position:relative;background:#FFF;margin:1.5rem 1.5rem 0 1.5rem;border-radius:.3rem;padding:1.5rem}</style><div class="zen-page"><h2 class="font24 white text-center normal">Toggle Group</h2><ul><li class="c-card"><div id="m-type" v-zen="toggle-group"></div></li><li class="c-card"><div id="m-status" v-zen="toggle-group"></div></li></ul></div><script>$(function(){var e={ele:"m-type",addAction:function(e){Message.toast("选择"+e.name)},delAction:function(e){Message.toast("取消"+e.name)},data:[{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!0},{name:"例子3",value:"35",selected:!0},{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!1},{name:"例子3",value:"35",selected:!1},{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!0},{name:"例子3",value:"35",selected:!0}]},t={ele:"m-status",addAction:function(e){Message.toast("选择"+e.name)},delAction:function(e){Message.toast("取消"+e.name)},data:[{name:"状态1",value:"33",selected:!0},{name:"状态2",value:"34",selected:!1},{name:"状态3",value:"35",selected:!0}]},a={toggle_type:null,toggle_status:null,init:function(){this.toggle_type=new ToggleGroup(e),this.toggle_status=new ToggleGroup(t)}};Zen.ready(a)})</script>*/}
 views.focus_time__index_js = function() {/*<script>$(function() {
     var tomato = {
@@ -191,6 +191,63 @@ views.focus_time__index_js = function() {/*<script>$(function() {
     Zen.ready(Service);
 })
 </script>*/}
+views.example__multi_select__index_js = function() {/*<script>$(function() {
+    var config_type = {
+        ele: "m-type",
+        data: [{
+            name: "例子1",
+            value: "33"
+        }, {
+            name: "例子2",
+            value: "34"
+        }, {
+            name: "例子3",
+            value: "35"
+        }, {
+            name: "例子1",
+            value: "33"
+        }, {
+            name: "例子2",
+            value: "34"
+        }, {
+            name: "例子3",
+            value: "35"
+        }, {
+            name: "例子1",
+            value: "33"
+        }, {
+            name: "例子2",
+            value: "34"
+        }, {
+            name: "例子3",
+            value: "35"
+        }]
+    }
+    var config_status = {
+        ele: "m-status",
+        data: [{
+            name: "状态1",
+            value: "33"
+        }, {
+            name: "状态2",
+            value: "34"
+        }, {
+            name: "状态3",
+            value: "35"
+        }]
+    }
+
+    var Service = {
+        multi_type:null,
+        multi_status:null,
+        init: function() {
+            this.multi_type = new MultiSelect(config_type);
+            this.multi_status = new MultiSelect(config_status);
+        }
+    }
+    Zen.ready(Service);
+})
+</script>*/}
 views.example__single_page__toggle_js = function() {/*<script>$(function() {
     var config_type = {
         ele: "m-type",
@@ -267,63 +324,6 @@ views.example__single_page__toggle_js = function() {/*<script>$(function() {
         init: function() {
           this.toggle_type = new ToggleGroup(config_type);
           this.toggle_status = new ToggleGroup(config_status);
-        }
-    }
-    Zen.ready(Service);
-})
-</script>*/}
-views.example__multi_select__index_js = function() {/*<script>$(function() {
-    var config_type = {
-        ele: "m-type",
-        data: [{
-            name: "例子1",
-            value: "33"
-        }, {
-            name: "例子2",
-            value: "34"
-        }, {
-            name: "例子3",
-            value: "35"
-        }, {
-            name: "例子1",
-            value: "33"
-        }, {
-            name: "例子2",
-            value: "34"
-        }, {
-            name: "例子3",
-            value: "35"
-        }, {
-            name: "例子1",
-            value: "33"
-        }, {
-            name: "例子2",
-            value: "34"
-        }, {
-            name: "例子3",
-            value: "35"
-        }]
-    }
-    var config_status = {
-        ele: "m-status",
-        data: [{
-            name: "状态1",
-            value: "33"
-        }, {
-            name: "状态2",
-            value: "34"
-        }, {
-            name: "状态3",
-            value: "35"
-        }]
-    }
-
-    var Service = {
-        multi_type:null,
-        multi_status:null,
-        init: function() {
-            this.multi_type = new MultiSelect(config_type);
-            this.multi_status = new MultiSelect(config_status);
         }
     }
     Zen.ready(Service);
