@@ -1,36 +1,47 @@
 <style>
-  .markdown-area{
-    margin-bottom: 1.5rem;
-  }
+    .markdown-area {
+        position: relative;
+        background: #fff;
+        margin: 1.5rem 1.5rem 0;
+        border-radius: .3rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
 </style>
 <div class="zen-page ">
     <h2 class="font24 white text-center normal title"></h2>
-    <div class="markdown-area c-card"></div>
+    <div class="markdown-area"></div>
+    <div class="catalog-area"></div>
+    <div class="page-template hide">
+        <div class="list-item inline c-card clearfix">
+            <div class="font20 title"></div>
+            <div class="font16 gray "><span class="type"></span>/<span class="file"></span></div>
+        </div>
+    </div>
 </div>
 <!-- <script v-script="//cdn.bootcss.com/showdown/1.5.0/showdown.min.js"></script> -->
 
 <script type="text/javascript">
     $(function() {
-        var Articles = [{
+        var articles = [{
             title: "Zenjs install",
-            date: "2016-11-25 14:00",
+            public: "2016-11-25 14:00",
             auther: "ganlight",
             type: "zenjs",
             section: "begin",
             file: "begin-install"
-        },{
+        }, {
             title: "Zenjs install2",
-            date: "2016-11-25 14:00",
+            public: "2016-11-25 14:00",
             auther: "ganlight",
             type: "zenjs",
             section: "begin",
-            file: "begin-install"
+            file: "begin-install2"
         }];
 
         var Service = {
             init: function() {
-                MarkDown.init();
-                MarkDown.load(Articles[0]);
+                MarkDown.init(articles);
             }
         }
         Zen.ready(Service);

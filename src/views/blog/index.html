@@ -23,7 +23,7 @@
 
 <script type="text/javascript">
     $(function() {
-        var Articles = [{
+        var articles = [{
             title: "Zenjs install",
             public: "2016-11-25 14:00",
             auther: "ganlight",
@@ -39,59 +39,9 @@
             file: "begin-install2"
         }];
 
-        var Catalog = {
-            articles: [],
-            types: null,
-            sections: null,
-            map: {},
-            init: function(articles) {
-                this.articles = articles || [];
-                this.rend();
-            },
-            rend: function() {
-                var self = this;
-                if (this.articles && this.articles.length > 0) {
-                    var len = this.articles.length;
-                    var data = this.articles;
-                    var parent = $(".catalog-area");
-                    for (var i = 0; i < data.length; i++) {
-                        var item = data[i];
-                        var clone = $(".page-template .list-item").clone();
-                        Store.data(clone, item);
-                        self.map[item.type + "/" + item.file] = item;
-                        Util.rendValue(clone, item);
-                        self.bind(clone);
-                        parent.append(clone);
-                    }
-                }
-            },
-            get: function(type, file) {
-                var item = this.map[type + "/" + file] || "";
-                return item;
-            },
-            bind: function(clone) {
-                var self = this;
-                clone.click(function() {
-                    var data = Store.data(clone);
-                    if (data && data.file) {
-                        window.location.href = "#" + Util.getHash() + "?type=" + data.type + "&file=" + data.file;
-                    }
-                })
-            }
-        }
-
         var Service = {
             init: function() {
-                MarkDown.init();
-                Catalog.init(Articles);
-                var type = Util.getPar("type");
-                var file = Util.getPar("file");
-                var article = Catalog.get(type, file);
-                if (article) {
-                    MarkDown.load(article);
-                } else {
-
-                }
+                MarkDown.init(articles);
             }
         }
         Zen.ready(Service);
