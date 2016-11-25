@@ -264,6 +264,40 @@ var Filter = {
     }
 }
 
+var MarkDown = {
+    converter: null,
+    init: function() {
+        if (showdown && showdown.Converter) {
+            this.converter = new showdown.Converter();
+        } else {
+            $(".title").html("暂不支持markdown");
+        }
+    },
+    rend: function(article, data) {
+        if (this.converter && data) {
+            var html = this.converter.makeHtml(data);
+            $(".title").html(article.title);
+            $(".markdown-area").html(html);
+        }
+    },
+    load: function(article) {
+        var self = this;
+        var url = "blog/" + article.type + "/" + article.file + ".md";
+        $.ajax({
+            url: url,
+            type: 'get',
+            async: false,
+            dataType: 'html',
+            success: function(data) {
+                self.rend(article, data);
+            },
+            error: function(e) {
+                $(".markdown-area").text("当前文章" + article.file + "不存在，请返回其他文章");
+            }
+        });
+    }
+}
+
 var Message = {};
 Message.close = function() {
     $(".c-confirm").hide(300);
@@ -388,6 +422,47 @@ var Template = {
     }
 }
 
+var URL = {
+    getPar: function(par) {
+        var local_url = document.location.href;
+        //获取要取得的get参数位置
+        var get = local_url.indexOf(par + "=");
+        if (get == -1) {
+            return false;
+        }
+        //截取字符串
+        var get_par = local_url.slice(par.length + get + 1);
+        //判断截取后的字符串是否还有其他get参数
+        var nextPar = get_par.indexOf("&");
+        if (nextPar != -1) {
+            get_par = get_par.slice(0, nextPar);
+        }
+        return get_par;
+    },
+    getHash: function() {
+        var hash = window.location.hash.replace("#", "");
+        hash = hash.split("?")[0];
+        return hash;
+    },
+    toCamel: function(name) {
+        //例如foo-style-css 变为fooStyleCss
+        var name = name.replace(/\-(\w)/g, function(all, letter) {　　　　　
+            return letter.toUpperCase();　　　　
+        });
+        return name;
+    },
+    toName: function(name) {
+        //例如fooStyleCss变为foo-style-css
+        var name = name.replace(/([A-Z])/g, "-$1").toLowerCase();
+        return name;
+    },
+    pathname: function(path) {
+        // change path to the function name
+        var pathname = path.replace(".js", "_js").replace(".html", "_html").replace(/-/g, "_").replace(/\//g, "__");
+        return pathname;
+    }
+}
+
 var Util = {
     lastClick: null,
     once: function(fn) {
@@ -498,6 +573,7 @@ var Util = {
     },
     getHash: function() {
         var hash = window.location.hash.replace("#", "");
+        hash = hash.split("?")[0];
         return hash;
     },
     isMobile: function() {

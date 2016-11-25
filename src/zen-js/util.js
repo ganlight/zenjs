@@ -108,6 +108,7 @@ var Util = {
     },
     getHash: function() {
         var hash = window.location.hash.replace("#", "");
+        hash = hash.split("?")[0];
         return hash;
     },
     isMobile: function() {

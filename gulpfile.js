@@ -21,7 +21,7 @@ var option = {
 var dist = __dirname + '/dist';
 
 gulp.task('zen:copy', function() {
-    return gulp.src(['src/assets/**/*', 'src/views/**/*','src/lib/**/*', 'src/favicon.ico', 'src/index.html'], option)
+    return gulp.src(['src/assets/**/*', 'src/views/**/*','src/lib/**/*', 'src/blog/**/*', 'src/favicon.ico', 'src/index.html'], option)
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
             stream: true
@@ -239,6 +239,7 @@ gulp.task('watch', ['release'], function() {
     gulp.watch('src/assets/**/*', ['build:views']);
     gulp.watch('src/views/**/*', ['build:views']);
     gulp.watch('src/index.html', ['zen:copy']);
+    gulp.watch('src/blog/**/*', ['zen:copy']);
     gulp.watch('src/zen-css/*.css', ['build:zen', 'release:zepto']);
     gulp.watch('src/zen-js/*.js', ['build:zen', 'release:zepto']);
     gulp.watch('src/zen-module/**/*', ['build:zen', 'release:zepto']);

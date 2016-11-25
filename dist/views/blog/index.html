@@ -1,43 +1,36 @@
-<style></style>
-<div class="zen-page v-center">
-    <div class="title"></div>
-    <ul class="link-list">
-        <li class="link-item text-center" v-link="#example/index">
-            <div class=""><i class="fa fa-tree fa-fw white font32"></i></div>
-            <div class="name">MODULES</div>
-            <div class="white-line"></div>
-        </li>
-        <li class="link-item text-center" v-link="https://github.com/ganlight/zenjs">
-            <div class=""><i class="fa fa-code fa-fw white"></i></div>
-            <div class="name ">GITHUB</div>
-            <div class="white-line"></div>
-        </li>
-        <li class="link-item text-center" v-link="#about">
-            <div class=""><i class="fa fa-inbox fa-fw white font32"></i></div>
-            <div class="name">ABOUT</div>
-            <div class="white-line"></div>
-        </li>
-    </ul>
+<style>
+  .markdown-area{
+    margin-bottom: 1.5rem;
+  }
+</style>
+<div class="zen-page ">
+    <h2 class="font24 white text-center normal title"></h2>
+    <div class="markdown-area c-card"></div>
 </div>
 <!-- <script v-script="//cdn.bootcss.com/showdown/1.5.0/showdown.min.js"></script> -->
-<script src="//cdn.bootcss.com/showdown/1.5.0/showdown.min.js"></script>
+
 <script type="text/javascript">
     $(function() {
-        var MarkDown = {
-            init: function() {
-                if (showdown && showdown.Converter) {
-                    var converter = new showdown.Converter(),
-                        text = '#hello, markdown!',
-                        html = converter.makeHtml(text);
-                    $(".title").html(html);
-                } else {
-                    $(".title").html("暂不支持markdown");
-                }
-            }
-        }
+        var Articles = [{
+            title: "Zenjs install",
+            date: "2016-11-25 14:00",
+            auther: "ganlight",
+            type: "zenjs",
+            section: "begin",
+            file: "begin-install"
+        },{
+            title: "Zenjs install2",
+            date: "2016-11-25 14:00",
+            auther: "ganlight",
+            type: "zenjs",
+            section: "begin",
+            file: "begin-install"
+        }];
+
         var Service = {
             init: function() {
                 MarkDown.init();
+                MarkDown.load(Articles[0]);
             }
         }
         Zen.ready(Service);
