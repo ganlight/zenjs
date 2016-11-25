@@ -3,18 +3,18 @@ var MarkDown = {
     init: function(articles) {
         if (showdown && showdown.Converter) {
             this.converter = new showdown.Converter();
+            Catalog.init(articles);
+            var type = Util.getPar("type");
+            var file = Util.getPar("file");
+            var article = Catalog.get(type, file);
+            if (article) {
+                MarkDown.load(article);
+            } else {
+                $(".markdown-area").hide();
+                $(".catalog-area").show();
+            }
         } else {
             $(".title").html("暂不支持markdown");
-        }
-        Catalog.init(articles);
-        var type = Util.getPar("type");
-        var file = Util.getPar("file");
-        var article = Catalog.get(type, file);
-        if (article) {
-            MarkDown.load(article);
-        } else {
-            $(".markdown-area").hide();
-            $(".catalog-area").show();
         }
     },
     rend: function(article, data) {

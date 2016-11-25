@@ -269,18 +269,18 @@ var MarkDown = {
     init: function(articles) {
         if (showdown && showdown.Converter) {
             this.converter = new showdown.Converter();
+            Catalog.init(articles);
+            var type = Util.getPar("type");
+            var file = Util.getPar("file");
+            var article = Catalog.get(type, file);
+            if (article) {
+                MarkDown.load(article);
+            } else {
+                $(".markdown-area").hide();
+                $(".catalog-area").show();
+            }
         } else {
             $(".title").html("暂不支持markdown");
-        }
-        Catalog.init(articles);
-        var type = Util.getPar("type");
-        var file = Util.getPar("file");
-        var article = Catalog.get(type, file);
-        if (article) {
-            MarkDown.load(article);
-        } else {
-            $(".markdown-area").hide();
-            $(".catalog-area").show();
         }
     },
     rend: function(article, data) {
@@ -1068,16 +1068,6 @@ var Zen = {
 }
 Zen.boot();
 
-Message.alert = function(message, fn) {
-    var $toast = $(".c-alert");
-    $(".c-alert .message-text").html(message);
-    $toast.show(300);
-    $(".c-alert .alert-ok").unbind('click').click(function() {
-        fn && fn();
-        Message.close();
-    });
-}
-
 Message.confirm = function(message, fn) {
     var $toast = $(".c-confirm");
     $(".c-confirm .message-text").html(message);
@@ -1090,6 +1080,16 @@ Message.confirm = function(message, fn) {
         Message.close();
     });
     $(".c-confirm .mask").unbind('click').click(function() {
+        Message.close();
+    });
+}
+
+Message.alert = function(message, fn) {
+    var $toast = $(".c-alert");
+    $(".c-alert .message-text").html(message);
+    $toast.show(300);
+    $(".c-alert .alert-ok").unbind('click').click(function() {
+        fn && fn();
         Message.close();
     });
 }
