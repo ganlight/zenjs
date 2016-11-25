@@ -1,0 +1,83 @@
+.inline .span12 {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    float: left;
+}
+
+.inline .span11 {
+    display: inline-block;
+    text-align: center;
+    width: 91.7%;
+    float: left;
+}
+
+.inline .span10 {
+    display: inline-block;
+    text-align: center;
+    width: 83.3%;
+    float: left;
+}
+
+.inline .span9 {
+    display: inline-block;
+    text-align: center;
+    width: 75%;
+    float: left;
+}
+
+.inline .span8 {
+    display: inline-block;
+    text-align: center;
+    width: 66.66%;
+    float: left;
+}
+
+.inline .span7 {
+    display: inline-block;
+    text-align: center;
+    width: 58.3%;
+    float: left;
+}
+
+.inline .span6 {
+    display: inline-block;
+    text-align: center;
+    width: 50%;
+    float: left;
+}
+
+.inline .span5 {
+    display: inline-block;
+    text-align: center;
+    width: 41.7%;
+    float: left;
+}
+
+.inline .span4 {
+    display: inline-block;
+    text-align: center;
+    width: 33.33%;
+    float: left;
+}
+
+.inline .span3 {
+    display: inline-block;
+    text-align: center;
+    width: 25%;
+    float: left;
+}
+
+.inline .span2 {
+    display: inline-block;
+    text-align: center;
+    width: 16.7%;
+    float: left;
+}
+
+.inline .span1 {
+    display: inline-block;
+    text-align: center;
+    width: 8.3%;
+    float: left;
+}

@@ -1,3 +1,7 @@
+html {
+    font-size: 62.5%;
+}
+
 .clearfix {
     *zoom: 1;
 }
@@ -54,73 +58,7 @@
     display: inherit;
 }
 
-.inline .span10 {
-    display: inline-block;
-    text-align: center;
-    width: 83.3%;
-    float: left;
-}
 
-.inline .span8 {
-    display: inline-block;
-    text-align: center;
-    width: 66.66%;
-    float: left;
-}
-
-.inline .span7 {
-    display: inline-block;
-    text-align: center;
-    width: 58.3%;
-    float: left;
-}
-
-.inline .span6 {
-    display: inline-block;
-    text-align: center;
-    width: 50%;
-    float: left;
-}
-
-.inline .span4 {
-    display: inline-block;
-    text-align: center;
-    width: 33.33%;
-    float: left;
-}
-
-.inline .span5 {
-    display: inline-block;
-    text-align: center;
-    width: 41.7%;
-    float: left;
-}
-
-.inline .span3 {
-    display: inline-block;
-    text-align: center;
-    width: 25%;
-    float: left;
-}
-
-.inline .span2 {
-    display: inline-block;
-    text-align: center;
-    width: 16.7%;
-    float: left;
-}
-
-.inline .span1 {
-    display: inline-block;
-    text-align: center;
-    width: 8.3%;
-    float: left;
-}
-
-
-html {
-    font-size: 62.5%;
-}
 
 .fl {
     float: left;
@@ -349,8 +287,6 @@ html {
     line-height: 6rem;
 }
 
-
-
 .b-line {
     border-bottom: .1rem solid #eeedf2;
 }
@@ -365,62 +301,4 @@ html {
 
 .r-line {
     border-right: .1rem solid #eeedf2;
-}
-
-/*----------------------------------------------*/
-
-
-/* 0. common-font Styles
-----------------------------------------------*/
-
-.font12 {
-    font-size: 1.2rem;
-}
-
-.font13 {
-    font-size: 1.3rem;
-}
-
-.font14 {
-    font-size: 1.4rem;
-}
-
-.font16 {
-    font-size: 1.6rem;
-}
-
-.font18 {
-    font-size: 1.8rem;
-}
-
-.font20 {
-    font-size: 2rem;
-}
-
-.font22 {
-    font-size: 2.2rem;
-}
-
-.font24 {
-    font-size: 2.4rem;
-}
-
-.font32 {
-    font-size: 3.2rem;
-}
-
-.font40 {
-    font-size: 4rem;
-}
-
-.font50 {
-    font-size: 5rem;
-}
-
-.normal {
-    font-weight: normal;
-}
-
-.bold {
-    font-weight: bold;
 }

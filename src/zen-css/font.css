@@ -1,0 +1,55 @@
+.normal {
+    font-weight: normal;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.font10 {
+    font-size: 1rem;
+}
+
+.font12 {
+    font-size: 1.2rem;
+}
+
+.font13 {
+    font-size: 1.3rem;
+}
+
+.font14 {
+    font-size: 1.4rem;
+}
+
+.font16 {
+    font-size: 1.6rem;
+}
+
+.font18 {
+    font-size: 1.8rem;
+}
+
+.font20 {
+    font-size: 2rem;
+}
+
+.font22 {
+    font-size: 2.2rem;
+}
+
+.font24 {
+    font-size: 2.4rem;
+}
+
+.font32 {
+    font-size: 3.2rem;
+}
+
+.font40 {
+    font-size: 4rem;
+}
+
+.font50 {
+    font-size: 5rem;
+}

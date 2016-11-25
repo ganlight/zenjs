@@ -1,0 +1,50 @@
+.c-card {
+    position: relative;
+    background: #FFF;
+    margin: 1.5rem 1.5rem 0 1.5rem;
+    border-radius: .3rem;
+    padding: 1.5rem;
+}
+
+.c-card:active {
+    background: #EEE;
+}
+
+.c-card img {
+    padding: 1rem 0;
+    margin-right: .5rem;
+}
+
+.c-card .title {
+    display: inline-block;
+    padding: 1rem 0;
+    line-height: 2.5rem;
+    vertical-align: bottom;
+}
+
+.c-card .card-btn {
+    position: absolute;
+    display: inline-block;
+    padding: 0.7rem 1.2rem;
+    background: #ff663d;
+    /*max-width: 5rem;*/
+    text-align: center;
+    color: #FFF;
+    border-radius: .3rem;
+    top: 2rem;
+    right: .5rem;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.c-card .card-more {
+    display: inline-block;
+    width: 1rem;
+    height: 2rem;
+    background: url('/assets/img/common/arrow-right-ico.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 2.5rem;
+    right: 0rem;
+}
