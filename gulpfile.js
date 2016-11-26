@@ -20,6 +20,18 @@ var option = {
 };
 var dist = __dirname + '/dist';
 
+var path2name = function(path) {
+    var _path = path.split("/");
+    var name = "";
+    for (var i = 0; i < _path.length; i++) {
+        var item = _path[i];
+        if (item) {
+            name += '["' + item + '"]';
+        }
+    }
+    return name;
+}
+
 gulp.task('zen:copy', function() {
     return gulp.src(['src/assets/**/*', 'src/views/**/*','src/lib/**/*', 'src/blog/**/*', 'src/favicon.ico', 'src/index.html'], option)
         .pipe(gulp.dest('dist'))
@@ -170,6 +182,30 @@ gulp.task('views:css', function() {
         }));
 });
 
+gulp.task('views:md', function() {
+    return gulp.src('src/views/**/*.md', option)
+        .pipe(tap(function(file) {
+            var dir = path.dirname(file.path);
+            console.log(file.path);
+            var contents = file.contents.toString();
+            var _path = file.path.replace(/\\/g, "/");
+            var pos = _path.indexOf("views/") + 6;
+            var pathname = _path.substring(pos, _path.length);
+            var toname = "views"+ '["' + pathname + '"]';
+            var prefix = toname + ' = function() {/*';
+            var suffix = '*/}'
+            contents = contents.replace(/\/\*/g, "__block_head__").replace(/\*\//g, "__block_foot__")
+            // contents = contents.replace(/__block_head__/g, '/*').replace(/__block_foot__/g, '*/')
+            contents = prefix + contents + suffix;
+            file.contents = new Buffer(contents);
+        }))
+        .pipe(concat('views_md.js'))
+        .pipe(gulp.dest('tmp/views'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+
 gulp.task('common:css', function() {
     return gulp.src('src/assets/css/*.css', option)
         .pipe(concat('common_css.js'))
@@ -197,8 +233,8 @@ gulp.task('common:js', function() {
         .pipe(gulp.dest('tmp/views'))
 });
 
-gulp.task('views:combine', ['common:css','common:js','views:html', 'views:js', 'views:css'], function() {
-    return gulp.src(['tmp/views/common_css.js', 'tmp/views/common_js.js','tmp/views/views_html.js', 'tmp/views/views_js.js', 'tmp/views/views_css.js'], option)
+gulp.task('views:combine', ['common:css','common:js','views:html', 'views:js', 'views:css', 'views:md'], function() {
+    return gulp.src(['tmp/views/common_css.js', 'tmp/views/common_js.js','tmp/views/views_html.js', 'tmp/views/views_js.js', 'tmp/views/views_css.js', 'tmp/views/views_md.js'], option)
         .pipe(concat('common.js'))
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
@@ -261,5 +297,5 @@ gulp.task('default', ['release'], function() {
 });
 
 gulp.task('build:zen', ['zen:copy', 'zen:js', 'zen:css', 'zen:html', 'zen:combine']);
-gulp.task('build:views', ['common:css','common:js','views:html', 'views:js', 'views:css', 'views:combine']);
+gulp.task('build:views', ['common:css','common:js','views:html', 'views:js', 'views:css','views:md', 'views:combine']);
 gulp.task('release', ['build:zen', 'build:views', 'release:zepto', 'release:jquery']);

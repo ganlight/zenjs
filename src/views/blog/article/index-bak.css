@@ -1,9 +1,10 @@
 code, pre {
-   font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+   font-family: Menlo, Monaco, Andale Mono, Courier New, monospace;
 }
 
 code {
    padding: 1px 3px;
+   font-size: 12px;
    -webkit-border-radius: 3px;
    -moz-border-radius: 3px;
    border-radius: 3px;
@@ -16,7 +17,7 @@ pre {
    padding: 14px;
    margin: 0 0 18px;
    line-height: 16px;
-   font-size: 1.4rem;
+   font-size: 11px;
    border: 1px solid #334;
    white-space: pre;
    white-space: pre-wrap;
@@ -25,7 +26,7 @@ pre {
    border-radius: 6px;
 }
 pre code {
-   font-size: 1.2rem;
+   font-size: 11px;
    padding: 0;
    background: transparent;
 }

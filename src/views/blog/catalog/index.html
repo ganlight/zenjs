@@ -1,0 +1,100 @@
+<style>
+    #app {
+        background: rgb(63, 85, 79);
+    }
+
+    .banner-area {
+        line-height: 5rem;
+    }
+
+    .banner-area .back-btn {
+        background: currentColor;
+    }
+
+    .banner-area .catalog-type {
+        background: cadetblue;
+    }
+
+    .catalog-area {
+        padding-top: 5rem;
+    }
+
+    .catalog-area .list-item {
+        display: block;
+        margin: 1rem;
+        background: ghostwhite;
+        padding: 1rem;
+    }
+
+    .catalog-area .list-item .title {
+        padding-bottom: 5px;
+    }
+</style>
+<div class="zen-page ">
+    <div class="banner-area inline clearfix fix-top">
+        <div class="back-btn span4" v-link="#index"><i class="fa fa-paper-plane fa-fw white"></i><span class="white ml10 font16">ZENJS</span></div>
+        <div class="catalog-type span8 white font16 ">目录</div>
+    </div>
+    <ul class="catalog-area">
+    </ul>
+    <div class="page-template hide">
+        <div class="list-item">
+            <div class="font20 title"></div>
+            <div class="font16 gray "><span class="type"></span>/<span class="file"></span></div>
+        </div>
+    </div>
+</div>
+<script v-script="views/blog/config.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var Catalog = {
+            articles: [],
+            types: null,
+            sections: null,
+            map: {},
+            init: function() {
+                if (articles) {
+                    this.articles = articles;
+                    this.rend();
+                }
+            },
+            rend: function() {
+                var self = this;
+                if (this.articles && this.articles.length > 0) {
+                    var len = this.articles.length;
+                    var data = this.articles;
+                    var parent = $(".catalog-area");
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        var clone = $(".page-template .list-item").clone();
+                        Store.data(clone, item);
+                        self.map[item.type + "/" + item.file] = item;
+                        Util.rendValue(clone, item);
+                        self.bind(clone);
+                        parent.append(clone);
+                    }
+                }
+            },
+            get: function(type, file) {
+                var item = this.map[type + "/" + file] || "";
+                return item;
+            },
+            bind: function(clone) {
+                var self = this;
+                clone.click(function() {
+                    var data = Store.data(clone);
+                    if (data && data.file) {
+                        window.location.href = "#blog/article" + "?type=" + data.type + "&file=" + data.file;
+                    }
+                })
+            }
+        }
+
+        var Service = {
+            init: function() {
+                Catalog.init();
+            }
+        }
+        Zen.ready(Service);
+    })
+</script>

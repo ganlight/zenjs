@@ -1,3 +1,19 @@
+views.blog__config_js = function() {/*<script>var articles = [{
+    title: "Zenjs install",
+    public: "2016-11-25 14:00",
+    auther: "ganlight",
+    type: "zenjs",
+    section: "begin",
+    file: "begin-install"
+}, {
+    title: "如何用zenjs写一个博客系统",
+    public: "2016-11-25 14:00",
+    auther: "ganlight",
+    type: "zenjs",
+    section: "begin",
+    file: "如何用zenjs写一个博客系统"
+}];
+</script>*/}
 views.focus_time__index_js = function() {/*<script>$(function() {
     var tomato = {
         work: 25,
@@ -156,6 +172,7 @@ views.focus_time__index_js = function() {/*<script>$(function() {
     Zen.ready(Service);
 })
 </script>*/}
+views.blog__catalog__index_js = function() {/*<script></script>*/}
 views.example__multi_select__index_js = function() {/*<script>$(function() {
     var config_type = {
         ele: "m-type",

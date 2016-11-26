@@ -220,8 +220,7 @@ var Zen = {
                 } else {
                     var script_name = this.pathname(script_src).replace("views__", "views.");
                     script = this.parse(eval(script_name));
-                    var app = $("#app");
-                    app.append(script);
+                    item.after(script);
                     item.remove();
                 }
             }
