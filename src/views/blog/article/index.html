@@ -40,7 +40,6 @@
 </div>
 <script v-script="views/blog/config.js"></script>
 <!-- <script v-script="//cdn.bootcss.com/showdown/1.5.0/showdown.min.js"></script> -->
-
 <script type="text/javascript">
     $(function() {
         var Service = {
@@ -50,6 +49,8 @@
                 var id = this.id = parseInt(Util.getPar("id")) || 0;
                 if (articles && articles[id]) {
                     MarkDown.load(articles[id]);
+                } else {
+                    window.location.href = "#blog/article?id=0";
                 }
                 this.bind();
             },
@@ -58,7 +59,7 @@
                     if (Service.id > 0) {
                         var id = Service.id - 1;
                         if (articles && articles[id]) {
-                            window.location.href = "#blog/article" + "?id=" + id;
+                            window.location.href = "#blog/article?id=" + id;
                         }
                     } else {
                         Message.toast("没有上一篇了.");
@@ -68,7 +69,7 @@
                     if (Service.id < articles.length - 1) {
                         var id = Service.id + 1;
                         if (articles && articles[id]) {
-                            window.location.href = "#blog/article" + "?id=" + id;
+                            window.location.href = "#blog/article?id=" + id;
                         }
                     } else {
                         Message.toast("没有下一篇了.");
