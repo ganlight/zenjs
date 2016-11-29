@@ -20,6 +20,7 @@ $(function() {
             } else {
                 clearInterval(this.loop);
                 this.loop = null;
+                Store.setLocal("FOCUS_TIME_CURRENT", task);
             }
         },
         format: function(num) {
@@ -38,8 +39,8 @@ $(function() {
         },
         refresh: function(task) {
             var remain_time = 0,
-                work_time = tomato.work * 6000,
-                rest_time = tomato.rest * 6000;
+                work_time = tomato.work * 60000,
+                rest_time = tomato.rest * 60000;
             if (task.status == "WORK_INIT") {
                 remain_time = work_time;
             }
@@ -116,7 +117,7 @@ $(function() {
         rest: function() {
             var self = this;
             var task = self.data;
-            task.work_start = new Date().getTime();
+            task.rest_start = new Date().getTime();
             task.status = "REST_START";
             TimeUtil.tick(task, true);
         },
@@ -124,7 +125,7 @@ $(function() {
             var self = this;
             var task = self.data;
             task.work_stop = new Date().getTime();
-            task.status = "WORK_START";
+            task.status = "WORK_STOP";
             TimeUtil.tick(task, false);
         }
     }
