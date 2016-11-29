@@ -43,18 +43,21 @@ $(function() {
                 rest_time = tomato.rest * 60000;
             if (task.status == "WORK_INIT") {
                 remain_time = work_time;
+                $(".start-btn").removeClass("hide");
             }
             if (task.status == "WORK_START") {
                 var current_time = new Date().getTime();
                 remain_time = work_time - (current_time - task.work_start);
+                $(".stop-btn").removeClass("hide");
                 if (remain_time < 0) {
-                    task.status == "WORK_DONE"
+                    task.status = "WORK_DONE"
                     TimeUtil.tick(task, false);
+                    $(".rest-btn").removeClass("hide");
                 }
             }
             if (task.status == "WORK_DONE") {
                 Message.alert(tomato.message.success);
-                task.status == "REST_INIT";
+                task.status = "REST_INIT";
                 remain_time = rest_time;
             }
             if (task.status == "WORK_STOP") {
@@ -68,11 +71,12 @@ $(function() {
                 var current_time = new Date().getTime();
                 remain_time = rest_time - (current_time - task.rest_start);
                 if (remain_time < 0) {
-                    task.status == "REST_DONE"
+                    task.status = "REST_DONE"
+                    TimeUtil.tick(task, false);
                 }
             }
             if (task.status == "REST_DONE") {
-                task.status == "WORK_INIT";
+                task.status = "WORK_INIT";
                 remain_time = work_time;
             }
             Store.setLocal("FOCUS_TIME_CURRENT", task);
