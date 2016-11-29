@@ -120,39 +120,26 @@ views.focus_time__index_js = function() {/*<script>$(function() {
     var tomato = {
         work: 25,
         rest: 5,
-        times: 4
-    }
-    var Task = function(task) {
-        var self = this;
-        this.data = {};
-        if (task) {
-            this.data = task;
-            if (task.status == "BEGIN") {
-                this.data.interval = setInterval(function() {
-                    self.refresh();
-                }, 1000);
-            }
-            var current_time = new Date().getTime();
-            task.used_time = current_time - task.begin_time;
-            var remain_time = tomato.work * 60000 - task.used_time;
-            var str = self.format(remain_time).str;
-            $(".remain-time").text(str);
-
-        } else {
-            this.data.name = "";
-            this.data.create_time = new Date().getTime();
-            this.data.begin_time = "";
-            this.data.end_time = "";
-            this.data.used_time = "";
-            this.data.remain_time = "";
-            this.data.status = "INIT";
-            this.data.interval = null;
-            $(".remain-time").text("25:00");
+        times: 4,
+        message: {
+            init: "开始一个番茄钟",
+            success: "哇，你很棒哦，又完成了一项工作！",
+            stop: "要不再坚持一会?"
         }
-        return this;
     }
-
-    Task.prototype = {
+    var TimeUtil = {
+        loop: null,
+        tick: function(task, on) {
+            var self = this;
+            if (on && !this.loop) {
+                this.loop = setInterval(function() {
+                    self.refresh(task);
+                }, 100);
+            } else {
+                clearInterval(this.loop);
+                this.loop = null;
+            }
+        },
         format: function(num) {
             var time = {
                 min: "00",
@@ -167,74 +154,96 @@ views.focus_time__index_js = function() {/*<script>$(function() {
             }
             return time;
         },
+        refresh: function(task) {
+            var remain_time = 0,
+                work_time = tomato.work * 6000,
+                rest_time = tomato.rest * 6000;
+            if (task.status == "WORK_INIT") {
+                remain_time = work_time;
+            }
+            if (task.status == "WORK_START") {
+                var current_time = new Date().getTime();
+                remain_time = work_time - (current_time - task.work_start);
+                if (remain_time < 0) {
+                    task.status == "WORK_DONE"
+                    TimeUtil.tick(task, false);
+                }
+            }
+            if (task.status == "WORK_DONE") {
+                Message.alert(tomato.message.success);
+                task.status == "REST_INIT";
+                remain_time = rest_time;
+            }
+            if (task.status == "WORK_STOP") {
+                remain_time = work_time - (task.work_stop - task.work_start);
+                TimeUtil.tick(task, false);
+            }
+            if (task.status == "REST_INIT") {
+                remain_time = rest_time;
+            }
+            if (task.status == "REST_START") {
+                var current_time = new Date().getTime();
+                remain_time = rest_time - (current_time - task.rest_start);
+                if (remain_time < 0) {
+                    task.status == "REST_DONE"
+                }
+            }
+            if (task.status == "REST_DONE") {
+                task.status == "WORK_INIT";
+                remain_time = work_time;
+            }
+            Store.setLocal("FOCUS_TIME_CURRENT", task);
+            var str = this.format(remain_time).str;
+            $(".remain-time").text(str);
+        }
+    }
+    var Task = function(task) {
+        var self = this;
+        this.data = {};
+        this.interval = null;
+        if (task) {
+            this.data = task;
+            if (task.status == "WORK_START" || task.status == "REST_START") {
+                TimeUtil.tick(task, true);
+            }
+        } else {
+            task = this.data;
+            task.name = "";
+            task.work_init = new Date().getTime();
+            task.work_start = "";
+            task.work_done = "";
+            task.work_stop = "";
+            task.rest_init = "";
+            task.rest_start = "";
+            task.rest_done = "";
+            task.rest_stop = "";
+            task.status = "WORK_INIT";
+        }
+        TimeUtil.refresh(task);
+        return this;
+    }
+
+    Task.prototype = {
         start: function() {
             var self = this;
-            var props = self.data;
-            props.begin_time = new Date().getTime();
-            props.status = "BEGIN";
-            props.interval = setInterval(function() {
-                self.refresh();
-            }, 1000);
-            Store.setLocal("FOCUS_TIME_CURRENT", this.data);
+            var task = self.data;
+            task.work_start = new Date().getTime();
+            task.status = "WORK_START";
+            TimeUtil.tick(task, true);
         },
         rest: function() {
             var self = this;
-            var props = self.data;
-            props.begin_time = new Date().getTime();
-            props.status = "REST";
-            if (!props.interval) {
-                props.interval = setInterval(function() {
-                    self.refresh();
-                }, 1000);
-            }
-            Store.setLocal("FOCUS_TIME_CURRENT", this.data);
+            var task = self.data;
+            task.work_start = new Date().getTime();
+            task.status = "REST_START";
+            TimeUtil.tick(task, true);
         },
         stop: function() {
             var self = this;
-            var props = self.data;
-            props.end_time = new Date().getTime();
-            props.used_time = props.end_time - props.begin_time;
-            if (self.format(props.used_time).min >= tomato.work) {
-                props.status = "FINISH";
-            } else {
-                props.status = "STOP";
-                clearInterval(props.interval);
-            }
-            Store.setLocal("FOCUS_TIME_CURRENT", this.data);
-        },
-        refresh: function() {
-            var self = this;
-            var props = self.data;
-            if (props.status == "BEGIN") {
-                var current_time = new Date().getTime();
-                props.used_time = current_time - props.begin_time;
-                var remain_time = tomato.work * 60000 - props.used_time;
-                if (self.format(self.used_time).min >= tomato.work) {
-                    props.status = "FINISH";
-                    $(".remain-time").text("25:00");
-                    clearInterval(props.interval);
-                    Store.setLocal("FOCUS_TIME_CURRENT", "");
-                    Message.alert("哇，你很棒哦，又完成了一项工作！");
-                } else {
-                    var str = self.format(remain_time).str;
-                    $(".remain-time").text(str);
-                }
-            }
-            if (props.status == "REST") {
-                var current_time = new Date().getTime();
-                props.used_time = current_time - props.begin_time;
-                var remain_time = tomato.rest * 60000 - props.used_time;
-                if (self.format(props.used_time).min >= tomato.rest) {
-                    props.status = "INIT";
-                    $(".remain-time").text("25:00");
-                    clearInterval(props.interval);
-                    Message.alert("休息完成，继续开始工作吧！");
-                } else {
-                    var str = self.format(remain_time).str;
-                    $(".remain-time").text(str);
-                }
-            }
-
+            var task = self.data;
+            task.work_stop = new Date().getTime();
+            task.status = "WORK_START";
+            TimeUtil.tick(task, false);
         }
     }
 
@@ -253,7 +262,6 @@ views.focus_time__index_js = function() {/*<script>$(function() {
     var Service = {
         task: null,
         init: function() {
-            console.log("focus-time");
             TaskList.init();
             this.task = TaskList.current;
             this.bind();

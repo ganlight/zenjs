@@ -43,49 +43,6 @@
 <script v-script="views/blog/config.js"></script>
 <script type="text/javascript">
     $(function() {
-        var Catalog = {
-            articles: [],
-            types: null,
-            sections: null,
-            map: {},
-            init: function() {
-                if (articles) {
-                    this.articles = articles;
-                    this.rend();
-                }
-            },
-            rend: function() {
-                var self = this;
-                if (this.articles && this.articles.length > 0) {
-                    var len = this.articles.length;
-                    var data = this.articles;
-                    var parent = $(".catalog-area");
-                    for (var i = 0; i < data.length; i++) {
-                        var item = data[i];
-                        var clone = $(".page-template .list-item").clone();
-                        Store.data(clone, item);
-                        self.map[item.type + "/" + item.file] = item;
-                        Util.rendValue(clone, item);
-                        self.bind(clone);
-                        parent.append(clone);
-                    }
-                }
-            },
-            get: function(type, file) {
-                var item = this.map[type + "/" + file] || "";
-                return item;
-            },
-            bind: function(clone) {
-                var self = this;
-                clone.click(function() {
-                    var data = Store.data(clone);
-                    if (data && data.file) {
-                        window.location.href = "#blog/article" + "?type=" + data.type + "&file=" + data.file;
-                    }
-                })
-            }
-        }
-
         var Service = {
             init: function() {
                 Catalog.init();
