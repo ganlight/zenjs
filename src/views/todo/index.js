@@ -34,7 +34,7 @@ $(function() {
             } else {
                 clone.addClass("active");
             }
-            self.bind(clone);
+            TodoEvent(clone);
             parent.append(clone);
         },
         save: function() {
@@ -65,74 +65,53 @@ $(function() {
         remove: function(todo) {
             this.todos.splice(this.todos.indexOf(todo), 1);
             TodoData.save(this.todos);
-        },
-        update: function(todo) {
-            var index = this.todos.indexOf(todo);
-            this.todos[index] = todo;
-            TodoData.save(this.todos);
-        },
-        edit: function(todo) {
-            this.beforeEditCache = todo.title
-            this.editedTodo = todo
-        },
-        editDone: function(todo) {
-            if (!this.editedTodo) {
-                return
+        }
+    }
+
+    var TodoEvent = function(target) {
+        //这里负责元素的事件的绑定
+        target.find(".destroy").click(function() {
+            var data = Store.data(target);
+            if (data) {
+                target.remove();
+                Todo.save();
             }
-            this.editedTodo = null
-            todo.title = todo.title.trim()
-            if (!todo.title) {
-                this.removeTodo(todo)
+        });
+        target.find(".toggle").click(function() {
+            var data = Store.data(target);
+            if (data) {
+                if (data.completed) {
+                    data.completed = false;
+                } else {
+                    data.completed = true;
+                }
+                target.toggleClass("completed");
+                Store.data(target, data);
+                Todo.save();
             }
-        },
-        editCancel: function(todo) {
-            this.editedTodo = null
-            todo.title = this.beforeEditCache
-        },
-        todoRemove: function() {
-            this.todos = filters.active(this.todos)
-        },
-        bind: function(clone) {
-            //这里负责元素的事件的绑定
-            clone.find(".destroy").click(function() {
-                var data = Store.data(clone);
-                if (data) {
-                    clone.remove();
-                    Todo.save();
-                }
-            });
-            clone.find(".toggle").click(function() {
-                var data = Store.data(clone);
-                if (data) {
-                    if (data.completed) {
-                        data.completed = false;
-                    } else {
-                        data.completed = true;
-                    }
-                    clone.toggleClass("completed");
-                    Store.data(clone, data);
-                    Todo.save();
-                }
-            });
-            clone.dblclick(function() {
-                var data = Store.data(clone);
-                if (data) {
-                    clone.addClass("editing");
-                    clone.find(".edit").val(data.title);
-                    clone.find(".edit").focus();
-                }
-            });
-            clone.find(".edit").blur(function() {
-                var data = Store.data(clone);
-                if (data) {
-                    data.title = clone.find(".edit").val();
+        });
+        target.find(".title").dblclick(function() {
+            var data = Store.data(target);
+            if (data) {
+                target.addClass("editing");
+                target.find(".edit").val(data.title);
+                target.find(".edit").focus();
+            }
+        });
+        target.find(".edit").blur(function() {
+            var data = Store.data(clone);
+            if (data) {
+                data.title = clone.find(".edit").val();
+                if (data.title && data.title.trim()) {
                     clone.find(".title").text(data.title);
                     clone.removeClass("editing");
                     Store.data(clone, data);
-                    Todo.save();
+                } else {
+                    clone.remove();
                 }
-            });
-        }
+                Todo.save();
+            }
+        });
     }
 
     var Service = {
