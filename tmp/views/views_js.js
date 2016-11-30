@@ -1,3 +1,121 @@
+views.blog__config_js = function() {/*<script>var articles = [{
+    title: "Zenjs的安装使用",
+    public: "2016-11-25 14:00",
+    auther: "ganlight",
+    type: "zenjs",
+    section: "begin",
+    file: "install"
+},{
+    title: "关于 ZENJS",
+    public: "2016-11-25 14:00",
+    auther: "ganlight",
+    type: "zenjs",
+    section: "begin",
+    file: "about-zenjs"
+}, {
+    title: "如何用zenjs写一个博客系统",
+    public: "2016-11-25 14:00",
+    auther: "ganlight",
+    type: "zenjs",
+    section: "begin",
+    file: "如何用zenjs写一个博客系统"
+}];
+
+var Catalog = {
+    articles: [],
+    types: null,
+    sections: null,
+    map: {},
+    init: function() {
+        if (articles) {
+            this.articles = articles;
+            this.rend();
+        }
+    },
+    rend: function() {
+        var self = this;
+        if (this.articles && this.articles.length > 0) {
+            var len = this.articles.length;
+            var data = this.articles;
+            var parent = $(".catalog-area");
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                item.id = i;
+                var clone = $(".page-template .list-item").clone();
+                Store.data(clone, item);
+                self.map[item.type + "/" + item.file] = item;
+                Util.rendValue(clone, item);
+                self.bind(clone);
+                parent.append(clone);
+            }
+        }
+    },
+    get: function(type, file) {
+        var item = this.map[type + "/" + file] || "";
+        return item;
+    },
+    getIndex: function(type, file) {
+        var item = this.map[type + "/" + file] || "";
+        return item;
+    },
+    bind: function(clone) {
+        var self = this;
+        clone.click(function() {
+            var data = Store.data(clone);
+            if (data && data.id > -1) {
+                window.location.href = "#blog/article" + "?id=" + data.id;
+            }
+        })
+    }
+}
+
+var MarkDown = {
+    converter: null,
+    init: function() {
+        if (showdown && showdown.Converter) {
+            this.converter = new showdown.Converter();
+        } else {
+            $(".title").html("暂不支持markdown");
+        }
+    },
+    rend: function(article, data) {
+        if (this.converter && data) {
+            var html = this.converter.makeHtml(data);
+            $(".title").html(article.title);
+            $(".markdown-area").html(html).show();
+        }
+    },
+    load: function(article) {
+        var self = this;
+        var url = "views" + '["blog/markdown/' + article.type + "/" + article.file + '.md"]';
+        var data = Zen.parse(eval(url));
+        if (data) {
+            data = data.replace(/__block_head__/g, '/*')
+            self.rend(article, data);
+        }
+    },
+    load_file: function(article) {
+        var self = this;
+        var url = "blog/" + article.type + "/" + article.file + ".md";
+        $.ajax({
+            url: url,
+            type: 'get',
+            async: false,
+            dataType: 'html',
+            success: function(data) {
+                $(".catalog-area").hide();
+                $(".markdown-area").show();
+                self.rend(article, data);
+            },
+            error: function(e) {
+                $(".markdown-area").hide();
+                $(".catalog-area").show();
+                Message.toast("当前文章" + article.file + "不存在，请返回其他文章");
+            }
+        });
+    }
+}
+</script>*/}
 views.focus_time__index_js = function() {/*<script>$(function() {
     var tomato = {
         work: 25,
@@ -173,8 +291,8 @@ views.todo__index_js = function() {/*<script>$(function() {
     var TodoData = {
         key: "ZENJS_TODO",
         get: function() {
-            var todos = Store.getLocal(this.key);
-            todos.each(function(todo, index) {
+            var todos = Store.getLocal(this.key) || [];
+            $.each(todos, function(todo, index) {
                 todo.id = index
             })
             this.uid = todos.length;
@@ -186,18 +304,39 @@ views.todo__index_js = function() {/*<script>$(function() {
     }
 
     var Todo = {
-        todos: null,
+        todos: [],
         init: function() {
             this.todos = TodoData.get();
+            this.rend();
+        },
+        rend: function() {
+            var self = this;
+            var len = this.todos.length;
+            var data = this.todos;
+            var parent = $(".todo-list");
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                item.id = i;
+                var clone = $(".page-template .todo-item").clone();
+                Store.data(clone, item);
+                Template.values(clone, item);
+                if (item.completed) {
+                    clone.addClass("completed");
+                } else {
+                    clone.addClass("active");
+                }
+                self.bind(clone);
+                parent.append(clone);
+            }
         },
         add: function() {
             var newTodo = $(".new-todo").val();
             var value = newTodo && newTodo.trim()
             if (!value) {
-                return
+                return;
             }
             this.todos.push({
-                id: todoStorage.uid++,
+                id: TodoData.uid++,
                 title: value,
                 completed: false
             });
@@ -208,11 +347,11 @@ views.todo__index_js = function() {/*<script>$(function() {
             this.todos.splice(this.todos.indexOf(todo), 1);
             TodoData.save(this.todos);
         },
-        editTodo: function(todo) {
+        edit: function(todo) {
             this.beforeEditCache = todo.title
             this.editedTodo = todo
         },
-        doneEdit: function(todo) {
+        editDone: function(todo) {
             if (!this.editedTodo) {
                 return
             }
@@ -222,255 +361,36 @@ views.todo__index_js = function() {/*<script>$(function() {
                 this.removeTodo(todo)
             }
         },
-        cancelEdit: function(todo) {
+        editCancel: function(todo) {
             this.editedTodo = null
             todo.title = this.beforeEditCache
         },
-        removeCompleted: function() {
+        todoRemove: function() {
             this.todos = filters.active(this.todos)
         },
-        bind: function() {
-
+        bind: function(clone) {
+            //这里负责元素的事件的绑定
         }
     }
 
     var Service = {
         init: function() {
-
+            Todo.init();
+            this.bind();
+        },
+        bind: function() {
+            //这里负责全局的绑定
+            $(".new-todo").keyup(function() {
+                if (event.keyCode == 13) {
+                    //监听回车事件
+                    Todo.add();
+                }
+            });
         }
     }
 
-
-    // visibility filters
-    var filters = {
-            all: function(todos) {
-                return todos
-            },
-            active: function(todos) {
-                return todos.filter(function(todo) {
-                    return !todo.completed
-                })
-            },
-            completed: function(todos) {
-                return todos.filter(function(todo) {
-                    return todo.completed
-                })
-            }
-        }
-        // app Vue instance
-    var app = new Vue({
-            // app initial state
-            data: {
-                todos: todoStorage.fetch(),
-                newTodo: '',
-                editedTodo: null,
-                visibility: 'all'
-            },
-
-            // watch todos change for localStorage persistence
-            watch: {
-                todos: {
-                    handler: function(todos) {
-                        todoStorage.save(todos)
-                    },
-                    deep: true
-                }
-            },
-
-            // computed properties
-            // http://vuejs.org/guide/computed.html
-            computed: {
-                filteredTodos: function() {
-                    return filters[this.visibility](this.todos)
-                },
-                remaining: function() {
-                    return filters.active(this.todos).length
-                },
-                allDone: {
-                    get: function() {
-                        return this.remaining === 0
-                    },
-                    set: function(value) {
-                        this.todos.forEach(function(todo) {
-                            todo.completed = value
-                        })
-                    }
-                }
-            },
-
-            filters: {
-                pluralize: function(n) {
-                    return n === 1 ? 'item' : 'items'
-                }
-            },
-
-            // methods that implement data logic.
-            // note there's no DOM manipulation here at all.
-            methods: {
-                addTodo: function() {
-                    var value = this.newTodo && this.newTodo.trim()
-                    if (!value) {
-                        return
-                    }
-                    this.todos.push({
-                        id: todoStorage.uid++,
-                        title: value,
-                        completed: false
-                    })
-                    this.newTodo = ''
-                },
-
-                removeTodo: function(todo) {
-                    this.todos.splice(this.todos.indexOf(todo), 1)
-                },
-
-                editTodo: function(todo) {
-                    this.beforeEditCache = todo.title
-                    this.editedTodo = todo
-                },
-
-                doneEdit: function(todo) {
-                    if (!this.editedTodo) {
-                        return
-                    }
-                    this.editedTodo = null
-                    todo.title = todo.title.trim()
-                    if (!todo.title) {
-                        this.removeTodo(todo)
-                    }
-                },
-
-                cancelEdit: function(todo) {
-                    this.editedTodo = null
-                    todo.title = this.beforeEditCache
-                },
-
-                removeCompleted: function() {
-                    this.todos = filters.active(this.todos)
-                }
-            }
-
-        })
-        // Zen.ready(Service);
+    Zen.ready(Service);
 })
-</script>*/}
-views.blog__config_js = function() {/*<script>var articles = [{
-    title: "Zenjs的安装使用",
-    public: "2016-11-25 14:00",
-    auther: "ganlight",
-    type: "zenjs",
-    section: "begin",
-    file: "install"
-},{
-    title: "关于 ZENJS",
-    public: "2016-11-25 14:00",
-    auther: "ganlight",
-    type: "zenjs",
-    section: "begin",
-    file: "about-zenjs"
-}, {
-    title: "如何用zenjs写一个博客系统",
-    public: "2016-11-25 14:00",
-    auther: "ganlight",
-    type: "zenjs",
-    section: "begin",
-    file: "如何用zenjs写一个博客系统"
-}];
-
-var Catalog = {
-    articles: [],
-    types: null,
-    sections: null,
-    map: {},
-    init: function() {
-        if (articles) {
-            this.articles = articles;
-            this.rend();
-        }
-    },
-    rend: function() {
-        var self = this;
-        if (this.articles && this.articles.length > 0) {
-            var len = this.articles.length;
-            var data = this.articles;
-            var parent = $(".catalog-area");
-            for (var i = 0; i < data.length; i++) {
-                var item = data[i];
-                item.id = i;
-                var clone = $(".page-template .list-item").clone();
-                Store.data(clone, item);
-                self.map[item.type + "/" + item.file] = item;
-                Util.rendValue(clone, item);
-                self.bind(clone);
-                parent.append(clone);
-            }
-        }
-    },
-    get: function(type, file) {
-        var item = this.map[type + "/" + file] || "";
-        return item;
-    },
-    getIndex: function(type, file) {
-        var item = this.map[type + "/" + file] || "";
-        return item;
-    },
-    bind: function(clone) {
-        var self = this;
-        clone.click(function() {
-            var data = Store.data(clone);
-            if (data && data.id > -1) {
-                window.location.href = "#blog/article" + "?id=" + data.id;
-            }
-        })
-    }
-}
-
-var MarkDown = {
-    converter: null,
-    init: function() {
-        if (showdown && showdown.Converter) {
-            this.converter = new showdown.Converter();
-        } else {
-            $(".title").html("暂不支持markdown");
-        }
-    },
-    rend: function(article, data) {
-        if (this.converter && data) {
-            var html = this.converter.makeHtml(data);
-            $(".title").html(article.title);
-            $(".markdown-area").html(html).show();
-        }
-    },
-    load: function(article) {
-        var self = this;
-        var url = "views" + '["blog/markdown/' + article.type + "/" + article.file + '.md"]';
-        var data = Zen.parse(eval(url));
-        if (data) {
-            data = data.replace(/__block_head__/g, '/*')
-            self.rend(article, data);
-        }
-    },
-    load_file: function(article) {
-        var self = this;
-        var url = "blog/" + article.type + "/" + article.file + ".md";
-        $.ajax({
-            url: url,
-            type: 'get',
-            async: false,
-            dataType: 'html',
-            success: function(data) {
-                $(".catalog-area").hide();
-                $(".markdown-area").show();
-                self.rend(article, data);
-            },
-            error: function(e) {
-                $(".markdown-area").hide();
-                $(".catalog-area").show();
-                Message.toast("当前文章" + article.file + "不存在，请返回其他文章");
-            }
-        });
-    }
-}
 </script>*/}
 views.example__multi_select__index_js = function() {/*<script>$(function() {
     var config_type = {
