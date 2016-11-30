@@ -99,15 +99,15 @@ $(function() {
             }
         });
         target.find(".edit").blur(function() {
-            var data = Store.data(clone);
+            var data = Store.data(target);
             if (data) {
-                data.title = clone.find(".edit").val();
+                data.title = target.find(".edit").val();
                 if (data.title && data.title.trim()) {
-                    clone.find(".title").text(data.title);
-                    clone.removeClass("editing");
-                    Store.data(clone, data);
+                    target.find(".title").text(data.title);
+                    target.removeClass("editing");
+                    Store.data(target, data);
                 } else {
-                    clone.remove();
+                    target.remove();
                 }
                 Todo.save();
             }
