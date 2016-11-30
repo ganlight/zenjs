@@ -18,27 +18,23 @@ $(function() {
         todos: [],
         init: function() {
             this.todos = TodoData.get();
-            this.rend();
-        },
-        rend: function() {
-            var self = this;
-            var len = this.todos.length;
-            var data = this.todos;
-            var parent = $(".todo-list");
-            for (var i = 0; i < data.length; i++) {
-                var item = data[i];
-                item.id = i;
-                var clone = $(".page-template .todo-item").clone();
-                Store.data(clone, item);
-                Template.values(clone, item);
-                if (item.completed) {
-                    clone.addClass("completed");
-                } else {
-                    clone.addClass("active");
-                }
-                self.bind(clone);
-                parent.append(clone);
+            for (i in this.todos) {
+                this.rend(this.todos[i]);
             }
+        },
+        rend: function(item) {
+            var self = this;
+            var parent = $(".todo-list");
+            var clone = $(".page-template .todo-item").clone();
+            Store.data(clone, item);
+            Template.values(clone, item);
+            if (item.completed) {
+                clone.addClass("completed");
+            } else {
+                clone.addClass("active");
+            }
+            self.bind(clone);
+            parent.append(clone);
         },
         add: function() {
             var newTodo = $(".new-todo").val();
@@ -46,11 +42,13 @@ $(function() {
             if (!value) {
                 return;
             }
-            this.todos.push({
+            var _new = {
                 id: TodoData.uid++,
                 title: value,
                 completed: false
-            });
+            };
+            this.todos.push(_new);
+            this.rend(_new);
             $(".new-todo").val("");
             TodoData.save(this.todos);
         },
@@ -81,6 +79,13 @@ $(function() {
         },
         bind: function(clone) {
             //这里负责元素的事件的绑定
+            clone.find(".destroy").click(function() {
+                var data = Store.data(clone);
+                if (data) {
+                    Todo.remove(data);
+                    clone.remove();
+                }
+            });
         }
     }
 
