@@ -6,6 +6,7 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
+
     .new-todo {
         outline: medium;
     }
@@ -19,6 +20,17 @@
         <ul class="todo-list">
 
         </ul>
+        <footer class="footer" v-show="todos.length" v-cloak>
+            <span class="todo-count"><strong class="remaining"></strong> <span class="remaining"></span> left</span>
+            <ul class="filters">
+                <li><a href="javascript:void(0);" >All</a></li>
+                <li><a href="javascript:void(0);" >Active</a></li>
+                <li><a href="javascript:void(0);" >Completed</a></li>
+            </ul>
+            <button class="clear-completed" @click="removeCompleted" v-show="todos.length > remaining">
+      Clear completed
+    </button>
+        </footer>
     </div>
     <footer class="info">
         <p>Double-click to edit a todo</p>
