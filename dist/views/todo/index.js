@@ -31,9 +31,10 @@ $(function() {
             Template.values(clone, item);
             if (item.completed) {
                 clone.addClass("completed");
-                clone.find(".toggle").attr("checked", true);
+                clone.find(".toggle").prop("checked", true);
             } else {
                 clone.addClass("active");
+                clone.find(".toggle").prop("checked", false);
             }
             TodoEvent(clone);
             parent.append(clone);
@@ -130,7 +131,7 @@ $(function() {
         },
         bind: function() {
             //这里负责全局的绑定
-            $(".new-todo").keyup(function() {
+            $(".new-todo").keyup(function(event) {
                 //监听回车事件,添加一条todo
                 if (event.keyCode == 13) {
                     Todo.add();
@@ -151,6 +152,27 @@ $(function() {
             });
             $(".clear-completed").click(function() {
                 $(".todo-list .todo-item.completed").remove();
+                Todo.save();
+            });
+            $(".toggle-all").click(function() {
+                var status = $(".toggle-all").attr("checked");
+                $(".todo-list .todo-item").each(function() {
+                    var target = $(this);
+                    var data = Store.data(target);
+                    if (data) {
+                        if (!status) {
+                            data.completed = false;
+                            target.removeClass("completed");
+                            target.addClass("active");
+                        } else {
+                            data.completed = true;
+                            target.addClass("completed");
+                            target.removeClass("active");
+                        }
+                        target.find(".toggle").prop("checked", data.completed);
+                        Store.data(target, data);
+                    }
+                });
                 Todo.save();
             })
         }
