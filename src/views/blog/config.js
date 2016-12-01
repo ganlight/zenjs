@@ -5,7 +5,7 @@ var articles = [{
     type: "zenjs",
     section: "begin",
     file: "install"
-},{
+}, {
     title: "关于 ZENJS",
     public: "2016-11-25 14:00",
     auther: "ganlight",
