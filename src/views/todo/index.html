@@ -10,6 +10,10 @@
     .new-todo {
         outline: medium;
     }
+    .filters a {
+        outline: none;
+        blr: expression(this.onFocus=this.blur());
+    }
 </style>
 <div class="zen-page ">
     <div class="todoapp">
@@ -21,15 +25,13 @@
 
         </ul>
         <footer class="footer" v-show="todos.length" v-cloak>
-            <span class="todo-count"><strong class="remaining"></strong> <span class="remaining"></span> left</span>
+            <span class="todo-count"><strong class="remaining"></strong> items left</span>
             <ul class="filters">
-                <li><a href="javascript:void(0);" class="selected">All</a></li>
-                <li><a href="javascript:void(0);">Active</a></li>
-                <li><a href="javascript:void(0);">Completed</a></li>
+                <li><a href="javascript:void(0);" class="selected" filter="">All</a></li>
+                <li><a href="javascript:void(0);" filter="active">Active</a></li>
+                <li><a href="javascript:void(0);" filter="completed">Completed</a></li>
             </ul>
-            <button class="clear-completed" @click="removeCompleted" v-show="todos.length > remaining">
-      Clear completed
-    </button>
+            <button class="clear-completed">Clear completed</button>
         </footer>
     </div>
     <footer class="info">

@@ -1,8 +1,10 @@
-/*----------------------------------------------*/
-/* 0. common-block Styles
-----------------------------------------------*/
 body {
     overflow-x: hidden;
+}
+
+.zen-page a {
+    outline: none;
+    blr: expression(this.onFocus=this.blur());
 }
 
 .main-container {

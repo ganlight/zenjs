@@ -21,6 +21,7 @@ $(function() {
             for (i in this.todos) {
                 this.rend(this.todos[i]);
             }
+            this.watch();
         },
         rend: function(item) {
             var self = this;
@@ -46,6 +47,7 @@ $(function() {
                 }
             })
             TodoData.save(this.todos);
+            this.watch();
         },
         add: function() {
             var newTodo = $(".new-todo").val();
@@ -62,9 +64,15 @@ $(function() {
             $(".new-todo").val("");
             this.save();
         },
-        remove: function(todo) {
-            this.todos.splice(this.todos.indexOf(todo), 1);
-            TodoData.save(this.todos);
+        watch: function() {
+            var active_num = $(".todo-list .todo-item.active").length;
+            var completed_num = $(".todo-list .todo-item.completed").length;
+            $(".remaining").text(active_num);
+            if (completed_num > 0) {
+                $(".clear-completed").show();
+            } else {
+                $(".clear-completed").hide();
+            }
         }
     }
 
@@ -86,6 +94,7 @@ $(function() {
                     data.completed = true;
                 }
                 target.toggleClass("completed");
+                target.toggleClass("active");
                 Store.data(target, data);
                 Todo.save();
             }
@@ -122,13 +131,29 @@ $(function() {
         bind: function() {
             //这里负责全局的绑定
             $(".new-todo").keyup(function() {
+                //监听回车事件,添加一条todo
                 if (event.keyCode == 13) {
-                    //监听回车事件
                     Todo.add();
                 }
             });
+            $(".filters a").click(function() {
+                //对todo进行筛选
+                var $this = $(this);
+                $(".filters a").removeClass("selected");
+                $this.addClass("selected");
+                var type = $this.attr("filter");
+                if (type) {
+                    $(".todo-list .todo-item").hide();
+                    $(".todo-list .todo-item." + type).show();
+                } else {
+                    $(".todo-list .todo-item").show();
+                }
+            });
+            $(".clear-completed").click(function() {
+                $(".todo-list .todo-item.completed").remove();
+                Todo.save();
+            })
         }
     }
-
     Zen.ready(Service);
 })

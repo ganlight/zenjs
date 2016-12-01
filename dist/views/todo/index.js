@@ -18,27 +18,36 @@ $(function() {
         todos: [],
         init: function() {
             this.todos = TodoData.get();
-            this.rend();
-        },
-        rend: function() {
-            var self = this;
-            var len = this.todos.length;
-            var data = this.todos;
-            var parent = $(".todo-list");
-            for (var i = 0; i < data.length; i++) {
-                var item = data[i];
-                item.id = i;
-                var clone = $(".page-template .todo-item").clone();
-                Store.data(clone, item);
-                Template.values(clone, item);
-                if (item.completed) {
-                    clone.addClass("completed");
-                } else {
-                    clone.addClass("active");
-                }
-                self.bind(clone);
-                parent.append(clone);
+            for (i in this.todos) {
+                this.rend(this.todos[i]);
             }
+            this.watch();
+        },
+        rend: function(item) {
+            var self = this;
+            var parent = $(".todo-list");
+            var clone = $(".page-template .todo-item").clone();
+            Store.data(clone, item);
+            Template.values(clone, item);
+            if (item.completed) {
+                clone.addClass("completed");
+                clone.find(".toggle").attr("checked", true);
+            } else {
+                clone.addClass("active");
+            }
+            TodoEvent(clone);
+            parent.append(clone);
+        },
+        save: function() {
+            var todos = this.todos = [];
+            $(".todo-list .todo-item").each(function() {
+                var data = Store.data($(this));
+                if (data) {
+                    todos.push(data);
+                }
+            })
+            TodoData.save(this.todos);
+            this.watch();
         },
         add: function() {
             var newTodo = $(".new-todo").val();
@@ -46,42 +55,72 @@ $(function() {
             if (!value) {
                 return;
             }
-            this.todos.push({
+            var _new = {
                 id: TodoData.uid++,
                 title: value,
                 completed: false
-            });
+            };
+            this.rend(_new);
             $(".new-todo").val("");
-            TodoData.save(this.todos);
+            this.save();
         },
-        remove: function(todo) {
-            this.todos.splice(this.todos.indexOf(todo), 1);
-            TodoData.save(this.todos);
-        },
-        edit: function(todo) {
-            this.beforeEditCache = todo.title
-            this.editedTodo = todo
-        },
-        editDone: function(todo) {
-            if (!this.editedTodo) {
-                return
+        watch: function() {
+            var active_num = $(".todo-list .todo-item.active").length;
+            var completed_num = $(".todo-list .todo-item.completed").length;
+            $(".remaining").text(active_num);
+            if (completed_num > 0) {
+                $(".clear-completed").show();
+            } else {
+                $(".clear-completed").hide();
             }
-            this.editedTodo = null
-            todo.title = todo.title.trim()
-            if (!todo.title) {
-                this.removeTodo(todo)
-            }
-        },
-        editCancel: function(todo) {
-            this.editedTodo = null
-            todo.title = this.beforeEditCache
-        },
-        todoRemove: function() {
-            this.todos = filters.active(this.todos)
-        },
-        bind: function(clone) {
-            //这里负责元素的事件的绑定
         }
+    }
+
+    var TodoEvent = function(target) {
+        //这里负责元素的事件的绑定
+        target.find(".destroy").click(function() {
+            var data = Store.data(target);
+            if (data) {
+                target.remove();
+                Todo.save();
+            }
+        });
+        target.find(".toggle").click(function() {
+            var data = Store.data(target);
+            if (data) {
+                if (data.completed) {
+                    data.completed = false;
+                } else {
+                    data.completed = true;
+                }
+                target.toggleClass("completed");
+                target.toggleClass("active");
+                Store.data(target, data);
+                Todo.save();
+            }
+        });
+        target.find(".title").dblclick(function() {
+            var data = Store.data(target);
+            if (data) {
+                target.addClass("editing");
+                target.find(".edit").val(data.title);
+                target.find(".edit").focus();
+            }
+        });
+        target.find(".edit").blur(function() {
+            var data = Store.data(target);
+            if (data) {
+                data.title = target.find(".edit").val();
+                if (data.title && data.title.trim()) {
+                    target.find(".title").text(data.title);
+                    target.removeClass("editing");
+                    Store.data(target, data);
+                } else {
+                    target.remove();
+                }
+                Todo.save();
+            }
+        });
     }
 
     var Service = {
@@ -92,13 +131,29 @@ $(function() {
         bind: function() {
             //这里负责全局的绑定
             $(".new-todo").keyup(function() {
+                //监听回车事件,添加一条todo
                 if (event.keyCode == 13) {
-                    //监听回车事件
                     Todo.add();
                 }
             });
+            $(".filters a").click(function() {
+                //对todo进行筛选
+                var $this = $(this);
+                $(".filters a").removeClass("selected");
+                $this.addClass("selected");
+                var type = $this.attr("filter");
+                if (type) {
+                    $(".todo-list .todo-item").hide();
+                    $(".todo-list .todo-item." + type).show();
+                } else {
+                    $(".todo-list .todo-item").show();
+                }
+            });
+            $(".clear-completed").click(function() {
+                $(".todo-list .todo-item.completed").remove();
+                Todo.save();
+            })
         }
     }
-
     Zen.ready(Service);
 })

@@ -25,134 +25,16 @@ views.index_html = function() {/*<style>.zen-page{min-height:100%}.c-navmenu-ban
 views.about__index_html = function() {/*<style>.zen-page p{margin:1.5rem;font-size:1.6rem;line-height:3rem}</style><div class="zen-page"><h2 class="font24 white text-center normal">ABOUT ZENJS</h2><div class="c-card"><h3>zenjs信息</h3><p>- github地址：https://github.com/ganlight/zenjs.git<br>- 演示地址：https://ganlight.github.io/zenjs<br>- 作者邮箱：ganlight@foxmail.com</p></div><div class="c-card"><h3>特点</h3><p>- 使用简单，只需引入一个js文件，就可以实现页面的模块化，方便便捷<br>- 本框架采用接近与js的方式去些，尽量去除其他的框架所带来的负担，为的的是能让这个工具小巧而灵活。<br>- 大道若简，coding就是这么纯粹就好，像禅Zen一样，无为而有为。<br></p></div><div class="c-card"><h3>库说明</h3><p>- zenjs.min.js 核心代码 (需与zepto或jQuery一起使用)<br>- zenjs-zepto.min.js 是将zepto的包与zenjs核心库打包在一起，页面只需引入这个即可<br>- zenjs-jquery.min.js 是将jquery的包与zenjs核心库打包在一起，页面只需引入这个即可</p></div><div class="c-card"><h3>开发说明</h3><p>###zen目录<br>- zen目录下所有定义模块的目录，每个目录下的模块名为文件夹<br>里面统一为index.css,index.html,index.js<br>###views目录<br>- modules文件夹这里面的每一个控件可以单独打开，可以使用。<br>- 模块划定，module的template部分，css部分，js部分和页面的html，css，js相分离，更加方便构建大型应用<br>###js目录<br>###css目录<br></p></div><div class="c-card"><h3>如何去构建</h3><p>- 通过运行 gulp -sw 就可以生成dist目录，会自动启动一个web服务器</p></div><div class="c-card"><h3>如何排除bug</h3><p>- 在console中输入Zen.current就能看到该页面相关的对象信息了</p></div><div class="c-card"><h3>其他</h3><p>- 虽然js的框架写法有很多做，但个人建议你按照当前简单的方式来，大道若简是我所崇尚的。<br>- 感谢vuejs，weui，zepto，gulp这些优秀的库。</p></div><div class="lh15">&nbsp;</div></div>*/}
 views.example__index_html = function() {/*<style>.index-page .list-item .name{padding-bottom:5px}</style><div class="zen-page index-page"><h2 class="font24 white text-center normal">Zenjs Modules</h2><ul class="page-list" id="page-list"></ul><div class="lh15">&nbsp;</div><div class="page-template hide"><li class="list-item inline c-card clearfix"><div class="font20 name"></div><div class="font16 gray href action"></div></li></div></div><script>$(function(){var pages=[{name:"toggle-group",href:"#example/toggle-group"},{name:"multi-select",href:"#example/multi-select"},{name:"single-page toggle-group",href:"#example/single-page/toggle-group"},{name:"single-page multi-select",href:"#example/single-page/multi-select"},{name:"alert",action:"Message.alert('Zenjs')"},{name:"toast",action:"Message.toast(' A light framwork')"},{name:"confirm",action:"Message.confirm('Coding Zen!')"}],Service={init:function(){this.data=pages,this.rend()},rend:function(){for(var e=this,a=pages,t=$(".page-list"),n=0;n<a.length;n++){var i=a[n],l=$(".page-template .list-item").clone();Store.data(l,i),Util.rendValue(l,i),e.bind(l),t.append(l)}},bind:function(clone){clone.click(function(){var data=Store.data(clone);data.href&&(window.location.href=data.href),data.action&&eval(data.action)})}};Zen.ready(Service)})</script>*/}
 views.focus_time__index_html = function() {/*<style>.zen-page{position:relative;max-width:none;margin:0 auto}.work-area{height:83.33%;position:absolute;width:100%;text-align:center;background:#0ff}.rest-area{height:16.67%;position:absolute;top:83.33%;background:#008b8b;width:100%}.remain-time{font-size:8rem;color:#FFF}</style><div class="zen-page"><div class="work-area v-center"><div class="remain-time"></div></div><div class="rest-area v-center"><div class="task-opt text-center"><span class="start-btn c-btn">开始</span> <span class="stop-btn c-btn">停止</span> <span class="rest-btn c-btn">休息</span></div></div></div><script>console.log("focus time")</script>*/}
-views.todo__index_html = function() {/*<style>#app{background:#f5f5f5;color:#4d4d4d;max-width:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.new-todo{outline:medium}</style><div class="zen-page"><div class="todoapp"><div class="header"><h1>todos</h1><input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?"></div><ul class="todo-list"></ul><footer class="footer" v-show="todos.length" v-cloak><span class="todo-count"><strong class="remaining"></strong> <span class="remaining"></span> left</span><ul class="filters"><li><a href="javascript:void(0);" class="selected">All</a></li><li><a href="javascript:void(0);">Active</a></li><li><a href="javascript:void(0);">Completed</a></li></ul><button class="clear-completed" @click="removeCompleted" v-show="todos.length > remaining">Clear completed</button></footer></div><footer class="info"><p>Double-click to edit a todo</p><p>Zenjs-Todo Written by <a href="http://ganlight.com">ganlight</a></p><p>Part of <a href="http://evanyou.me">Evan You</a> and <a href="http://todomvc.com">TodoMVC</a></p></footer><div class="page-template hide"><li class="todo-item"><div class="view"><input class="toggle" type="checkbox"><label class="todo-name title"></label><button class="destroy"></button></div><input class="edit" type="text"></li></div></div>*/}
+views.todo__index_html = function() {/*<style>#app{background:#f5f5f5;color:#4d4d4d;max-width:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.new-todo{outline:medium}.filters a{outline:0;blr:expression(this.onFocus=this.blur())}</style><div class="zen-page"><div class="todoapp"><div class="header"><h1>todos</h1><input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?"></div><ul class="todo-list"></ul><footer class="footer" v-show="todos.length" v-cloak><span class="todo-count"><strong class="remaining"></strong> items left</span><ul class="filters"><li><a href="javascript:void(0);" class="selected" filter="">All</a></li><li><a href="javascript:void(0);" filter="active">Active</a></li><li><a href="javascript:void(0);" filter="completed">Completed</a></li></ul><button class="clear-completed">Clear completed</button></footer></div><footer class="info"><p>Double-click to edit a todo</p><p>Zenjs-Todo Written by <a href="http://ganlight.com">ganlight</a></p><p>Part of <a href="http://evanyou.me">Evan You</a> and <a href="http://todomvc.com">TodoMVC</a></p></footer><div class="page-template hide"><li class="todo-item"><div class="view"><input class="toggle" type="checkbox"><label class="todo-name title"></label><button class="destroy"></button></div><input class="edit" type="text"></li></div></div>*/}
 views.front__green_html = function() {/*<style>.bg-green{color:green;font-size:20px;width:80%;height:100px}</style><div class="zen-page"><h2 class="font24 white text-center normal">ZEN PAGE</h2><div class="c-card bg-green v-center">green</div></div><script>console.log("green page")</script>*/}
 views.front__page_html = function() {/*<style>.example-field{font-size:20px;position:absolute;width:100%;height:100%}</style><div class="zen-page example-field" v-script="views/example/js/toggle-group.js"><ul><li><div id="m-type" v-zen="toggle-group"></div></li><br><li><div id="m-status" v-zen="toggle-group"></div></li></ul></div>*/}
 views.front__red_html = function() {/*<style>.bg-red{background:red;font-size:20px;position:absolute;width:100%;height:100%}</style><div class="zen-page bg-red v-center">red</div>*/}
-views.blog__catalog__index_html = function() {/*<style>.banner-area{line-height:5rem}.banner-area .back-btn{background:currentColor}.banner-area .catalog-type{background:#5f9ea0}.catalog-area{padding-top:5rem}.catalog-area .list-item{display:block;margin:1rem;background:#f8f8ff;padding:1rem}.catalog-area .list-item .title{padding-bottom:5px}</style><div class="zen-page"><div class="banner-area inline clearfix fix-top"><div class="back-btn span4" v-link="#index"><i class="fa fa-paper-plane fa-fw white"></i><span class="white ml10 font16">ZENJS</span></div><div class="catalog-type span8 white font16">目录</div></div><ul class="catalog-area"></ul><div class="page-template hide"><div class="list-item"><div class="font20 title"></div><div class="font16 gray"><span class="type"></span>/<span class="file"></span></div></div></div></div><script v-script="views/blog/config.js"></script><script>$(function(){var n={init:function(){Catalog.init()}};Zen.ready(n)})</script>*/}
-views.blog__article__index_html = function() {/*<style>.banner-area{line-height:5rem}.banner-area .next-btn,.banner-area .pre-btn{background:currentColor}.banner-area .catalog-type{background:#5f9ea0}.markdown-area{position:relative;background:#fff;margin:1.5rem 1.5rem 0;border-radius:.3rem;padding:1.5rem;margin-bottom:6rem;display:none}</style><div class="zen-page"><div class="banner-area inline clearfix fix-bottom"><div class="pre-btn span3"><i class="fa fa-arrow-left fa-fw white"></i><span class="white ml10 font16">上一篇</span></div><div class="catalog-type span6 white font16" v-link="#blog/catalog">目录</div><div class="next-btn span3"><span class="white mr10 font16">下一篇</span><i class="fa fa-arrow-right fa-fw white"></i></div></div><h2 class="font24 white text-center normal title"></h2><div class="markdown-area"></div><div class="catalog-area"></div><div class="page-template hide"><div class="list-item inline c-card clearfix"><div class="font20 title"></div><div class="font16 gray"><span class="type"></span>/<span class="file"></span></div></div></div></div><script v-script="views/blog/config.js"></script><script>$(function(){var i={id:0,init:function(){MarkDown.init();var i=this.id=parseInt(Util.getPar("id"))||0;articles&&articles[i]?MarkDown.load(articles[i]):window.location.href="#blog/article?id=0",this.bind()},bind:function(){$(".zen-page .pre-btn").click(function(){if(i.id>0){var t=i.id-1;articles&&articles[t]&&(window.location.href="#blog/article?id="+t)}else Message.toast("没有上一篇了.")}),$(".zen-page .next-btn").click(function(){if(i.id<articles.length-1){var t=i.id+1;articles&&articles[t]&&(window.location.href="#blog/article?id="+t)}else Message.toast("没有下一篇了.")})}};Zen.ready(i)})</script>*/}
 views.example__multi_select__index_html = function() {/*<div class="zen-page"><h2 class="font24 white text-center normal">Multi Select</h2><ul><li class="c-card"><span class="label-txt lh40">多选择1：</span><div id="m-type" v-zen="multi-select"></div></li><br><li class="c-card"><span class="label-txt lh40">多选择2：</span><div id="m-status" v-zen="multi-select"></div></li></ul></div>*/}
 views.example__single_page__multi_select_html = function() {/*<style>.zen-page{font-size:1.6rem}</style><div class="zen-page"><h2 class="font24 white text-center normal">Multi Select</h2><ul><li class="c-card"><span class="label-txt lh40">多选择1：</span><div id="m-type" v-zen="multi-select"></div></li><br><li class="c-card"><span class="label-txt lh40">多选择2：</span><div id="m-status" v-zen="multi-select"></div></li></ul></div><script>$(function(){var e={ele:"m-type",data:[{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"},{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"},{name:"例子1",value:"33"},{name:"例子2",value:"34"},{name:"例子3",value:"35"}]},a={ele:"m-status",data:[{name:"状态1",value:"33"},{name:"状态2",value:"34"},{name:"状态3",value:"35"}]},l={multi_type:null,multi_status:null,init:function(){this.multi_type=new MultiSelect(e),this.multi_status=new MultiSelect(a)}};Zen.ready(l)})</script>*/}
 views.example__single_page__toggle_group_html = function() {/*<style>.zen-page{font-size:1.6rem}.c-card{position:relative;background:#FFF;margin:1.5rem 1.5rem 0 1.5rem;border-radius:.3rem;padding:1.5rem}</style><div class="zen-page"><h2 class="font24 white text-center normal">Toggle Group</h2><ul><li class="c-card"><div id="m-type" v-zen="toggle-group"></div></li><li class="c-card"><div id="m-status" v-zen="toggle-group"></div></li></ul></div><script v-script="views/example/single-page/toggle.js"></script>*/}
 views.example__toggle_group__index_html = function() {/*<style>.zen-page{font-size:1.6rem}.c-card{position:relative;background:#FFF;margin:1.5rem 1.5rem 0 1.5rem;border-radius:.3rem;padding:1.5rem}</style><div class="zen-page"><h2 class="font24 white text-center normal">Toggle Group</h2><ul><li class="c-card"><div id="m-type" v-zen="toggle-group"></div></li><li class="c-card"><div id="m-status" v-zen="toggle-group"></div></li></ul></div><script>$(function(){var e={ele:"m-type",addAction:function(e){Message.toast("选择"+e.name)},delAction:function(e){Message.toast("取消"+e.name)},data:[{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!0},{name:"例子3",value:"35",selected:!0},{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!1},{name:"例子3",value:"35",selected:!1},{name:"例子1",value:"33",selected:!0},{name:"例子2",value:"34",selected:!0},{name:"例子3",value:"35",selected:!0}]},t={ele:"m-status",addAction:function(e){Message.toast("选择"+e.name)},delAction:function(e){Message.toast("取消"+e.name)},data:[{name:"状态1",value:"33",selected:!0},{name:"状态2",value:"34",selected:!1},{name:"状态3",value:"35",selected:!0}]},a={toggle_type:null,toggle_status:null,init:function(){this.toggle_type=new ToggleGroup(e),this.toggle_status=new ToggleGroup(t)}};Zen.ready(a)})</script>*/}
-views.blog__config_js = function() {/*<script>var articles = [{
-    title: "Zenjs的安装使用",
-    public: "2016-11-25 14:00",
-    auther: "ganlight",
-    type: "zenjs",
-    section: "begin",
-    file: "install"
-},{
-    title: "关于 ZENJS",
-    public: "2016-11-25 14:00",
-    auther: "ganlight",
-    type: "zenjs",
-    section: "begin",
-    file: "about-zenjs"
-}, {
-    title: "如何用zenjs写一个博客系统",
-    public: "2016-11-25 14:00",
-    auther: "ganlight",
-    type: "zenjs",
-    section: "begin",
-    file: "如何用zenjs写一个博客系统"
-}];
-
-var Catalog = {
-    articles: [],
-    types: null,
-    sections: null,
-    map: {},
-    init: function() {
-        if (articles) {
-            this.articles = articles;
-            this.rend();
-        }
-    },
-    rend: function() {
-        var self = this;
-        if (this.articles && this.articles.length > 0) {
-            var len = this.articles.length;
-            var data = this.articles;
-            var parent = $(".catalog-area");
-            for (var i = 0; i < data.length; i++) {
-                var item = data[i];
-                item.id = i;
-                var clone = $(".page-template .list-item").clone();
-                Store.data(clone, item);
-                self.map[item.type + "/" + item.file] = item;
-                Util.rendValue(clone, item);
-                self.bind(clone);
-                parent.append(clone);
-            }
-        }
-    },
-    get: function(type, file) {
-        var item = this.map[type + "/" + file] || "";
-        return item;
-    },
-    getIndex: function(type, file) {
-        var item = this.map[type + "/" + file] || "";
-        return item;
-    },
-    bind: function(clone) {
-        var self = this;
-        clone.click(function() {
-            var data = Store.data(clone);
-            if (data && data.id > -1) {
-                window.location.href = "#blog/article" + "?id=" + data.id;
-            }
-        })
-    }
-}
-
-var MarkDown = {
-    converter: null,
-    init: function() {
-        if (showdown && showdown.Converter) {
-            this.converter = new showdown.Converter();
-        } else {
-            $(".title").html("暂不支持markdown");
-        }
-    },
-    rend: function(article, data) {
-        if (this.converter && data) {
-            var html = this.converter.makeHtml(data);
-            $(".title").html(article.title);
-            $(".markdown-area").html(html).show();
-        }
-    },
-    load: function(article) {
-        var self = this;
-        var url = "views" + '["blog/markdown/' + article.type + "/" + article.file + '.md"]';
-        var data = Zen.parse(eval(url));
-        if (data) {
-            data = data.replace(/__block_head__/g, '/*')
-            self.rend(article, data);
-        }
-    },
-    load_file: function(article) {
-        var self = this;
-        var url = "blog/" + article.type + "/" + article.file + ".md";
-        $.ajax({
-            url: url,
-            type: 'get',
-            async: false,
-            dataType: 'html',
-            success: function(data) {
-                $(".catalog-area").hide();
-                $(".markdown-area").show();
-                self.rend(article, data);
-            },
-            error: function(e) {
-                $(".markdown-area").hide();
-                $(".catalog-area").show();
-                Message.toast("当前文章" + article.file + "不存在，请返回其他文章");
-            }
-        });
-    }
-}
-</script>*/}
+views.blog__article__index_html = function() {/*<style>.banner-area{line-height:5rem}.banner-area .next-btn,.banner-area .pre-btn{background:currentColor}.banner-area .catalog-type{background:#5f9ea0}.markdown-area{position:relative;background:#fff;margin:1.5rem 1.5rem 0;border-radius:.3rem;padding:1.5rem;margin-bottom:6rem;display:none}</style><div class="zen-page"><div class="banner-area inline clearfix fix-bottom"><div class="pre-btn span3"><i class="fa fa-arrow-left fa-fw white"></i><span class="white ml10 font16">上一篇</span></div><div class="catalog-type span6 white font16" v-link="#blog/catalog">目录</div><div class="next-btn span3"><span class="white mr10 font16">下一篇</span><i class="fa fa-arrow-right fa-fw white"></i></div></div><h2 class="font24 white text-center normal title"></h2><div class="markdown-area"></div><div class="catalog-area"></div><div class="page-template hide"><div class="list-item inline c-card clearfix"><div class="font20 title"></div><div class="font16 gray"><span class="type"></span>/<span class="file"></span></div></div></div></div><script v-script="views/blog/config.js"></script><script>$(function(){var i={id:0,init:function(){MarkDown.init();var i=this.id=parseInt(Util.getPar("id"))||0;articles&&articles[i]?MarkDown.load(articles[i]):window.location.href="#blog/article?id=0",this.bind()},bind:function(){$(".zen-page .pre-btn").click(function(){if(i.id>0){var t=i.id-1;articles&&articles[t]&&(window.location.href="#blog/article?id="+t)}else Message.toast("没有上一篇了.")}),$(".zen-page .next-btn").click(function(){if(i.id<articles.length-1){var t=i.id+1;articles&&articles[t]&&(window.location.href="#blog/article?id="+t)}else Message.toast("没有下一篇了.")})}};Zen.ready(i)})</script>*/}
+views.blog__catalog__index_html = function() {/*<style>.banner-area{line-height:5rem}.banner-area .back-btn{background:currentColor}.banner-area .catalog-type{background:#5f9ea0}.catalog-area{padding-top:5rem}.catalog-area .list-item{display:block;margin:1rem;background:#f8f8ff;padding:1rem}.catalog-area .list-item .title{padding-bottom:5px}</style><div class="zen-page"><div class="banner-area inline clearfix fix-top"><div class="back-btn span4" v-link="#index"><i class="fa fa-paper-plane fa-fw white"></i><span class="white ml10 font16">ZENJS</span></div><div class="catalog-type span8 white font16">目录</div></div><ul class="catalog-area"></ul><div class="page-template hide"><div class="list-item"><div class="font20 title"></div><div class="font16 gray"><span class="type"></span>/<span class="file"></span></div></div></div></div><script v-script="views/blog/config.js"></script><script>$(function(){var n={init:function(){Catalog.init()}};Zen.ready(n)})</script>*/}
 views.focus_time__index_js = function() {/*<script>$(function() {
     var tomato = {
         work: 25,
@@ -324,6 +206,124 @@ views.focus_time__index_js = function() {/*<script>$(function() {
     Zen.ready(Service);
 })
 </script>*/}
+views.blog__config_js = function() {/*<script>var articles = [{
+    title: "Zenjs的安装使用",
+    public: "2016-11-25 14:00",
+    auther: "ganlight",
+    type: "zenjs",
+    section: "begin",
+    file: "install"
+},{
+    title: "关于 ZENJS",
+    public: "2016-11-25 14:00",
+    auther: "ganlight",
+    type: "zenjs",
+    section: "begin",
+    file: "about-zenjs"
+}, {
+    title: "如何用zenjs写一个博客系统",
+    public: "2016-11-25 14:00",
+    auther: "ganlight",
+    type: "zenjs",
+    section: "begin",
+    file: "如何用zenjs写一个博客系统"
+}];
+
+var Catalog = {
+    articles: [],
+    types: null,
+    sections: null,
+    map: {},
+    init: function() {
+        if (articles) {
+            this.articles = articles;
+            this.rend();
+        }
+    },
+    rend: function() {
+        var self = this;
+        if (this.articles && this.articles.length > 0) {
+            var len = this.articles.length;
+            var data = this.articles;
+            var parent = $(".catalog-area");
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                item.id = i;
+                var clone = $(".page-template .list-item").clone();
+                Store.data(clone, item);
+                self.map[item.type + "/" + item.file] = item;
+                Util.rendValue(clone, item);
+                self.bind(clone);
+                parent.append(clone);
+            }
+        }
+    },
+    get: function(type, file) {
+        var item = this.map[type + "/" + file] || "";
+        return item;
+    },
+    getIndex: function(type, file) {
+        var item = this.map[type + "/" + file] || "";
+        return item;
+    },
+    bind: function(clone) {
+        var self = this;
+        clone.click(function() {
+            var data = Store.data(clone);
+            if (data && data.id > -1) {
+                window.location.href = "#blog/article" + "?id=" + data.id;
+            }
+        })
+    }
+}
+
+var MarkDown = {
+    converter: null,
+    init: function() {
+        if (showdown && showdown.Converter) {
+            this.converter = new showdown.Converter();
+        } else {
+            $(".title").html("暂不支持markdown");
+        }
+    },
+    rend: function(article, data) {
+        if (this.converter && data) {
+            var html = this.converter.makeHtml(data);
+            $(".title").html(article.title);
+            $(".markdown-area").html(html).show();
+        }
+    },
+    load: function(article) {
+        var self = this;
+        var url = "views" + '["blog/markdown/' + article.type + "/" + article.file + '.md"]';
+        var data = Zen.parse(eval(url));
+        if (data) {
+            data = data.replace(/__block_head__/g, '/*')
+            self.rend(article, data);
+        }
+    },
+    load_file: function(article) {
+        var self = this;
+        var url = "blog/" + article.type + "/" + article.file + ".md";
+        $.ajax({
+            url: url,
+            type: 'get',
+            async: false,
+            dataType: 'html',
+            success: function(data) {
+                $(".catalog-area").hide();
+                $(".markdown-area").show();
+                self.rend(article, data);
+            },
+            error: function(e) {
+                $(".markdown-area").hide();
+                $(".catalog-area").show();
+                Message.toast("当前文章" + article.file + "不存在，请返回其他文章");
+            }
+        });
+    }
+}
+</script>*/}
 views.todo__index_js = function() {/*<script>$(function() {
     var TodoData = {
         key: "ZENJS_TODO",
@@ -347,6 +347,7 @@ views.todo__index_js = function() {/*<script>$(function() {
             for (i in this.todos) {
                 this.rend(this.todos[i]);
             }
+            this.watch();
         },
         rend: function(item) {
             var self = this;
@@ -372,6 +373,7 @@ views.todo__index_js = function() {/*<script>$(function() {
                 }
             })
             TodoData.save(this.todos);
+            this.watch();
         },
         add: function() {
             var newTodo = $(".new-todo").val();
@@ -388,9 +390,15 @@ views.todo__index_js = function() {/*<script>$(function() {
             $(".new-todo").val("");
             this.save();
         },
-        remove: function(todo) {
-            this.todos.splice(this.todos.indexOf(todo), 1);
-            TodoData.save(this.todos);
+        watch: function() {
+            var active_num = $(".todo-list .todo-item.active").length;
+            var completed_num = $(".todo-list .todo-item.completed").length;
+            $(".remaining").text(active_num);
+            if (completed_num > 0) {
+                $(".clear-completed").show();
+            } else {
+                $(".clear-completed").hide();
+            }
         }
     }
 
@@ -412,6 +420,7 @@ views.todo__index_js = function() {/*<script>$(function() {
                     data.completed = true;
                 }
                 target.toggleClass("completed");
+                target.toggleClass("active");
                 Store.data(target, data);
                 Todo.save();
             }
@@ -448,14 +457,30 @@ views.todo__index_js = function() {/*<script>$(function() {
         bind: function() {
             //这里负责全局的绑定
             $(".new-todo").keyup(function() {
+                //监听回车事件,添加一条todo
                 if (event.keyCode == 13) {
-                    //监听回车事件
                     Todo.add();
                 }
             });
+            $(".filters a").click(function() {
+                //对todo进行筛选
+                var $this = $(this);
+                $(".filters a").removeClass("selected");
+                $this.addClass("selected");
+                var type = $this.attr("filter");
+                if (type) {
+                    $(".todo-list .todo-item").hide();
+                    $(".todo-list .todo-item." + type).show();
+                } else {
+                    $(".todo-list .todo-item").show();
+                }
+            });
+            $(".clear-completed").click(function() {
+                $(".todo-list .todo-item.completed").remove();
+                Todo.save();
+            })
         }
     }
-
     Zen.ready(Service);
 })
 </script>*/}
@@ -599,8 +624,8 @@ views.example__single_page__toggle_js = function() {/*<script>$(function() {
 </script>*/}
 views.focus_time__index_css = function() {/*<style>::-webkit-scrollbar-track-piece{background:#f5f5f5;border-left:1px solid #d2d2d2}::-webkit-scrollbar{width:13px;height:13px}::-webkit-scrollbar-thumb{background:#c2c2c2;background-clip:padding-box;border:1px solid #979797;min-height:28px}::-webkit-scrollbar-thumb:hover{border:1px solid #636363;background:#929292}body{font-family:Tahoma,Arial,MS Trebuchet,sans-serif;font-size:14px}button,input,label{display:block;margin:10px auto}#title{margin:10px auto;width:500px;text-align:center;font-size:60px}#remainTime{text-align:center;font-size:180px}#progressBar,#progressBarBorder{width:500px;height:15px;overflow:hidden}#progressBarBorder{display:block;margin:10px auto;border:1px solid #fff;box-shadow:1px 1px 15px #000}#progressBar{background:blue}#control{margin:10px auto;width:500px}.taskLeave{background:#ff0}.taskDone{background:blue}.taskStop{background:red}.copyright{margin:50px auto;text-align:center}</style>*/}
 views.todo__index_css = function() {/*<style>body,button,html{margin:0;padding:0}button{border:0;background:none;font-size:100%;vertical-align:baseline;font-family:inherit;font-weight:inherit;color:inherit;-webkit-appearance:none;appearance:none;-webkit-font-smoothing:antialiased}body,button{-moz-osx-font-smoothing:grayscale}body{font:14px Helvetica Neue,Helvetica,Arial,sans-serif;line-height:1.4em;background:#f5f5f5;color:#4d4d4d;min-width:230px;max-width:550px;margin:0 auto;-webkit-font-smoothing:antialiased;font-weight:300}:focus{outline:0}.hidden{display:none}.todoapp{background:#fff;margin:130px 0 40px;position:relative;box-shadow:0 2px 4px 0 rgba(0,0,0,.2),0 25px 50px 0 rgba(0,0,0,.1)}.todoapp input::-webkit-input-placeholder{font-style:italic;font-weight:300;color:#e6e6e6}.todoapp input::-moz-placeholder{font-style:italic;font-weight:300;color:#e6e6e6}.todoapp input::input-placeholder{font-style:italic;font-weight:300;color:#e6e6e6}.todoapp h1{position:absolute;top:-155px;width:100%;font-size:100px;font-weight:100;text-align:center;color:rgba(175,47,47,.15);-webkit-text-rendering:optimizeLegibility;-moz-text-rendering:optimizeLegibility;text-rendering:optimizeLegibility}.edit,.new-todo{position:relative;margin:0;width:100%;font-size:24px;font-family:inherit;font-weight:inherit;line-height:1.4em;border:0;color:inherit;padding:6px;border:1px solid #999;box-shadow:inset 0 -1px 5px 0 rgba(0,0,0,.2);box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.new-todo{padding:16px 16px 16px 60px;border:none;background:rgba(0,0,0,.003);box-shadow:inset 0 -2px 1px rgba(0,0,0,.03)}.main{position:relative;z-index:2;border-top:1px solid #e6e6e6}label[for=toggle-all]{display:none}.toggle-all{position:absolute;top:-55px;left:-12px;width:60px;height:34px;text-align:center;border:none}.toggle-all:before{content:'❯';font-size:22px;color:#e6e6e6;padding:10px 27px}.toggle-all:checked:before{color:#737373}.todo-list{margin:0;padding:0;list-style:none}.todo-list li{position:relative;font-size:24px;border-bottom:1px solid #ededed}.todo-list li:last-child{border-bottom:none}.todo-list li.editing{border-bottom:none;padding:0}.todo-list li.editing .edit{display:block;width:506px;padding:12px 16px;margin:0 0 0 43px}.todo-list li.editing .view{display:none}.todo-list li .toggle{text-align:center;width:40px;height:auto;position:absolute;top:0;bottom:0;margin:auto 0;border:none;-webkit-appearance:none;appearance:none}.todo-list li .toggle:after{content:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#ededed" stroke-width="3"/></svg>')}.todo-list li .toggle:checked:after{content:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#bddad5" stroke-width="3"/><path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>')}.todo-list li label{word-break:break-all;padding:15px 60px 15px 15px;margin-left:45px;display:block;line-height:1.2;transition:color .4s}.todo-list li.completed label{color:#d9d9d9;text-decoration:line-through}.todo-list li .destroy{display:none;position:absolute;top:0;right:10px;bottom:0;width:40px;height:40px;margin:auto 0;font-size:30px;color:#cc9a9a;margin-bottom:11px;transition:color .2s ease-out}.todo-list li .destroy:hover{color:#af5b5e}.todo-list li .destroy:after{content:'×'}.todo-list li:hover .destroy{display:block}.todo-list li .edit{display:none}.todo-list li.editing:last-child{margin-bottom:-1px}.footer{color:#777;padding:10px 15px;height:20px;text-align:center;border-top:1px solid #e6e6e6}.footer:before{content:'';position:absolute;right:0;bottom:0;left:0;height:50px;overflow:hidden;box-shadow:0 1px 1px rgba(0,0,0,.2),0 8px 0 -3px #f6f6f6,0 9px 1px -3px rgba(0,0,0,.2),0 16px 0 -6px #f6f6f6,0 17px 2px -6px rgba(0,0,0,.2)}.todo-count{float:left;text-align:left}.todo-count strong{font-weight:300}.filters{margin:0;padding:0;list-style:none;position:absolute;right:0;left:0}.filters li{display:inline}.filters li a{color:inherit;margin:3px;padding:3px 7px;text-decoration:none;border:1px solid transparent;border-radius:3px}.filters li a:hover{border-color:rgba(175,47,47,.1)}.filters li a.selected{border-color:rgba(175,47,47,.2)}.clear-completed,html .clear-completed:active{float:right;position:relative;line-height:20px;text-decoration:none;cursor:pointer}.clear-completed:hover{text-decoration:underline}.info{margin:65px auto 0;color:#bfbfbf;font-size:10px;text-shadow:0 1px 0 hsla(0,0%,100%,.5);text-align:center}.info p{line-height:1}.info a{color:inherit;text-decoration:none;font-weight:400}.info a:hover{text-decoration:underline}@media screen and (-webkit-min-device-pixel-ratio:0){.todo-list li .toggle,.toggle-all{background:none}.todo-list li .toggle{height:40px}.toggle-all{-webkit-transform:rotate(90deg);transform:rotate(90deg);-webkit-appearance:none;appearance:none}}@media (max-width:430px){.footer{height:50px}.filters{bottom:10px}}</style>*/}
-views.blog__article__index_css = function() {/*<style>code{padding:1px 3px;border-radius:3px;background:#334;color:#fff}pre{display:block;padding:14px;margin:0 0 18px;line-height:16px;font-size:1.4rem;border:1px solid #334;white-space:pre;white-space:pre-wrap;word-wrap:break-word;background-color:#282a36;border-radius:6px}pre code{font-size:1.2rem;padding:0;background:transparent}sup{font-size:.83em;vertical-align:super;line-height:0}*{-webkit-print-color-adjust:exact}</style>*/}
 views.example__multi_select__index_css = function() {/*<style>.zen-page{font-size:1.6rem}</style>*/}
+views.blog__article__index_css = function() {/*<style>code{padding:1px 3px;border-radius:3px;background:#334;color:#fff}pre{display:block;padding:14px;margin:0 0 18px;line-height:16px;font-size:1.4rem;border:1px solid #334;white-space:pre;white-space:pre-wrap;word-wrap:break-word;background-color:#282a36;border-radius:6px}pre code{font-size:1.2rem;padding:0;background:transparent}sup{font-size:.83em;vertical-align:super;line-height:0}*{-webkit-print-color-adjust:exact}</style>*/}
 views["blog/markdown/zenjs/about-zenjs.md"] = function() {/*
 
 # zenjs
