@@ -10,6 +10,7 @@
     .new-todo {
         outline: medium;
     }
+
     .filters a {
         outline: none;
         blr: expression(this.onFocus=this.blur());
@@ -21,9 +22,11 @@
             <h1>todos</h1>
             <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?">
         </div>
-        <ul class="todo-list">
-
-        </ul>
+        <section class="main">
+            <input class="toggle-all" type="checkbox" v-model="allDone">
+            <ul class="todo-list">
+            </ul>
+        </section>
         <footer class="footer" v-show="todos.length" v-cloak>
             <span class="todo-count"><strong class="remaining"></strong> items left</span>
             <ul class="filters">

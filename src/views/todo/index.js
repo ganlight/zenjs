@@ -152,6 +152,27 @@ $(function() {
             $(".clear-completed").click(function() {
                 $(".todo-list .todo-item.completed").remove();
                 Todo.save();
+            });
+            $(".toggle-all").click(function() {
+                var status = $(".toggle-all").attr("checked");
+                $(".todo-list .todo-item").each(function() {
+                    var target =$(this);
+                    var data = Store.data(target);
+                    if (data) {
+                        if (status) {
+                            data.completed = false;
+                            target.removeClass("completed");
+                            target.addClass("active");
+                        } else {
+                            data.completed = true;
+                            target.addClass("completed");
+                            target.removeClass("active");
+                        }
+                        target.find(".toggle").attr("checked",status);
+                        Store.data(target, data);
+                    }
+                });
+                Todo.save();
             })
         }
     }
