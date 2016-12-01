@@ -130,7 +130,7 @@ $(function() {
         },
         bind: function() {
             //这里负责全局的绑定
-            $(".new-todo").keyup(function() {
+            $(".new-todo").keyup(function(event) {
                 //监听回车事件,添加一条todo
                 if (event.keyCode == 13) {
                     Todo.add();
