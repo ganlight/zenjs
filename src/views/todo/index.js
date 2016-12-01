@@ -31,9 +31,10 @@ $(function() {
             Template.values(clone, item);
             if (item.completed) {
                 clone.addClass("completed");
-                clone.find(".toggle").attr("checked", true);
+                clone.find(".toggle").prop("checked", true);
             } else {
                 clone.addClass("active");
+                clone.find(".toggle").prop("checked", false);
             }
             TodoEvent(clone);
             parent.append(clone);
@@ -156,10 +157,10 @@ $(function() {
             $(".toggle-all").click(function() {
                 var status = $(".toggle-all").attr("checked");
                 $(".todo-list .todo-item").each(function() {
-                    var target =$(this);
+                    var target = $(this);
                     var data = Store.data(target);
                     if (data) {
-                        if (status) {
+                        if (!status) {
                             data.completed = false;
                             target.removeClass("completed");
                             target.addClass("active");
@@ -168,7 +169,7 @@ $(function() {
                             target.addClass("completed");
                             target.removeClass("active");
                         }
-                        target.find(".toggle").attr("checked",status);
+                        target.find(".toggle").prop("checked", data.completed);
                         Store.data(target, data);
                     }
                 });
