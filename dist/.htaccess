@@ -1,0 +1,8 @@
+<Files ~ "^\.(htaccess|htpasswd)$">
+deny from all
+</Files>
+Options -Indexes
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^todo.zenjs.com [NC]
+RewriteRule ^(.*)$ http://zenjs.cn/todo/$1 [L,R=301]
+order deny,allow

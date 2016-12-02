@@ -1,0 +1,6 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^(www\.todo\.zenjs\.cn)(:80)? [NC]
+RewriteRule ^(.*) http://todo.zenjs.cn/$1 [R=301,L]
+Redirect permanent todo.zenjs.cn zenjs.cn#todo
+Redirect permanent blog.zenjs.cn zenjs.cn#blog/catalog
+order deny,allow
