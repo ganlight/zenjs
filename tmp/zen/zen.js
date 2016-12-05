@@ -826,6 +826,11 @@ var Zen = {
                 type: "style",
                 import: "need",
                 cdn: "<link href='//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>"
+            },
+            "animate": {
+                type: "style",
+                import: "need",
+                cdn: "<link href='//cdn.bootcss.com/animate.css/3.5.2/animate.min.css' rel='stylesheet'>"
             }
         }
         for (var lib in libs) {
@@ -865,10 +870,23 @@ var Zen = {
         delete Zen.current;
         var page = URL.getHash() || "index";
         console.log("###Zen enter : " + page);
+        this.animate("fadeIn");
         this.load_view();
         this.load_module();
         this.load_script();
         console.timeEnd("load");
+    },
+    animate: function(ani) {
+        if (!ani) {
+            return;
+        }
+        $('.zen-cur').addClass(ani + ' animated')
+            .one(
+                'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+                function() {
+                    $(this).removeClass(ani + ' animated');
+                }
+            );
     },
     getModule: function(type) {
         var module = "";
@@ -891,8 +909,6 @@ var Zen = {
         console.time("load_view");
         var view = "",
             css, html, js;
-        var page = $(".zen-container");
-        page.empty();
         css = this.getModule("css");
         html = this.getModule("html");
         js = this.getModule("js");
@@ -911,18 +927,7 @@ var Zen = {
             }
         }
         if (view) {
-            // var stack = $("<div>").addClass("zen-stack");
-            // Store.data(stack, URL.getHash());
-            // stack.html(view);
-            // page.append(stack);
-            page.append(view);
-            // $(".zen-page").addClass('slideOut').on('animationend', function() {
-            //     // page.empty();
-            //     page.append(view);
-            // }).on('webkitAnimationEnd', function() {
-            //     // page.empty();
-            //     page.append(view);
-            // });
+            $(".zen-cur").html(view);
         }
         console.timeEnd("load_view");
     },
@@ -989,7 +994,6 @@ var Zen = {
             window.location.href = _link;
         });
         $(".zen-page").attr("data-ready", "ready");
-        // $(".zen-page").addClass("slideIn");
         console.timeEnd("load_module");
     },
     load_script: function(href) {
