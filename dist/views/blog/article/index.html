@@ -47,7 +47,7 @@
             id: 0,
             init: function() {
                 MarkDown.init();
-                var id = this.id = parseInt(Util.getPar("id")) || 0;
+                var id = this.id = parseInt(URL.getPar("id")) || 0;
                 if (articles && articles[id]) {
                     MarkDown.load(articles[id]);
                 } else {

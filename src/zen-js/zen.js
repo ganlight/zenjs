@@ -13,7 +13,7 @@ var Zen = {
             FastClick.attach(document.body);
         }
         $(window).on('hashchange', function() {
-            var name = Util.getHash() || "index";
+            var name = URL.getHash() || "index";
             Zen.load()
         });
     },
@@ -84,7 +84,7 @@ var Zen = {
     load: function() {
         console.time("load");
         delete Zen.current;
-        var page = Util.getHash() || "index";
+        var page = URL.getHash() || "index";
         console.log("###Zen enter : " + page);
         this.load_view();
         this.load_module();
@@ -93,9 +93,9 @@ var Zen = {
     },
     getModule: function(type) {
         var module = "";
-        var hash = Util.getHash() || "index";
-        var name = "views." + this.pathname(hash) + "_" + type;
-        var name_index = "views." + this.pathname(hash) + "__index_" + type;
+        var hash = URL.getHash() || "index";
+        var name = "views." + URL.pathname(hash) + "_" + type;
+        var name_index = "views." + URL.pathname(hash) + "__index_" + type;
         if (eval(name)) {
             module = this.parse(eval(name));
             console.log("Zen module : " + name);
@@ -132,7 +132,18 @@ var Zen = {
             }
         }
         if (view) {
+            // var stack = $("<div>").addClass("zen-stack");
+            // Store.data(stack, URL.getHash());
+            // stack.html(view);
+            // page.append(stack);
             page.append(view);
+            // $(".zen-page").addClass('slideOut').on('animationend', function() {
+            //     // page.empty();
+            //     page.append(view);
+            // }).on('webkitAnimationEnd', function() {
+            //     // page.empty();
+            //     page.append(view);
+            // });
         }
         console.timeEnd("load_view");
     },
@@ -218,7 +229,7 @@ var Zen = {
                     head.append(clone);
                     item.remove();
                 } else {
-                    var script_name = this.pathname(script_src).replace("views__", "views.");
+                    var script_name = URL.pathname(script_src).replace("views__", "views.");
                     script = this.parse(eval(script_name));
                     item.after(script);
                     item.remove();
@@ -232,7 +243,7 @@ var Zen = {
     },
     debug_script: function() {
         //用于调试单页的script脚本(模块下的index.js)
-        var href = "views/" + Util.getHash() + "/index.js";
+        var href = "views/" + URL.getHash() + "/index.js";
         var head = $('head');
         head.find("*[data-type='debug-script']").remove();
         var clone = $('<script>').attr("type", "text/javascript");
@@ -252,23 +263,6 @@ var Zen = {
         }
         return;
     },
-    toCamel: function(name) {
-        //例如foo-style-css 变为fooStyleCss
-        var name = name.replace(/\-(\w)/g, function(all, letter) {　　　　　
-            return letter.toUpperCase();　　　　
-        });
-        return name;
-    },
-    toName: function(name) {
-        //例如fooStyleCss变为foo-style-css
-        var name = name.replace(/([A-Z])/g, "-$1").toLowerCase();
-        return name;
-    },
-    pathname: function(path) {
-        // change path to the function name
-        var pathname = path.replace(".js", "_js").replace(".html", "_html").replace(/-/g, "_").replace(/\//g, "__");
-        return pathname;
-    },
     delay: function(fn) {
         if ($(".zen-page").attr("data-ready") == "ready") {
             fn && fn();
@@ -283,7 +277,7 @@ var Zen = {
     ready: function(service) {
         console.time("ready");
         //用于引导页面，并且便于获取调试信息
-        var page = Util.getHash() || "index";
+        var page = URL.getHash() || "index";
         //如果前面的zen-page沒有渲染好，需要等待
         this.delay(function() {
             service && service.init && service.init();
