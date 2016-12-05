@@ -56,7 +56,7 @@
     text-align: center;
 }
 
-#app.nav-right {
+.zen-container.nav-right {
     transform: translateX(-15rem);
     -webkit-transform: translateX(-15rem);
     -moz-transform: translateX(-15rem);
@@ -70,7 +70,7 @@
     -moz-transform: translateX(0);
 }
 
-#app.nav-top {
+.zen-container.nav-top {
     transform: translateY(15rem);
     -webkit-transform: translateY(15rem);
     -moz-transform: translateY(15rem);
@@ -98,7 +98,7 @@
     z-index: -1;
 }
 
-#app.nav-left {
+.zen-container.nav-left {
     transform: translateX(80%);
     -webkit-transform: translateX(80%);
     -moz-transform: translateX(80%);

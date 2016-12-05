@@ -112,7 +112,7 @@ var Zen = {
         console.time("load_view");
         var view = "",
             css, html, js;
-        var page = $("#app");
+        var page = $(".zen-container");
         page.empty();
         css = this.getModule("css");
         html = this.getModule("html");
@@ -138,7 +138,7 @@ var Zen = {
     },
     load_module: function() {
         console.time("load_module");
-        var app = $("#app");
+        var app = $(".zen-container");
         app.find('*[v-zen]').each(function() {
             //对包含v-slot的加载特定id的代码块
             var _this = $(this);

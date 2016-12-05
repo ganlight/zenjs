@@ -4,7 +4,7 @@ var App = {
     },
     bind: function() {
         $(".c-navmenu-banner .menu").click(function() {
-            $("#app").toggleClass("nav-on");
+            $(".zen-container").toggleClass("nav-on");
         });
     }
 }

@@ -4,7 +4,7 @@ var SideNav = {
     bottom: null,
     left: null,
     toggle: function(type) {
-        if ($("#app").hasClass("nav-" + type)) {
+        if ($(".zen-container").hasClass("nav-" + type)) {
             this.close();
         } else {
             this.show(type);
@@ -13,11 +13,11 @@ var SideNav = {
     show: function(type) {
         this.close(type);
         $(".c-side-nav.nav-" + type).show();
-        $("#app").addClass("nav-" + type);
+        $(".zen-container").addClass("nav-" + type);
     },
     close: function(type) {
-        $("#app").removeClass("nav-top");
-        $("#app").removeClass("nav-right");
+        $(".zen-container").removeClass("nav-top");
+        $(".zen-container").removeClass("nav-right");
         setTimeout(function() {
             $(".c-side-nav").hide(200);
             if (type) {

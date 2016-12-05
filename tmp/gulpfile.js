@@ -3,7 +3,6 @@ gulp.task('views:one', function() {
     return gulp.src(['src/views/index.*'], option)
         .pipe(tap(function(file) {
             console.log(file.path);
-            // console.log(path.dirname(file.path));
             var _path = file.path.replace(/\\/g, "/");
             if (_path.indexOf(".css") > -1) {
                 var toname = "views." + file.name;
@@ -46,8 +45,6 @@ function combine(source) {
     console.log(name + " source " + source);
     return gulp.src(source, option)
         .pipe(tap(function(file) {
-
-            // console.log(path.dirname(file.path));
             var _path = file.path.replace(/\\/g, "/");
             console.log("combine :" + _path);
             if (_path.indexOf(".css") > -1) {
@@ -72,7 +69,6 @@ gulp.task('views:three', function() {
     return gulp.src(['src/views/**/*'], option)
         .pipe(tap(function(file) {
             console.log(file.path);
-            // console.log(path.dirname(file.path));
             var _path = file.path.replace(/\\/g, "/");
             if (_path.indexOf(".") > -1) {
 

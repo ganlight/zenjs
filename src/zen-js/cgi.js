@@ -70,7 +70,7 @@ var CGI = {
             async: false,
             dataType: 'html',
             success: function(data) {
-                $("#app").html(data);
+                $(".zen-container").html(data);
                 Zen.init();
             },
             error: function(e) {

@@ -42,7 +42,7 @@ gulp.task('zen:copy', function() {
 
 gulp.task('zen:js', function() {
     return gulp.src(['src/zen-js/*.js', 'src/zen-module/*/index.js'], option)
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(concat('zen.js'))
         .pipe(gulp.dest('tmp/zen'))
 });
@@ -53,6 +53,7 @@ gulp.task('zen:css', function() {
             zindex: false
         }))
         .pipe(concat('zen.css'))
+        .pipe(postcss([autoprefixer]))
         .pipe(gulp.dest('tmp/zen'))
 });
 
@@ -162,6 +163,7 @@ gulp.task('views:css', function() {
         .pipe(nano({
             zindex: false
         }))
+        .pipe(postcss([autoprefixer]))
         .pipe(tap(function(file) {
             var dir = path.dirname(file.path);
             console.log(file.path);
@@ -195,7 +197,6 @@ gulp.task('views:md', function() {
             var prefix = toname + ' = function() {/*';
             var suffix = '*/}'
             contents = contents.replace(/\/\*/g, "__block_head__").replace(/\*\//g, "__block_foot__")
-            // contents = contents.replace(/__block_head__/g, '/*').replace(/__block_foot__/g, '*/')
             contents = prefix + contents + suffix;
             file.contents = new Buffer(contents);
         }))
