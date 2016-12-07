@@ -864,6 +864,9 @@ var Zen = {
             var common_js = Zen.parse(views.common_js);
             $("head").append(common_js);
         }
+        //创建一个zen-stack(zen-cur)
+        var zen_cur = $('<div>').addClass("zen-stack zen-cur");
+        $(".zen-container").html(zen_cur);
     },
     load: function() {
         console.time("load");
