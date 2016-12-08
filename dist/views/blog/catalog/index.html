@@ -7,42 +7,148 @@
         background: currentColor;
     }
 
-    .banner-area .catalog-type {
+    .banner-area .catalog-area {
         background: cadetblue;
     }
 
-    .catalog-area {
+    .articles-area {
         padding-top: 5rem;
     }
 
-    .catalog-area .list-item {
+    .articles-area .article-item {
         display: block;
         margin: 1rem;
         background: ghostwhite;
         padding: 1rem;
     }
 
-    .catalog-area .list-item .title {
+    .articles-area .article-item .title {
         padding-bottom: 5px;
     }
 </style>
-<div class="zen-page ">
+<div class="zen-page">
     <div class="banner-area inline clearfix fix-top">
-        <div class="back-btn span4" v-link="#index"><i class="fa fa-paper-plane fa-fw white"></i><span class="white ml10 font16">ZENJS</span></div>
-        <div class="catalog-type span8 white font16 ">目录</div>
+        <div class="back-btn span4" v-link="#index">
+            <i class="fa fa-paper-plane fa-fw white"></i>
+            <span class="white ml10 font16">ZENJS</span>
+        </div>
+        <div class="catalog-area span8 white font16 ">
+            <div class="catalog-title">目录</div>
+            <ul class="catalog-list">
+
+            </ul>
+        </div>
+
     </div>
-    <ul class="catalog-area">
+    <ul class="articles-area">
     </ul>
     <div class="page-template hide">
-        <div class="list-item">
+        <div class="article-item">
             <div class="font20 title"></div>
-            <div class="font16 gray "><span class="type"></span>/<span class="file"></span></div>
+            <div class="font16 gray ">
+                <span class="type"></span>/<span class="file"></span>
+            </div>
+        </div>
+        <div class="catalog-item">
+            <span class="type_name"></span> <span class="type_num"></span>
         </div>
     </div>
 </div>
 <script v-script="views/blog/config.js"></script>
 <script type="text/javascript">
     $(function() {
+        var Catalog = {
+            articles: [],
+            types: [{
+                type: "zenjs",
+                type_name: "zenjs 目录",
+            }, {
+                type: "life",
+                type_name: "life 目录",
+            }],
+            sections: null,
+            map: {},
+            init: function() {
+                if (ZEN_ARTICLES) {
+                    this.articles = ZEN_ARTICLES;
+                    this.pre();
+                    // this.rendType(this.types);
+                }
+            },
+            pre: function() {
+                var self = this;
+                if (this.articles && this.articles.length > 0) {
+                    var len = this.articles.length;
+                    var data = this.articles;
+                    var parent = $(".articles-area");
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        item.id = i;
+                        var clone = $(".page-template .article-item").clone();
+                        Store.data(clone, item);
+                        self.map[item.type + "/" + item.file] = item;
+                        Util.rendValue(clone, item);
+                        self.bindArticle(clone);
+                        parent.append(clone);
+                    }
+                }
+            },
+            rendType: function(types) {
+                var self = this;
+                if (types) {
+                    var len = types.length;
+                    var data = types;
+                    var parent = $(".catalog-list");
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        var clone = $(".page-template .catalog-item").clone();
+                        Store.data(clone, item);
+                        Util.rendValue(clone, item);
+                        parent.append(clone);
+                    }
+                }
+            },
+            rendArticles: function(articles) {
+                var self = this;
+                if (articles && articles.length > 0) {
+                    var len = articles.length;
+                    var data = articles;
+                    var parent = $(".articles-area");
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        var clone = $(".page-template .article-item").clone();
+                        Store.data(clone, item);
+                        Util.rendValue(clone, item);
+                        self.bindArticle(clone);
+                        parent.append(clone);
+                    }
+                }
+            },
+            get: function(type, file) {
+                var item = this.map[type + "/" + file] || "";
+                return item;
+            },
+            bindType: function(clone) {
+                var self = this;
+                clone.click(function() {
+                    var data = Store.data(clone);
+                    if (data && data.type) {
+                        var type = data.type;
+                        var articles = data.catalog[type];
+                        self.rendArticles(articles);
+                    }
+                });
+            },
+            bindArticle: function(clone) {
+                var self = this;
+                clone.click(function() {
+                    var data = Store.data(clone);
+                    if (data && data.id > -1) {
+                        window.location.href = "#blog/article" + "?id=" + data.id;
+                    }
+                })
+            }
+        }
         var Service = {
             init: function() {
                 Catalog.init();

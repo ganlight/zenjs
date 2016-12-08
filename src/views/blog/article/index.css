@@ -33,6 +33,10 @@ sup {
    vertical-align: super;
    line-height: 0;
 }
+ul{
+  list-style: inherit;
+  margin-left: 20px;
+}
 ul li{
   line-height: 2rem;
   font-weight: 100;
@@ -59,9 +63,10 @@ ul li{
 .markdown-area {
     position: relative;
     background: #fff;
-    margin: 1.5rem 1.5rem 0;
+    margin: 1rem 1rem 0;
     border-radius: .3rem;
-    padding: 1.5rem;
+    padding: 1rem;
     margin-bottom: 6rem;
     display: none;
+    color: #2c3e50;
 }

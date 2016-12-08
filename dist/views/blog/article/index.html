@@ -1,28 +1,3 @@
-<style>
-    .banner-area {
-        line-height: 5rem;
-        bottom: -0.1rem;
-    }
-
-    .banner-area .pre-btn,
-    .banner-area .next-btn {
-        background: currentColor;
-    }
-
-    .banner-area .catalog-type {
-        background: cadetblue;
-    }
-
-    .markdown-area {
-        position: relative;
-        background: #fff;
-        margin: 1.5rem 1.5rem 0;
-        border-radius: .3rem;
-        padding: 1.5rem;
-        margin-bottom: 6rem;
-        display: none;
-    }
-</style>
 <div class="zen-page ">
     <div class="banner-area inline clearfix fix-bottom">
         <div class="pre-btn span3"><i class="fa fa-arrow-left fa-fw white"></i><span class="white ml10 font16">上一篇</span></div>
@@ -30,7 +5,7 @@
         <div class="next-btn span3"><span class="white mr10 font16">下一篇</span><i class="fa fa-arrow-right fa-fw white"></i></div>
     </div>
     <h2 class="font24 white text-center normal title"></h2>
-    <div class="markdown-area"></div>
+    <div class="markdown-area content"></div>
     <div class="catalog-area"></div>
     <div class="page-template hide">
         <div class="list-item inline c-card clearfix">
@@ -41,43 +16,3 @@
 </div>
 <script v-script="views/blog/config.js"></script>
 <!-- <script v-script="//cdn.bootcss.com/showdown/1.5.0/showdown.min.js"></script> -->
-<script type="text/javascript">
-    $(function() {
-        var Service = {
-            id: 0,
-            init: function() {
-                MarkDown.init();
-                var id = this.id = parseInt(URL.getPar("id")) || 0;
-                if (articles && articles[id]) {
-                    MarkDown.load(articles[id]);
-                } else {
-                    window.location.href = "#blog/article?id=0";
-                }
-                this.bind();
-            },
-            bind: function() {
-                $(".zen-page .pre-btn").click(function() {
-                    if (Service.id > 0) {
-                        var id = Service.id - 1;
-                        if (articles && articles[id]) {
-                            window.location.href = "#blog/article?id=" + id;
-                        }
-                    } else {
-                        Message.toast("没有上一篇了.");
-                    }
-                })
-                $(".zen-page .next-btn").click(function() {
-                    if (Service.id < articles.length - 1) {
-                        var id = Service.id + 1;
-                        if (articles && articles[id]) {
-                            window.location.href = "#blog/article?id=" + id;
-                        }
-                    } else {
-                        Message.toast("没有下一篇了.");
-                    }
-                })
-            }
-        }
-        Zen.ready(Service);
-    })
-</script>

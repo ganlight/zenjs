@@ -1,32 +1,31 @@
-views.blog__config_js = function() {/*<script>var articles = [{
+views.blog__config_js = function() {/*<script>var ZEN_ARTICLES = [{
     title: "Zenjs的安装使用",
     public: "2016-11-25 14:00",
     auther: "ganlight",
-    type: "zenjs",
+    type: "zenjs 1",
     section: "begin",
-    file: "install"
+    file: "zenjs/install"
 }, {
     title: "关于 ZENJS",
     public: "2016-11-25 14:00",
     auther: "ganlight",
-    type: "zenjs",
+    type: "zenjs 2",
     section: "begin",
-    file: "about-zenjs"
+    file: "zenjs/about-zenjs"
 }, {
     title: "如何用zenjs写一个博客系统",
     public: "2016-11-25 14:00",
     auther: "ganlight",
-    type: "zenjs",
+    type: "zenjs 3",
     section: "begin",
-    file: "如何用zenjs写一个博客系统"
+    file: "zenjs/如何用zenjs写一个博客系统"
 }];
 
 
 var CATALOG_TMP = {
     "type": "catalog",
     "name": "zenjs 框架",
-    "data": [{
-    }]
+    "data": [{}]
 }
 
 var ARTICLE_TMP = {
@@ -424,7 +423,7 @@ views.blog__article__index_js = function() {/*<script>$(function() {
         },
         load: function(article) {
             var self = this;
-            var url = "views" + '["blog/markdown/' + article.type + "/" + article.file + '.md"]';
+            var url = "views" + '["blog/markdown/' + article.file + '.md"]';
             var data = Zen.parse(eval(url));
             if (data) {
                 data = data.replace(/__block_head__/g, '/*').replace(/__block_foot__/g, "*\/");
@@ -457,8 +456,8 @@ views.blog__article__index_js = function() {/*<script>$(function() {
         init: function() {
             MarkDown.init();
             var id = this.id = parseInt(URL.getPar("id")) || 0;
-            if (articles && articles[id]) {
-                MarkDown.load(articles[id]);
+            if (ZEN_ARTICLES && ZEN_ARTICLES[id]) {
+                MarkDown.load(ZEN_ARTICLES[id]);
             } else {
                 window.location.href = "#blog/article?id=0";
             }
@@ -468,7 +467,7 @@ views.blog__article__index_js = function() {/*<script>$(function() {
             $(".zen-page .pre-btn").click(function() {
                 if (Service.id > 0) {
                     var id = Service.id - 1;
-                    if (articles && articles[id]) {
+                    if (ZEN_ARTICLES && ZEN_ARTICLES[id]) {
                         window.location.href = "#blog/article?id=" + id;
                     }
                 } else {
@@ -476,9 +475,9 @@ views.blog__article__index_js = function() {/*<script>$(function() {
                 }
             })
             $(".zen-page .next-btn").click(function() {
-                if (Service.id < articles.length - 1) {
+                if (Service.id < ZEN_ARTICLES.length - 1) {
                     var id = Service.id + 1;
-                    if (articles && articles[id]) {
+                    if (ZEN_ARTICLES && ZEN_ARTICLES[id]) {
                         window.location.href = "#blog/article?id=" + id;
                     }
                 } else {
