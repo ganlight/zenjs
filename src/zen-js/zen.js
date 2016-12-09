@@ -71,7 +71,7 @@ var Zen = {
             var modules = Zen.parse(Zen.modules);
             var moudles_div = $("<div>").addClass("zen-modules");
             moudles_div.append(modules);
-            $("body").append(moudles_div);
+            $(".zen-container").append(moudles_div);
         }
         if (Zen.css) {
             var css = Zen.parse(Zen.css);
@@ -87,7 +87,7 @@ var Zen = {
         }
         //创建一个zen-stack(zen-cur)
         var zen_cur = $('<div>').addClass("zen-stack zen-cur");
-        $(".zen-container").html(zen_cur);
+        $(".zen-container").append(zen_cur);
     },
     load: function() {
         console.time("load");

@@ -1,0 +1,39 @@
+<style>
+    .c-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(13, 14, 13, 0.29);
+        z-index: 100;
+        display: none;
+    }
+
+    .mask-on .c-mask {
+        display: block;
+    }
+</style>
+<div class="zen-module show">
+    <div class="c-mask">
+    </div>
+</div>
+<script type="text/javascript">
+    var Mask = {
+        init: function() {
+            this.bind();
+        },
+        show: function() {
+            $(".zen-container").addClass("mask-on");
+        },
+        close: function() {
+            $(".zen-container").removeClass("mask-on");
+        },
+        bind: function() {
+            $(".c-mask").click(function() {
+                Mask.close();
+            });
+        }
+    }
+    Mask.init();
+</script>

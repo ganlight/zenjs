@@ -1,6 +1,7 @@
 <style>
     .banner-area {
         line-height: 5rem;
+        z-index: 101;
     }
 
     .banner-area .back-btn {
@@ -25,6 +26,14 @@
     .articles-area .article-item .title {
         padding-bottom: 5px;
     }
+
+    .catalog-area .catalog-list {
+        display: none;
+    }
+
+    .mask-on .catalog-list {
+        display: block;
+    }
 </style>
 <div class="zen-page">
     <div class="banner-area inline clearfix fix-top">
@@ -38,7 +47,6 @@
 
             </ul>
         </div>
-
     </div>
     <ul class="articles-area">
     </ul>
@@ -59,20 +67,15 @@
     $(function() {
         var Catalog = {
             articles: [],
-            types: [{
-                type: "zenjs",
-                type_name: "zenjs 目录",
-            }, {
-                type: "life",
-                type_name: "life 目录",
-            }],
+            types: {},
             sections: null,
             map: {},
             init: function() {
                 if (ZEN_ARTICLES) {
                     this.articles = ZEN_ARTICLES;
                     this.pre();
-                    // this.rendType(this.types);
+                    this.rendType(this.types);
+                    this.rendArticles(this.articles);
                 }
             },
             pre: function() {
@@ -80,30 +83,28 @@
                 if (this.articles && this.articles.length > 0) {
                     var len = this.articles.length;
                     var data = this.articles;
-                    var parent = $(".articles-area");
                     for (var i = 0; i < data.length; i++) {
                         var item = data[i];
                         item.id = i;
-                        var clone = $(".page-template .article-item").clone();
-                        Store.data(clone, item);
-                        self.map[item.type + "/" + item.file] = item;
-                        Util.rendValue(clone, item);
-                        self.bindArticle(clone);
-                        parent.append(clone);
+                        if (!self.types[item.type]) {
+                            self.types[item.type] = [];
+                        }
+                        self.types[item.type].push(item);
                     }
                 }
             },
             rendType: function(types) {
                 var self = this;
                 if (types) {
-                    var len = types.length;
-                    var data = types;
                     var parent = $(".catalog-list");
-                    for (var i = 0; i < data.length; i++) {
-                        var item = data[i];
+                    for (var i in types) {
+                        var item = i;
                         var clone = $(".page-template .catalog-item").clone();
-                        Store.data(clone, item);
-                        Util.rendValue(clone, item);
+                        Store.data(clone, types[i]);
+                        clone.find(".type_name").text(i);
+                        clone.attr("data-type", i);
+                        clone.find(".type_num").text(types[i].length);
+                        self.bindType(clone);
                         parent.append(clone);
                     }
                 }
@@ -114,6 +115,7 @@
                     var len = articles.length;
                     var data = articles;
                     var parent = $(".articles-area");
+                    parent.empty();
                     for (var i = 0; i < data.length; i++) {
                         var item = data[i];
                         var clone = $(".page-template .article-item").clone();
@@ -131,10 +133,9 @@
             bindType: function(clone) {
                 var self = this;
                 clone.click(function() {
-                    var data = Store.data(clone);
-                    if (data && data.type) {
-                        var type = data.type;
-                        var articles = data.catalog[type];
+                    var type = $(this).attr("data-type");
+                    if (type) {
+                        var articles = self.types[type];
                         self.rendArticles(articles);
                     }
                 });
@@ -151,7 +152,16 @@
         }
         var Service = {
             init: function() {
+                //如果需要debug什么,可以将对象放入到this中
+                this.data = Catalog;
                 Catalog.init();
+                this.bind();
+            },
+            bind: function() {
+                $(".catalog-area").click(function() {
+                    $(".zen-container").toggleClass("mask-on");
+                    $(".zen-modules").toggleClass("mask-on");
+                });
             }
         }
         Zen.ready(Service);

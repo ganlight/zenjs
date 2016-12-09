@@ -1,6 +1,7 @@
 <style>
     .banner-area {
         line-height: 5rem;
+        z-index: 101;
     }
 
     .banner-area .back-btn {
@@ -25,6 +26,14 @@
     .articles-area .article-item .title {
         padding-bottom: 5px;
     }
+
+    .catalog-area .catalog-list {
+        display: none;
+    }
+
+    .mask-on .catalog-list {
+        display: block;
+    }
 </style>
 <div class="zen-page">
     <div class="banner-area inline clearfix fix-top">
@@ -34,7 +43,7 @@
         </div>
         <div class="catalog-area span8 white font16 ">
             <div class="catalog-title">目录</div>
-            <ul class="catalog-list" style="display:none">
+            <ul class="catalog-list">
 
             </ul>
         </div>
@@ -150,7 +159,8 @@
             },
             bind: function() {
                 $(".catalog-area").click(function() {
-                    $(".catalog-list").toggle();
+                    $(".zen-container").toggleClass("mask-on");
+                    $(".zen-modules").toggleClass("mask-on");
                 });
             }
         }
