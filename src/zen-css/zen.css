@@ -7,26 +7,18 @@
     overflow-y: auto;
 }
 
-.zen-stack {
+.zen-stack, .zen-modules {
     position: absolute;
-    width: 100%;
-    height: 100%;
     transition: all 0.2s;
-}
-
-.zen-modules {
-    position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    transition: all 0.2s;
     z-index: 0;
 }
 
 .zen-page {
     position: relative;
-    transition: all 0.2s;
     max-width: 1024px;
     margin: 0 auto;
 }
