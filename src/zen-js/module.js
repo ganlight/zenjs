@@ -1,3 +1,2 @@
-var Module ={
-
+var Module = {
 }

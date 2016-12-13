@@ -1,4 +1,11 @@
 var Check = {
+    parm: function(parm) {
+        if (typeof(parm) == "undefined" || parm == null || parm == "") {
+            return true;
+        } else {
+            return false;
+        }
+    },
     name: function(s) {
         //检验姓名：姓名是2-15字的汉字
         var patrn = /^\s*[\u4e00-\u9fa5]{1,}[\u4e00-\u9fa5.·]{0,15}[\u4e00-\u9fa5]{1,}\s*$/;
@@ -6,10 +13,6 @@ var Check = {
             return false;
         }
         return true;
-    },
-    idCard: function(card) {
-        //检查身份证
-        return IDCard.check(card);
     },
     number: function(s) {
         if (s.length == 0) {
@@ -75,5 +78,22 @@ var Check = {
             };
             return true;
         };
+    },
+    platform: function() {
+        //检测平台,如果是移动端为true
+        var system = {
+            win: false,
+            mac: false,
+            xll: false
+        };
+        var p = navigator.platform;
+        system.win = p.indexOf("Win") == 0;
+        system.mac = p.indexOf("Mac") == 0;
+        system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+        if (system.win || system.mac || system.xll) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

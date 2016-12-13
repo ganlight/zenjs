@@ -5,10 +5,18 @@ var Filter = {
         } else {
             value = parseFloat(value).toFixed(2);
         }
+        var value0 = parseInt(value);
+        if (value0 == value) {
+            return value0;
+        }
+        var value1 = parseFloat(value).toFixed(1);
+        if (parseFloat(value1) == parseFloat(value)) {
+            return value1;
+        }
         return value;
     },
-    fmoney: function(s, n) {
-        if (n < 0 || n > 20) {
+    number: function(s, n) {
+        if (!n || n < 0 || n > 20) {
             n = 2;
         }
         s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
@@ -29,6 +37,14 @@ var Filter = {
             return t.split("").reverse().join("");
         }
         return t.split("").reverse().join("") + "." + r;
+    },
+    trim: function(str, is_global) { //去掉空格
+        var result;
+        result = str.replace(/(^\s+)|(\s+$)/g, "");
+        if (is_global.toLowerCase() == "g") {
+            result = result.replace(/\s/g, "");
+        }
+        return result;
     },
     times: function(datepicker1, datepicker2) {
         var _times = "";

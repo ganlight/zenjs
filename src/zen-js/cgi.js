@@ -6,25 +6,7 @@ var CGI = {
     //不同环境的配置，可设置为 DEV , PUB , TEST
     ENV: 'DEV',
     SET: {
-        PUBLIC: {
-            COACH_TYPE: 'public/coach/types',
-            COACH_LIST: 'public/coach/list',
-            COACH_DETAIL: 'public/coach/detail',
-            JOB_LIST: 'public/job/list',
-            JOB_DETAIL: 'public/job/detail'
-        },
-        TYPE: {
-            //用来设置不同环境的类型
-            DEV: 'get',
-            TEST: 'post',
-            PUB: 'post'
-        },
-        ROOT: {
-            //用来设置不同环境的API地址
-            DEV: '/assets/json/',
-            TEST: 'http://localhost/',
-            PUB: '/server/api/'
-        }
+
     },
     TYPE: function() {
         var ajaxType = CGI.SET.TYPE[CGI.ENV] || "post";
@@ -76,6 +58,17 @@ var CGI = {
             error: function(e) {
                 window.location.hash = "index";
                 // CGI.getView("views/red");
+            }
+        });
+    },
+    getCommonPart: function(url, tag) {
+        $.ajax({
+            url: url,
+            type: 'get',
+            async: false,
+            dataType: 'html',
+            success: function(data) {
+                $(tag).html(data);
             }
         });
     }
