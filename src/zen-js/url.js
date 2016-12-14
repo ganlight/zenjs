@@ -2,14 +2,6 @@ var URL = {
     go: function(href) {
         //通过加时间戳可以,去除微信的缓存
         if (!href) return;
-        if (href.indexOf("ts=") == -1) {
-            var timstamp = new Date().getTime();
-            if (href.indexOf("?") >= 0) {
-                href = href + "&ts=" + timstamp;
-            } else {
-                href = href + "?ts=" + timstamp;
-            }
-        }
         window.location.href = href;
     },
     getPar: function(par) {
