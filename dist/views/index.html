@@ -114,8 +114,8 @@
                 });
                 $(".c-side-nav .c-ul li").click(function(e) {
                     e.preventDefault();
-                    URL.go($(this).attr("v-link"));
                     SideNav.close();
+                    URL.go($(this).attr("v-link"));
                 });
             }
         }
