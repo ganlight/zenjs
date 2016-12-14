@@ -1,5 +1,7 @@
 var Zen = {
     mode: "normal",
+    fastclick: false,
+    animate: "",
     boot: function() {
         $(document).ready(function() {
             Zen.init();
@@ -8,9 +10,14 @@ var Zen = {
         });
     },
     bind: function() {
-        if (FastClick) {
+        if (this.fastclick && FastClick) {
+            //采用fastclick.min.js来解决300ms延时问题
             FastClick.attach(document.body);
+        } else {
+            //采用简单方式处理
+            SimpleClick.init();
         }
+
         $(window).on('hashchange', function() {
             var name = URL.getHash() || "index";
             Zen.load()
@@ -53,13 +60,13 @@ var Zen = {
         delete Zen.current;
         var page = URL.getHash() || "index";
         console.log("###Zen enter : " + page);
-        this.animate("fadeIn");
+        this.enterAni(this.animate);
         this.load_view();
         this.load_module();
         this.load_script();
         console.timeEnd("load");
     },
-    animate: function(ani) {
+    enterAni: function(ani) {
         if (!ani) {
             return;
         }

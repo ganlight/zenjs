@@ -120,7 +120,7 @@
                         var item = data[i];
                         var clone = $(".page-template .article-item").clone();
                         Store.data(clone, item);
-                        Util.rendValue(clone, item);
+                        Template.values(clone, item);
                         self.bindArticle(clone);
                         parent.append(clone);
                     }
