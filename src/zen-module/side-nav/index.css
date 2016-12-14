@@ -9,7 +9,7 @@
     bottom: 0;
     margin: 0;
     transition: all 0.2s;
-    z-index: -1;
+    z-index: 0;
 }
 
 .c-side-nav.nav-right {
@@ -23,7 +23,7 @@
     margin: 0;
     padding-top: 3rem;
     transition: all 0.2s;
-    z-index: -1;
+    z-index: 0;
 }
 
 .c-side-nav .avatar {

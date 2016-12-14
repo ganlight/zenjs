@@ -32,12 +32,14 @@ var Zen = {
         this.isDebug = mode;
     },
     init: function() {
+        var container = $(".zen-container");
         this.isDebug = Store.gLocal("ZEN_DEBUG") || false;
+        
         if (Zen.modules) {
             var modules = Zen.parse(Zen.modules);
             var moudles_div = $("<div>").addClass("zen-modules");
             moudles_div.append(modules);
-            $(".zen-container").append(moudles_div);
+            container.append(moudles_div);
         }
         if (Zen.css) {
             var css = Zen.parse(Zen.css);
@@ -53,7 +55,8 @@ var Zen = {
         }
         //创建一个zen-stack(zen-cur)
         var zen_cur = $('<div>').addClass("zen-stack zen-cur");
-        $(".zen-container").append(zen_cur);
+        container.append(zen_cur);
+
     },
     load: function() {
         console.time("load");

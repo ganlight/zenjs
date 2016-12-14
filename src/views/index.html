@@ -112,7 +112,9 @@
                 $(".c-navmenu-banner .logo").click(function() {
                     SideNav.toggle("top");
                 });
-                $(".c-side-nav").click(function() {
+                $(".c-side-nav .c-ul li").click(function(e) {
+                    e.preventDefault();
+                    URL.go($(this).attr("v-link"));
                     SideNav.close();
                 });
             }

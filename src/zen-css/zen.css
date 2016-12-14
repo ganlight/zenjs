@@ -7,7 +7,7 @@
     overflow-y: auto;
 }
 
-.zen-stack, .zen-modules {
+.zen-stack {
     position: absolute;
     transition: all 0.2s;
     width: 100%;
