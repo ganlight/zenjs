@@ -52,7 +52,7 @@
                     var item = data[i];
                     var clone = $(".page-template .list-item").clone();
                     Store.data(clone, item);
-                    Util.rendValue(clone, item);
+                    Template.values(clone, item);
                     self.bind(clone);
                     parent.append(clone);
                 }
