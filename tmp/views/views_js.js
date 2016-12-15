@@ -298,6 +298,14 @@ views.todo__index_js = function() {/*<script>$(function() {
             } else {
                 $(".clear-completed").hide();
             }
+            var filter = $(".filters a.selected");
+            var type = filter.attr("filter");
+            if (type) {
+                $(".todo-list .todo-item").hide();
+                $(".todo-list .todo-item." + type).show();
+            } else {
+                $(".todo-list .todo-item").show();
+            }
         }
     }
 
@@ -366,13 +374,7 @@ views.todo__index_js = function() {/*<script>$(function() {
                 var $this = $(this);
                 $(".filters a").removeClass("selected");
                 $this.addClass("selected");
-                var type = $this.attr("filter");
-                if (type) {
-                    $(".todo-list .todo-item").hide();
-                    $(".todo-list .todo-item." + type).show();
-                } else {
-                    $(".todo-list .todo-item").show();
-                }
+                Todo.watch();
             });
             $(".clear-completed").click(function() {
                 $(".todo-list .todo-item.completed").remove();

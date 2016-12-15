@@ -74,6 +74,14 @@ $(function() {
             } else {
                 $(".clear-completed").hide();
             }
+            var filter = $(".filters a.selected");
+            var type = filter.attr("filter");
+            if (type) {
+                $(".todo-list .todo-item").hide();
+                $(".todo-list .todo-item." + type).show();
+            } else {
+                $(".todo-list .todo-item").show();
+            }
         }
     }
 
@@ -142,13 +150,7 @@ $(function() {
                 var $this = $(this);
                 $(".filters a").removeClass("selected");
                 $this.addClass("selected");
-                var type = $this.attr("filter");
-                if (type) {
-                    $(".todo-list .todo-item").hide();
-                    $(".todo-list .todo-item." + type).show();
-                } else {
-                    $(".todo-list .todo-item").show();
-                }
+                Todo.watch();
             });
             $(".clear-completed").click(function() {
                 $(".todo-list .todo-item.completed").remove();
