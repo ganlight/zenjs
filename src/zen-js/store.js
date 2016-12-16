@@ -1,4 +1,4 @@
-var Store = {
+zen.store = {
     data: function(clone, obj) {
         if (obj) {
             if (typeof(obj) == 'string') {

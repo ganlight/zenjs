@@ -1,4 +1,4 @@
-var Filter = {
+zen.filter = {
     money: function(value) {
         if (value == "" || isNaN(value) || value == Infinity) {
             value = parseFloat("0").toFixed(2);

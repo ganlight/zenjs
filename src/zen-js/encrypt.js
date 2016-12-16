@@ -3,7 +3,7 @@
 http://www.codefans.net/jscss/code/3406.shtml
 http://files.cnblogs.com/files/mofish/base64.js
 */
-var Encrypt = {
+zen.encrypt = {
     encode: function(str, pwd) {
         if (pwd == null || pwd.length <= 0) {
             pwd = "zenjs";

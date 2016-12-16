@@ -14,7 +14,7 @@ ToggleGroup.prototype = {
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
             var clone = parent.find(".template-area .toggle-item").clone();
-            Store.data(clone, item);
+            zen.store.data(clone, item);
             clone.text(item.name);
             if (item.selected) {
                 parent.find("*[data-type='selected'] .toggle-list").append(clone);
@@ -26,27 +26,27 @@ ToggleGroup.prototype = {
     },
     add: function(obj) {
         var parent = this.ele;
-        var data = Store.data(obj);
+        var data = zen.store.data(obj);
         // obj.remove();
         parent.find("*[data-type='selected'] .toggle-list").append(obj);
         data.selected = true;
-        Store.data(obj,data);
+        zen.store.data(obj,data);
         this.addAction && this.addAction(data);
     },
     del: function(obj) {
         var parent = this.ele;
-        var data = Store.data(obj);
+        var data = zen.store.data(obj);
         // obj.remove();
         parent.find("*[data-type='none'] .toggle-list").append(obj);
         data.selected = false;
-        Store.data(obj,data);
+        zen.store.data(obj,data);
         this.addAction && this.delAction(data);
     },
     bind: function(clone) {
         var self = this;
         if (clone) {
             clone.click(function() {
-                var data = Store.data(clone);
+                var data = zen.store.data(clone);
                 if (data.selected) {
                     self.del(clone);
                 } else {

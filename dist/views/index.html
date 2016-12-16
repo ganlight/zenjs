@@ -115,10 +115,10 @@
                 $(".c-side-nav .c-ul li").click(function(e) {
                     e.preventDefault();
                     SideNav.close();
-                    URL.go($(this).attr("v-link"));
+                    zen.url.go($(this).attr("v-link"));
                 });
             }
         }
-        Zen.ready(Service);
+        zen.page.ready(Service);
     })
 </script>

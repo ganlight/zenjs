@@ -1,5 +1,5 @@
-var Message = {};
-Message.close = function() {
+zen.message = {};
+zen.message.close = function() {
     $(".c-confirm").hide(300);
     $(".c-alert").hide(300);
     $(".c-select").hide(300);

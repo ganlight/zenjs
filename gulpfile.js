@@ -9,6 +9,7 @@ var nano = require('gulp-cssnano');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var uglify = require('gulp-uglify');
+var gutil = require('gulp-util')
 var rename = require('gulp-rename');
 var htmlmin = require('gulp-htmlmin');
 var sourcemaps = require('gulp-sourcemaps');
@@ -33,7 +34,7 @@ var path2name = function(path) {
 }
 
 gulp.task('zen:copy', function() {
-    return gulp.src(['src/assets/**/*', 'src/views/**/*','src/lib/**/*', 'src/blog/**/*', 'src/favicon.ico', 'src/index.html'], option)
+    return gulp.src(['src/assets/**/*', 'src/views/**/*', 'src/lib/**/*', 'src/blog/**/*', 'src/favicon.ico', 'src/index.html'], option)
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
             stream: true
@@ -42,7 +43,10 @@ gulp.task('zen:copy', function() {
 
 gulp.task('zen:js', function() {
     return gulp.src(['src/zen-js/*.js', 'src/zen-module/*/index.js'], option)
-        .pipe(uglify())
+        // .pipe(uglify())
+        .pipe(uglify().on('error', function(e) {
+            console.log(e);
+        }))
         .pipe(concat('zen.js'))
         .pipe(gulp.dest('tmp/zen'))
 });
@@ -122,7 +126,7 @@ gulp.task('views:html', function() {
             var _path = file.path.replace(/\\/g, "/");
             var pos = _path.indexOf("views/") + 6;
             var pathname = _path.substring(pos, _path.length);
-            var toname = "views." + pathname.replace(/\//g, "__").replace(".html", "_html").replace(/-/g, "_");
+            var toname = "Zen.views." + pathname.replace(/\//g, "__").replace(".html", "_html").replace(/-/g, "_");
             var prefix = toname + ' = function() {/*';
             var suffix = '*/}'
             contents = prefix + contents + suffix;
@@ -145,7 +149,7 @@ gulp.task('views:js', function() {
             var _path = file.path.replace(/\\/g, "/");
             var pos = _path.indexOf("views/") + 6;
             var pathname = _path.substring(pos, _path.length);
-            var toname = "views." + pathname.replace(".js", "_js").replace(/\//g, "__").replace(/-/g, "_");
+            var toname = "Zen.views." + pathname.replace(".js", "_js").replace(/\//g, "__").replace(/-/g, "_");
             var prefix = toname + ' = function() {/*<script>';
             var suffix = '</script>*/}'
             contents = prefix + contents + suffix;
@@ -171,7 +175,7 @@ gulp.task('views:css', function() {
             var _path = file.path.replace(/\\/g, "/");
             var pos = _path.indexOf("views/") + 6;
             var pathname = _path.substring(pos, _path.length);
-            var toname = "views." + pathname.replace(".css", "_css").replace(/\//g, "__").replace(/-/g, "_");
+            var toname = "Zen.views." + pathname.replace(".css", "_css").replace(/\//g, "__").replace(/-/g, "_");
             var prefix = toname + ' = function() {/*<style>';
             var suffix = '</style>*/}'
             contents = prefix + contents + suffix;
@@ -193,7 +197,7 @@ gulp.task('views:md', function() {
             var _path = file.path.replace(/\\/g, "/");
             var pos = _path.indexOf("views/") + 6;
             var pathname = _path.substring(pos, _path.length);
-            var toname = "views"+ '["' + pathname + '"]';
+            var toname = "Zen.views" + '["' + pathname + '"]';
             var prefix = toname + ' = function() {/*';
             var suffix = '*/}'
             contents = contents.replace(/\/\*/g, "__block_head__").replace(/\*\//g, "__block_foot__")
@@ -213,7 +217,7 @@ gulp.task('common:css', function() {
         .pipe(tap(function(file) {
             console.log(file.path);
             var contents = file.contents.toString();
-            var prefix = "views.common_css" + ' = function() {/*<style>';
+            var prefix = "Zen.views.common_css" + ' = function() {/*<style>';
             var suffix = '</style>*/}'
             contents = prefix + contents + suffix;
             file.contents = new Buffer(contents);
@@ -226,7 +230,7 @@ gulp.task('common:js', function() {
         .pipe(tap(function(file) {
             console.log(file.path);
             var contents = file.contents.toString();
-            var prefix = "views.common_js" + ' = function() {/*<script>';
+            var prefix = "Zen.views.common_js" + ' = function() {/*<script>';
             var suffix = '</script>*/}'
             contents = prefix + contents + suffix;
             file.contents = new Buffer(contents);
@@ -234,8 +238,8 @@ gulp.task('common:js', function() {
         .pipe(gulp.dest('tmp/views'))
 });
 
-gulp.task('views:combine', ['common:css','common:js','views:html', 'views:js', 'views:css', 'views:md'], function() {
-    return gulp.src(['tmp/views/common_css.js', 'tmp/views/common_js.js','tmp/views/views_html.js', 'tmp/views/views_js.js', 'tmp/views/views_css.js', 'tmp/views/views_md.js'], option)
+gulp.task('views:combine', ['common:css', 'common:js', 'views:html', 'views:js', 'views:css', 'views:md'], function() {
+    return gulp.src(['tmp/views/common_css.js', 'tmp/views/common_js.js', 'tmp/views/views_html.js', 'tmp/views/views_js.js', 'tmp/views/views_css.js', 'tmp/views/views_md.js'], option)
         .pipe(concat('common.js'))
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.reload({
@@ -298,5 +302,5 @@ gulp.task('default', ['release'], function() {
 });
 
 gulp.task('build:zen', ['zen:copy', 'zen:js', 'zen:css', 'zen:html', 'zen:combine']);
-gulp.task('build:views', ['common:css','common:js','views:html', 'views:js', 'views:css','views:md', 'views:combine']);
+gulp.task('build:views', ['common:css', 'common:js', 'views:html', 'views:js', 'views:css', 'views:md', 'views:combine']);
 gulp.task('release', ['build:zen', 'build:views', 'release:zepto', 'release:jquery']);

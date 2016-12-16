@@ -17,8 +17,8 @@ $(function() {
         },
         load: function(article) {
             var self = this;
-            var url = "views" + '["blog/markdown/' + article.file + '.md"]';
-            var data = Zen.parse(eval(url));
+            var url = "Zen.views" + '["blog/markdown/' + article.file + '.md"]';
+            var data = zen.parse(eval(url));
             if (data) {
                 data = data.replace(/__block_head__/g, '/*').replace(/__block_foot__/g, "*\/");
                 self.rend(article, data);
@@ -40,7 +40,7 @@ $(function() {
                 error: function(e) {
                     $(".markdown-area").hide();
                     $(".catalog-area").show();
-                    Message.toast("当前文章" + article.file + "不存在，请返回其他文章");
+                    zen.message.toast("当前文章" + article.file + "不存在，请返回其他文章");
                 }
             });
         }
@@ -49,7 +49,7 @@ $(function() {
         id: 0,
         init: function() {
             MarkDown.init();
-            var id = this.id = parseInt(URL.getPar("id")) || 0;
+            var id = this.id = parseInt(zen.url.getPar("id")) || 0;
             if (ZEN_ARTICLES && ZEN_ARTICLES[id]) {
                 MarkDown.load(ZEN_ARTICLES[id]);
             } else {
@@ -65,7 +65,7 @@ $(function() {
                         window.location.href = "#blog/article?id=" + id;
                     }
                 } else {
-                    Message.toast("没有上一篇了.");
+                    zen.message.toast("没有上一篇了.");
                 }
             })
             $(".zen-page .next-btn").click(function() {
@@ -75,10 +75,10 @@ $(function() {
                         window.location.href = "#blog/article?id=" + id;
                     }
                 } else {
-                    Message.toast("没有下一篇了.");
+                    zen.message.toast("没有下一篇了.");
                 }
             })
         }
     }
-    Zen.ready(Service);
+    zen.page.ready(Service);
 })

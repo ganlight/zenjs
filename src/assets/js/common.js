@@ -13,7 +13,7 @@ var App = {
 系统全局相关
 */
 //ENV 可设置为 DEV 和 PUB
-CGI.SET = {
+zen.cgi.SET = {
     PUBLIC: {
         COACH_TYPE: 'public/coach/types',
         COACH_LIST: 'public/coach/list',

@@ -20,16 +20,17 @@
             <div id="m-status" v-zen="toggle-group"></div>
         </li>
     </ul>
+    <div class="lh30">&nbsp;</div>
 </div>
 <script>
     $(function() {
         var config_type = {
             ele: "m-type",
             addAction: function(item) {
-                Message.toast("选择" + item.name);
+                zen.message.toast("选择" + item.name);
             },
             delAction: function(item) {
-                Message.toast("取消" + item.name);
+                zen.message.toast("取消" + item.name);
             },
             data: [{
                 name: "例子1",
@@ -72,10 +73,10 @@
         var config_status = {
             ele: "m-status",
             addAction: function(item) {
-                Message.toast("选择" + item.name);
+                zen.message.toast("选择" + item.name);
             },
             delAction: function(item) {
-                Message.toast("取消" + item.name);
+                zen.message.toast("取消" + item.name);
             },
             data: [{
                 name: "状态1",
@@ -100,6 +101,6 @@
                 this.toggle_status = new ToggleGroup(config_status);
             }
         }
-        Zen.ready(Service);
+        zen.page.ready(Service);
     })
 </script>

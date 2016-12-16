@@ -1,0 +1,32 @@
+.c-tabs {
+    position: relative;
+}
+
+.c-tabs .tabs-area {
+    margin-bottom: 1rem;
+    background: #FFF;
+}
+
+.c-tabs .tab-item {
+    position: relative;
+    line-height: 4rem;
+}
+
+.c-tabs .tab-item>span {
+    border-bottom: .2rem solid #FFF;
+    display: inline-block;
+}
+
+.c-tabs .tab-item.selected>span {
+    border-bottom: .2rem solid #ff663d;
+    display: inline-block;
+    color: #ff663d;
+}
+
+.c-tabs .tab-context {
+    display: none;
+}
+
+.c-tabs .tab-context.active {
+    display: block;
+}

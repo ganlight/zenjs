@@ -1,4 +1,4 @@
-var Pre = {
+zen.pre = {
     support: function() {
         //用于加载其他cdn库，zepto必须先引入，只引入其他的need的选项
         var libs = {

@@ -2,10 +2,10 @@ $(function() {
     var config_type = {
         ele: "m-type",
         addAction: function(item) {
-            Message.toast("选择"+item.name);
+            zen.message.toast("选择"+item.name);
         },
         delAction: function(item) {
-            Message.toast("取消"+item.name);
+            zen.message.toast("取消"+item.name);
         },
         data: [{
             name: "例子1",
@@ -48,10 +48,10 @@ $(function() {
     var config_status = {
         ele: "m-status",
         addAction: function(item) {
-            Message.toast("选择"+item.name);
+            zen.message.toast("选择"+item.name);
         },
         delAction: function(item) {
-            Message.toast("取消"+item.name);
+            zen.message.toast("取消"+item.name);
         },
         data: [{
             name: "状态1",
@@ -76,5 +76,5 @@ $(function() {
           this.toggle_status = new ToggleGroup(config_status);
         }
     }
-    Zen.ready(Service);
+    zen.page.ready(Service);
 })

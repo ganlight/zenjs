@@ -2,7 +2,7 @@
 系统全局相关
 */
 //ENV 可设置为 DEV 和 PUB
-var CGI = {
+zen.cgi = {
     //不同环境的配置，可设置为 DEV , PUB , TEST
     ENV: 'DEV',
     SET: {

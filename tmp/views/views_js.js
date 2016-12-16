@@ -1,4 +1,4 @@
-views.blog__config_js = function() {/*<script>var ZEN_ARTICLES = [{
+Zen.views.blog__config_js = function() {/*<script>var ZEN_ARTICLES = [{
     title: "Zenjs的安装使用",
     public: "2016-11-25 14:00",
     auther: "ganlight",
@@ -51,7 +51,7 @@ var ZENJS_BLOG = {
     }
 }
 </script>*/}
-views.focus_time__index_js = function() {/*<script>$(function() {
+Zen.views.focus_time__index_js = function() {/*<script>$(function() {
     var tomato = {
         work: 25,
         rest: 5,
@@ -73,7 +73,7 @@ views.focus_time__index_js = function() {/*<script>$(function() {
             } else {
                 clearInterval(this.loop);
                 this.loop = null;
-                Store.setLocal("FOCUS_TIME_CURRENT", task);
+                zen.store.setLocal("FOCUS_TIME_CURRENT", task);
             }
         },
         format: function(num) {
@@ -109,7 +109,7 @@ views.focus_time__index_js = function() {/*<script>$(function() {
                 }
             }
             if (task.status == "WORK_DONE") {
-                Message.alert(tomato.message.success);
+                zen.message.alert(tomato.message.success);
                 task.status = "REST_INIT";
                 remain_time = rest_time;
             }
@@ -132,7 +132,7 @@ views.focus_time__index_js = function() {/*<script>$(function() {
                 task.status = "WORK_INIT";
                 remain_time = work_time;
             }
-            Store.setLocal("FOCUS_TIME_CURRENT", task);
+            zen.store.setLocal("FOCUS_TIME_CURRENT", task);
             var str = this.format(remain_time).str;
             $(".remain-time").text(str);
         }
@@ -190,7 +190,7 @@ views.focus_time__index_js = function() {/*<script>$(function() {
     var TaskList = {
         current: null,
         init: function() {
-            var task = Store.getLocal("FOCUS_TIME_CURRENT");
+            var task = zen.store.getLocal("FOCUS_TIME_CURRENT");
             if (task) {
                 this.current = new Task(task);
             } else {
@@ -219,14 +219,14 @@ views.focus_time__index_js = function() {/*<script>$(function() {
             });
         }
     }
-    Zen.ready(Service);
+    zen.page.ready(Service);
 })
 </script>*/}
-views.todo__index_js = function() {/*<script>$(function() {
+Zen.views.todo__index_js = function() {/*<script>$(function() {
     var TodoData = {
         key: "ZENJS_TODO",
         get: function() {
-            var todos = Store.getLocal(this.key) || [];
+            var todos = zen.store.getLocal(this.key) || [];
             $.each(todos, function(todo, index) {
                 todo.id = index
             })
@@ -234,7 +234,7 @@ views.todo__index_js = function() {/*<script>$(function() {
             return todos;
         },
         save: function(todos) {
-            Store.setLocal(this.key, todos);
+            zen.store.setLocal(this.key, todos);
         }
     }
 
@@ -251,8 +251,8 @@ views.todo__index_js = function() {/*<script>$(function() {
             var self = this;
             var parent = $(".todo-list");
             var clone = $(".page-template .todo-item").clone();
-            Store.data(clone, item);
-            Template.values(clone, item);
+            zen.store.data(clone, item);
+            zen.template.values(clone, item);
             if (item.completed) {
                 clone.addClass("completed");
                 clone.find(".toggle").prop("checked", true);
@@ -266,7 +266,7 @@ views.todo__index_js = function() {/*<script>$(function() {
         save: function() {
             var todos = this.todos = [];
             $(".todo-list .todo-item").each(function() {
-                var data = Store.data($(this));
+                var data = zen.store.data($(this));
                 if (data) {
                     todos.push(data);
                 }
@@ -312,14 +312,14 @@ views.todo__index_js = function() {/*<script>$(function() {
     var TodoEvent = function(target) {
         //这里负责元素的事件的绑定
         target.find(".destroy").click(function() {
-            var data = Store.data(target);
+            var data = zen.store.data(target);
             if (data) {
                 target.remove();
                 Todo.save();
             }
         });
         target.find(".toggle").click(function() {
-            var data = Store.data(target);
+            var data = zen.store.data(target);
             if (data) {
                 if (data.completed) {
                     data.completed = false;
@@ -328,12 +328,12 @@ views.todo__index_js = function() {/*<script>$(function() {
                 }
                 target.toggleClass("completed");
                 target.toggleClass("active");
-                Store.data(target, data);
+                zen.store.data(target, data);
                 Todo.save();
             }
         });
         target.find(".title").dblclick(function() {
-            var data = Store.data(target);
+            var data = zen.store.data(target);
             if (data) {
                 target.addClass("editing");
                 target.find(".edit").val(data.title);
@@ -341,13 +341,13 @@ views.todo__index_js = function() {/*<script>$(function() {
             }
         });
         target.find(".edit").blur(function() {
-            var data = Store.data(target);
+            var data = zen.store.data(target);
             if (data) {
                 data.title = target.find(".edit").val();
                 if (data.title && data.title.trim()) {
                     target.find(".title").text(data.title);
                     target.removeClass("editing");
-                    Store.data(target, data);
+                    zen.store.data(target, data);
                 } else {
                     target.remove();
                 }
@@ -384,7 +384,7 @@ views.todo__index_js = function() {/*<script>$(function() {
                 var status = $(".toggle-all").attr("checked");
                 $(".todo-list .todo-item").each(function() {
                     var target = $(this);
-                    var data = Store.data(target);
+                    var data = zen.store.data(target);
                     if (data) {
                         if (!status) {
                             data.completed = false;
@@ -396,17 +396,17 @@ views.todo__index_js = function() {/*<script>$(function() {
                             target.removeClass("active");
                         }
                         target.find(".toggle").prop("checked", data.completed);
-                        Store.data(target, data);
+                        zen.store.data(target, data);
                     }
                 });
                 Todo.save();
             })
         }
     }
-    Zen.ready(Service);
+    zen.page.ready(Service);
 })
 </script>*/}
-views.blog__article__index_js = function() {/*<script>$(function() {
+Zen.views.blog__article__index_js = function() {/*<script>$(function() {
     var MarkDown = {
         converter: null,
         init: function() {
@@ -425,8 +425,8 @@ views.blog__article__index_js = function() {/*<script>$(function() {
         },
         load: function(article) {
             var self = this;
-            var url = "views" + '["blog/markdown/' + article.file + '.md"]';
-            var data = Zen.parse(eval(url));
+            var url = "Zen.views" + '["blog/markdown/' + article.file + '.md"]';
+            var data = zen.parse(eval(url));
             if (data) {
                 data = data.replace(/__block_head__/g, '/*').replace(/__block_foot__/g, "*\/");
                 self.rend(article, data);
@@ -448,7 +448,7 @@ views.blog__article__index_js = function() {/*<script>$(function() {
                 error: function(e) {
                     $(".markdown-area").hide();
                     $(".catalog-area").show();
-                    Message.toast("当前文章" + article.file + "不存在，请返回其他文章");
+                    zen.message.toast("当前文章" + article.file + "不存在，请返回其他文章");
                 }
             });
         }
@@ -457,7 +457,7 @@ views.blog__article__index_js = function() {/*<script>$(function() {
         id: 0,
         init: function() {
             MarkDown.init();
-            var id = this.id = parseInt(URL.getPar("id")) || 0;
+            var id = this.id = parseInt(zen.url.getPar("id")) || 0;
             if (ZEN_ARTICLES && ZEN_ARTICLES[id]) {
                 MarkDown.load(ZEN_ARTICLES[id]);
             } else {
@@ -473,7 +473,7 @@ views.blog__article__index_js = function() {/*<script>$(function() {
                         window.location.href = "#blog/article?id=" + id;
                     }
                 } else {
-                    Message.toast("没有上一篇了.");
+                    zen.message.toast("没有上一篇了.");
                 }
             })
             $(".zen-page .next-btn").click(function() {
@@ -483,15 +483,15 @@ views.blog__article__index_js = function() {/*<script>$(function() {
                         window.location.href = "#blog/article?id=" + id;
                     }
                 } else {
-                    Message.toast("没有下一篇了.");
+                    zen.message.toast("没有下一篇了.");
                 }
             })
         }
     }
-    Zen.ready(Service);
+    zen.page.ready(Service);
 })
 </script>*/}
-views.example__multi_select__index_js = function() {/*<script>$(function() {
+Zen.views.example__multi_select__index_js = function() {/*<script>$(function() {
     var config_type = {
         ele: "m-type",
         data: [{
@@ -545,17 +545,17 @@ views.example__multi_select__index_js = function() {/*<script>$(function() {
             this.multi_status = new MultiSelect(config_status);
         }
     }
-    Zen.ready(Service);
+    zen.page.ready(Service);
 })
 </script>*/}
-views.example__single_page__toggle_js = function() {/*<script>$(function() {
+Zen.views.example__single_page__toggle_js = function() {/*<script>$(function() {
     var config_type = {
         ele: "m-type",
         addAction: function(item) {
-            Message.toast("选择"+item.name);
+            zen.message.toast("选择"+item.name);
         },
         delAction: function(item) {
-            Message.toast("取消"+item.name);
+            zen.message.toast("取消"+item.name);
         },
         data: [{
             name: "例子1",
@@ -598,10 +598,10 @@ views.example__single_page__toggle_js = function() {/*<script>$(function() {
     var config_status = {
         ele: "m-status",
         addAction: function(item) {
-            Message.toast("选择"+item.name);
+            zen.message.toast("选择"+item.name);
         },
         delAction: function(item) {
-            Message.toast("取消"+item.name);
+            zen.message.toast("取消"+item.name);
         },
         data: [{
             name: "状态1",
@@ -626,6 +626,6 @@ views.example__single_page__toggle_js = function() {/*<script>$(function() {
           this.toggle_status = new ToggleGroup(config_status);
         }
     }
-    Zen.ready(Service);
+    zen.page.ready(Service);
 })
 </script>*/}

@@ -1,9 +1,9 @@
-var Util = {
+zen.util = {
     lastClick: null,
     once: function(fn) {
         var now = new Date().getTime();
         if (now - Util.lastClick < 2000) {
-            Message.toast("您的操作过快，请稍后尝试");
+            zen.message.toast("您的操作过快，请稍后尝试");
             return;
         };
         Util.lastClick = now;
@@ -54,7 +54,7 @@ var Util = {
         });
     },
     alertOver: function() {
-        Message.alert("当前活动已经结束，请关注盈火虫公众号参与更多活动！", function() {
+        zen.message.alert("当前活动已经结束，请关注盈火虫公众号参与更多活动！", function() {
             window.location.href = "/";
         });
     }

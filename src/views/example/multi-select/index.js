@@ -52,5 +52,5 @@ $(function() {
             this.multi_status = new MultiSelect(config_status);
         }
     }
-    Zen.ready(Service);
+    zen.page.ready(Service);
 })

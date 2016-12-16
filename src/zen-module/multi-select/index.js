@@ -16,7 +16,7 @@ MultiSelect.prototype = {
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
             var clone = $("<div>").addClass("select-item");
-            Store.data(clone, item);
+            zen.store.data(clone, item);
             clone.attr("data-value", item.value).text(item.name);
             // MultiSelect.bind(clone);
             parent.append(clone);

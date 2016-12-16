@@ -2,7 +2,7 @@ $(function() {
     var TodoData = {
         key: "ZENJS_TODO",
         get: function() {
-            var todos = Store.getLocal(this.key) || [];
+            var todos = zen.store.getLocal(this.key) || [];
             $.each(todos, function(todo, index) {
                 todo.id = index
             })
@@ -10,7 +10,7 @@ $(function() {
             return todos;
         },
         save: function(todos) {
-            Store.setLocal(this.key, todos);
+            zen.store.setLocal(this.key, todos);
         }
     }
 
@@ -27,8 +27,8 @@ $(function() {
             var self = this;
             var parent = $(".todo-list");
             var clone = $(".page-template .todo-item").clone();
-            Store.data(clone, item);
-            Template.values(clone, item);
+            zen.store.data(clone, item);
+            zen.template.values(clone, item);
             if (item.completed) {
                 clone.addClass("completed");
                 clone.find(".toggle").prop("checked", true);
@@ -42,7 +42,7 @@ $(function() {
         save: function() {
             var todos = this.todos = [];
             $(".todo-list .todo-item").each(function() {
-                var data = Store.data($(this));
+                var data = zen.store.data($(this));
                 if (data) {
                     todos.push(data);
                 }
@@ -74,20 +74,28 @@ $(function() {
             } else {
                 $(".clear-completed").hide();
             }
+            var filter = $(".filters a.selected");
+            var type = filter.attr("filter");
+            if (type) {
+                $(".todo-list .todo-item").hide();
+                $(".todo-list .todo-item." + type).show();
+            } else {
+                $(".todo-list .todo-item").show();
+            }
         }
     }
 
     var TodoEvent = function(target) {
         //这里负责元素的事件的绑定
         target.find(".destroy").click(function() {
-            var data = Store.data(target);
+            var data = zen.store.data(target);
             if (data) {
                 target.remove();
                 Todo.save();
             }
         });
         target.find(".toggle").click(function() {
-            var data = Store.data(target);
+            var data = zen.store.data(target);
             if (data) {
                 if (data.completed) {
                     data.completed = false;
@@ -96,12 +104,12 @@ $(function() {
                 }
                 target.toggleClass("completed");
                 target.toggleClass("active");
-                Store.data(target, data);
+                zen.store.data(target, data);
                 Todo.save();
             }
         });
         target.find(".title").dblclick(function() {
-            var data = Store.data(target);
+            var data = zen.store.data(target);
             if (data) {
                 target.addClass("editing");
                 target.find(".edit").val(data.title);
@@ -109,13 +117,13 @@ $(function() {
             }
         });
         target.find(".edit").blur(function() {
-            var data = Store.data(target);
+            var data = zen.store.data(target);
             if (data) {
                 data.title = target.find(".edit").val();
                 if (data.title && data.title.trim()) {
                     target.find(".title").text(data.title);
                     target.removeClass("editing");
-                    Store.data(target, data);
+                    zen.store.data(target, data);
                 } else {
                     target.remove();
                 }
@@ -142,13 +150,7 @@ $(function() {
                 var $this = $(this);
                 $(".filters a").removeClass("selected");
                 $this.addClass("selected");
-                var type = $this.attr("filter");
-                if (type) {
-                    $(".todo-list .todo-item").hide();
-                    $(".todo-list .todo-item." + type).show();
-                } else {
-                    $(".todo-list .todo-item").show();
-                }
+                Todo.watch();
             });
             $(".clear-completed").click(function() {
                 $(".todo-list .todo-item.completed").remove();
@@ -158,7 +160,7 @@ $(function() {
                 var status = $(".toggle-all").attr("checked");
                 $(".todo-list .todo-item").each(function() {
                     var target = $(this);
-                    var data = Store.data(target);
+                    var data = zen.store.data(target);
                     if (data) {
                         if (!status) {
                             data.completed = false;
@@ -170,12 +172,12 @@ $(function() {
                             target.removeClass("active");
                         }
                         target.find(".toggle").prop("checked", data.completed);
-                        Store.data(target, data);
+                        zen.store.data(target, data);
                     }
                 });
                 Todo.save();
             })
         }
     }
-    Zen.ready(Service);
+    zen.page.ready(Service);
 })

@@ -31,13 +31,13 @@
             "href": "#example/single-page/multi-select"
         }, {
             "name": "alert",
-            "action": "Message.alert('Zenjs')"
+            "action": "zen.message.alert('Zenjs')"
         }, {
             "name": "toast",
-            "action": "Message.toast(' A light framwork')"
+            "action": "zen.message.toast(' A light framwork')"
         }, {
             "name": "confirm",
-            "action": "Message.confirm('Coding Zen!')"
+            "action": "zen.message.confirm('Coding Zen!')"
         }];
         var Service = {
             init: function() {
@@ -51,15 +51,15 @@
                 for (var i = 0; i < data.length; i++) {
                     var item = data[i];
                     var clone = $(".page-template .list-item").clone();
-                    Store.data(clone, item);
-                    Template.values(clone, item);
+                    zen.store.data(clone, item);
+                    zen.template.values(clone, item);
                     self.bind(clone);
                     parent.append(clone);
                 }
             },
             bind: function(clone) {
                 clone.click(function() {
-                    var data = Store.data(clone);
+                    var data = zen.store.data(clone);
                     if (data.href) {
                         window.location.href = data.href;
                     }
@@ -70,6 +70,6 @@
                 })
             }
         }
-        Zen.ready(Service);
+        zen.page.ready(Service);
     })
 </script>

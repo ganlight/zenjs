@@ -1,4 +1,4 @@
-var Message1 = {
+zen.message1 = {
     toast: function(message) {
         var $toast = $(".c-toast");
         $(".c-toast .message-text").text(message);
@@ -13,7 +13,7 @@ var Message1 = {
         $toast.show(300);
         $(".c-alert .alert-ok").unbind('click').click(function() {
             fn && fn();
-            Message.close();
+            zen.message.close();
         });
     },
     confirm: function(message, fn) {
@@ -22,23 +22,23 @@ var Message1 = {
         $toast.show(300);
         $(".c-confirm .confirm-ok").unbind('click').click(function() {
             fn && fn();
-            Message.close();
+            zen.message.close();
         });
         $(".c-confirm .confirm-cancel").unbind('click').click(function() {
-            Message.close();
+            zen.message.close();
         });
         $(".c-confirm .mask").unbind('click').click(function() {
-            Message.close();
+            zen.message.close();
         });
     },
     custom: function(name) {
         var $toast = $("#" + name);
         $toast.show(300);
         $(".custom-confirm .confirm-cancel").unbind('click').click(function() {
-            Message.close();
+            zen.message.close();
         });
         $(".custom-confirm .mask").unbind('click').click(function() {
-            Message.close();
+            zen.message.close();
         });
     },
     select: function(title, slot, fn) {
@@ -47,20 +47,20 @@ var Message1 = {
         $toast.show(300);
         $(".c-select .select-ok").unbind('click').click(function() {
             fn && fn();
-            Message.close();
+            zen.message.close();
         });
         $(".c-select .mask").unbind('click').click(function() {
-            Message.close();
+            zen.message.close();
         });
     },
     dropdown: function(slot) {
         var $toast = $("#" + slot);
         $toast.show(300);
         $(".c-dropdown .dropdown-btn").unbind('click').click(function() {
-            Message.close();
+            zen.message.close();
         });
         $(".c-dropdown .mask").unbind('click').click(function() {
-            Message.close();
+            zen.message.close();
         });
     },
     close: function() {
@@ -100,12 +100,12 @@ var Message1 = {
             },
             success: function(json) {
                 if (json.code == "00000") {
-                    Message.nextClick(60, send_type);
+                    zen.message.nextClick(60, send_type);
                 } else {
                     if (json.code == "50025" || json.code == "50027") {
-                        Message.nextClick(json.result.time_left, send_type);
+                        zen.message.nextClick(json.result.time_left, send_type);
                     } else {
-                        Message.alert(json.message);
+                        zen.message.alert(json.message);
                         $(".custom-confirm .error-message").text(json.message).removeClass('hide');
                         voice.removeClass("gray");
                         sms.removeClass("gray").text("获取验证码");
@@ -139,7 +139,7 @@ var Message1 = {
             };
             wait--;
             setTimeout(function() {
-                Message.nextClick(wait, send_type);
+                zen.message.nextClick(wait, send_type);
             }, 1000);
         }
     }

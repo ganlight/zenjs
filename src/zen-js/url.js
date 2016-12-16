@@ -1,4 +1,4 @@
-var URL = {
+zen.url = {
     go: function(href) {
         //通过加时间戳可以,去除微信的缓存
         if (!href) return;

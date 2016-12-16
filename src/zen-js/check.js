@@ -1,4 +1,4 @@
-var Check = {
+zen.check = {
     parm: function(parm) {
         if (typeof(parm) == "undefined" || parm == null || parm == "") {
             return true;
@@ -73,7 +73,7 @@ var Check = {
     agreement: function() {
         if ($(".agreement").length) {
             if (!$(".agreement").hasClass("selected")) {
-                Message.toast("您需要阅读并同意《用户协议》");
+                zen.message.toast("您需要阅读并同意《用户协议》");
                 return false;
             };
             return true;

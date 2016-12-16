@@ -1,67 +1,12 @@
-var Zen = {
+//初始化页面
+zen.page = {
     mode: "normal",
     fastclick: false,
     animate: "",
-    boot: function() {
-        $(document).ready(function() {
-            Zen.init();
-            Zen.load();
-            Zen.bind();
-        });
-    },
-    bind: function() {
-        if (this.fastclick && FastClick) {
-            //采用fastclick.min.js来解决300ms延时问题
-            FastClick.attach(document.body);
-        } else {
-            //采用简单方式处理
-            SimpleClick.init();
-        }
-
-        $(window).on('hashchange', function() {
-            var name = URL.getHash() || "index";
-            Zen.load()
-        });
-    },
-    debug: function(status) {
-        var mode = "normal";
-        if (status == "debug") {
-            mode = "debug";
-        }
-        Store.sLocal("ZEN_DEBUG", mode);
-        this.isDebug = mode;
-    },
     init: function() {
-        var container = $(".zen-container");
-        this.isDebug = Store.gLocal("ZEN_DEBUG") || false;
-        
-        if (Zen.modules) {
-            var modules = Zen.parse(Zen.modules);
-            var moudles_div = $("<div>").addClass("zen-modules");
-            moudles_div.append(modules);
-            container.append(moudles_div);
-        }
-        if (Zen.css) {
-            var css = Zen.parse(Zen.css);
-            $("title").after(css);
-        }
-        if (views.common_css) {
-            var common_css = Zen.parse(views.common_css);
-            $("head").append(common_css);
-        }
-        if (views.common_js) {
-            var common_js = Zen.parse(views.common_js);
-            $("head").append(common_js);
-        }
-        //创建一个zen-stack(zen-cur)
-        var zen_cur = $('<div>').addClass("zen-stack zen-cur");
-        container.append(zen_cur);
-
-    },
-    load: function() {
         console.time("load");
         delete Zen.current;
-        var page = URL.getHash() || "index";
+        var page = zen.url.getHash() || "index";
         console.log("###Zen enter : " + page);
         this.enterAni(this.animate);
         this.load_view();
@@ -83,16 +28,16 @@ var Zen = {
     },
     getModule: function(type) {
         var module = "";
-        var hash = URL.getHash() || "index";
-        var name = "views." + URL.pathname(hash) + "_" + type;
-        var name_index = "views." + URL.pathname(hash) + "__index_" + type;
+        var hash = zen.url.getHash() || "index";
+        var name = "Zen.views." + zen.url.pathname(hash) + "_" + type;
+        var name_index = "Zen.views." + zen.url.pathname(hash) + "__index_" + type;
         if (eval(name)) {
-            module = this.parse(eval(name));
+            module = zen.parse(eval(name));
             console.log("Zen module : " + name);
             return module;
         }
         if (eval(name_index)) {
-            module = this.parse(eval(name_index));
+            module = zen.parse(eval(name_index));
             console.log("Zen module : " + name);
             return module;
         }
@@ -164,14 +109,14 @@ var Zen = {
             var _send = $(this).attr('v-send');
             if (!_send) return;
             var _para = _send.split(',')
-            Message.send(_para[0], _para[1], _para[2]);
+            zen.message.send(_para[0], _para[1], _para[2]);
         });
         $('*[v-select]').click(function() {
             //对包含v-send相关的控件，直接进行发送短信或语音验证码
             //这里包含多个参数例如，regist,sms
             var _select = $(this).attr('v-select');
             if (!_select) return;
-            Message.select('', _select);
+            zen.message.select('', _select);
         });
         $('*[v-toggle]').click(function() {
             //对包含v-toggle相关的控件，直接进行绑定操作
@@ -205,8 +150,8 @@ var Zen = {
                     head.append(clone);
                     item.remove();
                 } else {
-                    var script_name = URL.pathname(script_src).replace("views__", "views.");
-                    script = this.parse(eval(script_name));
+                    var script_name = zen.url.pathname(script_src).replace("views__", "Zen.views.");
+                    script = zen.parse(eval(script_name));
                     item.after(script);
                     item.remove();
                 }
@@ -219,7 +164,7 @@ var Zen = {
     },
     debug_script: function() {
         //用于调试单页的script脚本(模块下的index.js)
-        var href = "views/" + URL.getHash() + "/index.js";
+        var href = "views/" + zen.url.getHash() + "/index.js";
         var head = $('head');
         head.find("*[data-type='debug-script']").remove();
         var clone = $('<script>').attr("type", "text/javascript");
@@ -246,14 +191,14 @@ var Zen = {
         } else {
             console.log("Zen delay : 5ms");
             setTimeout(function() {
-                Zen.delay(fn)
+                zen.page.delay(fn)
             }, 5)
         }
     },
     ready: function(service) {
         console.time("ready");
         //用于引导页面，并且便于获取调试信息
-        var page = URL.getHash() || "index";
+        var page = zen.url.getHash() || "index";
         //如果前面的zen-page沒有渲染好，需要等待
         this.delay(function() {
             service && service.init && service.init();
@@ -263,4 +208,3 @@ var Zen = {
         console.timeEnd("ready");
     }
 }
-Zen.boot();

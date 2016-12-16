@@ -20,7 +20,7 @@ $(function() {
             } else {
                 clearInterval(this.loop);
                 this.loop = null;
-                Store.setLocal("FOCUS_TIME_CURRENT", task);
+                zen.store.setLocal("FOCUS_TIME_CURRENT", task);
             }
         },
         format: function(num) {
@@ -56,7 +56,7 @@ $(function() {
                 }
             }
             if (task.status == "WORK_DONE") {
-                Message.alert(tomato.message.success);
+                zen.message.alert(tomato.message.success);
                 task.status = "REST_INIT";
                 remain_time = rest_time;
             }
@@ -79,7 +79,7 @@ $(function() {
                 task.status = "WORK_INIT";
                 remain_time = work_time;
             }
-            Store.setLocal("FOCUS_TIME_CURRENT", task);
+            zen.store.setLocal("FOCUS_TIME_CURRENT", task);
             var str = this.format(remain_time).str;
             $(".remain-time").text(str);
         }
@@ -137,7 +137,7 @@ $(function() {
     var TaskList = {
         current: null,
         init: function() {
-            var task = Store.getLocal("FOCUS_TIME_CURRENT");
+            var task = zen.store.getLocal("FOCUS_TIME_CURRENT");
             if (task) {
                 this.current = new Task(task);
             } else {
@@ -166,5 +166,5 @@ $(function() {
             });
         }
     }
-    Zen.ready(Service);
+    zen.page.ready(Service);
 })

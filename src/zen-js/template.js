@@ -1,4 +1,4 @@
-var Template = {
+zen.template = {
     select: function(data, sname) {
         var sdata = data[sname];
         if ($("select[name=" + sname + "]").length) {

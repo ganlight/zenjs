@@ -100,7 +100,7 @@
                     for (var i in types) {
                         var item = i;
                         var clone = $(".page-template .catalog-item").clone();
-                        Store.data(clone, types[i]);
+                        zen.store.data(clone, types[i]);
                         clone.find(".type_name").text(i);
                         clone.attr("data-type", i);
                         clone.find(".type_num").text(types[i].length);
@@ -119,8 +119,8 @@
                     for (var i = 0; i < data.length; i++) {
                         var item = data[i];
                         var clone = $(".page-template .article-item").clone();
-                        Store.data(clone, item);
-                        Template.values(clone, item);
+                        zen.store.data(clone, item);
+                        zen.template.values(clone, item);
                         self.bindArticle(clone);
                         parent.append(clone);
                     }
@@ -143,7 +143,7 @@
             bindArticle: function(clone) {
                 var self = this;
                 clone.click(function() {
-                    var data = Store.data(clone);
+                    var data = zen.store.data(clone);
                     if (data && data.id > -1) {
                         window.location.href = "#blog/article" + "?id=" + data.id;
                     }
@@ -163,6 +163,6 @@
                 });
             }
         }
-        Zen.ready(Service);
+        zen.page.ready(Service);
     })
 </script>

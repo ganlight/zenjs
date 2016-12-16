@@ -1,4 +1,4 @@
-views["blog/markdown/zenjs/about-zenjs.md"] = function() {/*
+Zen.views["blog/markdown/zenjs/about-zenjs.md"] = function() {/*
 
 # zenjs
 
@@ -88,7 +88,7 @@ var articles = [{
 }];
 ```
 */}
-views["blog/markdown/zenjs/install.md"] = function() {/*##Zenjs的安装使用
+Zen.views["blog/markdown/zenjs/install.md"] = function() {/*##Zenjs的安装使用
 
 ###获取zenjs
 https://github.com/ganlight/zenjs
@@ -156,7 +156,7 @@ src
 
 ```
 */}
-views["blog/markdown/zenjs/如何用zenjs写一个博客系统.md"] = function() {/*##如何用Zenjs写一个博客系统
+Zen.views["blog/markdown/zenjs/如何用zenjs写一个博客系统.md"] = function() {/*##如何用Zenjs写一个博客系统
 
 ##只需要一百来行代码就可以轻松完成
 -目录结构

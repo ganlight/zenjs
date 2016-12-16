@@ -1,4 +1,4 @@
-var Moment = {
+zen.monment = {
     init: function() {
         Date.prototype.format = function(fmt) {
             var o = {
@@ -40,4 +40,4 @@ var Moment = {
         return new Date(time).format("yyyy-MM-dd");
     }
 }
-Moment.init();
+zen.monment.init();

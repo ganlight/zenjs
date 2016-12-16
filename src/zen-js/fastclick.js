@@ -1,6 +1,9 @@
-//SimpleClick 参照weui中的的fastclick函数
-var SimpleClick = {
-    support: false,
+//zen.fastclick 参照weui中的的fastclick函数
+zen.fastclick = function() {
+    this.support = false;
+    // this.init();
+}
+zen.fastclick.prototype = {
     init: function() {
         this.support = this.check();
         this.bind();

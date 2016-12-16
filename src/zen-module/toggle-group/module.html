@@ -83,7 +83,7 @@
             for (var i = 0; i < data.length; i++) {
                 var item = data[i];
                 var clone = parent.find(".template-area .toggle-item").clone();
-                // Store.data(clone, item);
+                // zen.store.data(clone, item);
                 clone.data(item);
                 clone.text(item.name);
                 if (item.selected) {
@@ -96,23 +96,23 @@
         },
         add: function(obj) {
             var parent = this.ele;
-            // var data = Store.data(obj);
+            // var data = zen.store.data(obj);
             var data = obj.data();
             obj.remove();
             parent.find("*[data-type='selected'] .toggle-list").append(obj);
             data.selected = true;
-            // Store.data(obj, data);
+            // zen.store.data(obj, data);
             obj.data(data);
             this.addAction && this.addAction(data);
         },
         del: function(obj) {
             var parent = this.ele;
-            // var data = Store.data(obj);
+            // var data = zen.store.data(obj);
             var data = obj.data();
             obj.remove();
             parent.find("*[data-type='none'] .toggle-list").append(obj);
             data.selected = false;
-            // Store.data(obj, data);
+            // zen.store.data(obj, data);
             obj.data(data);
             this.addAction && this.delAction(data);
         },
@@ -120,7 +120,7 @@
             var self = this;
             if (clone) {
                 clone.click(function() {
-                    // var data = Store.data(clone);
+                    // var data = zen.store.data(clone);
                     var data = clone.data();
                     if (data.selected) {
                         self.del(clone);
