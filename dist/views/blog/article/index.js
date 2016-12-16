@@ -17,7 +17,7 @@ $(function() {
         },
         load: function(article) {
             var self = this;
-            var url = "views" + '["blog/markdown/' + article.file + '.md"]';
+            var url = "Zen.views" + '["blog/markdown/' + article.file + '.md"]';
             var data = zen.parse(eval(url));
             if (data) {
                 data = data.replace(/__block_head__/g, '/*').replace(/__block_foot__/g, "*\/");

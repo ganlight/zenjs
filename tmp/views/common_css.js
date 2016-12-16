@@ -1,6 +1,5 @@
 Zen.views.common_css = function() {/*<style>.zen-stack {
-    background: url("assets/img/background.jpg");
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background: #141E30;
+    background: linear-gradient(to left, #141E30, #243B55);
 }
 </style>*/}

@@ -202,7 +202,7 @@ zen.page = {
         //如果前面的zen-page沒有渲染好，需要等待
         this.delay(function() {
             service && service.init && service.init();
-            Zen.current = service || page;
+            zen.cur = service || page;
             console.log("***Zen ready : " + page);
         });
         console.timeEnd("ready");
