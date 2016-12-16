@@ -65,6 +65,7 @@ zen.page = {
             }
         }
         if (view) {
+            $(".zen-container").removeClass("mask-on nav-top nav-right");
             $(".zen-cur").html(view);
         }
         console.timeEnd("load_view");

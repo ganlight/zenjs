@@ -3,8 +3,8 @@
 道是万物之始的原发点，没有形名可寻。
 Zen无名可化万物,zm,zv,zen都是Zen下各个模块别名
 */
-var zm = Zen.module
-var zv = Zen.view
+var zm = Zen.modules
+var zv = Zen.views
 var zd = Zen.data
 var zt = Zen.template
 var zen = Zen.common

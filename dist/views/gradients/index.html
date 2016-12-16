@@ -1,0 +1,87 @@
+<style>
+    .zen-page {
+        max-width: none;
+    }
+
+    .card {
+        position: absolute;
+        width: 90%;
+        height: 90%;
+        background: #FFF;
+        top: 5%;
+        left: 5%;
+        border-radius: .5rem;
+    }
+</style>
+<div class="zen-page">
+    <div class="card v-center">
+        <div class="font24 name">card</div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        var Card = {
+            ele: null,
+            init: function() {
+                var $card = this.ele = $(".card");
+                this.change();
+                Card.reset($card);
+                $(window).resize(function() {
+                    Card.reset($card);
+                });
+                this.bind();
+            },
+            reset: function(ele, gap) {
+                if (!gap) {
+                    var gap = 15;
+                }
+                var width = window.innerWidth || document.body && document.body.clientWidth;
+                var height = window.innerHeight || document.body && document.body.clientHeight;
+                this.width = width - gap * 2;
+                this.height = height - gap * 2;
+                var style = {
+                    "width": width - gap * 2,
+                    "height": height - gap * 2,
+                    "left": gap,
+                    "top": gap
+                }
+                ele.css(style);
+            },
+            change: function() {
+                var gradients = zen.gradients;
+                var index = parseInt(Math.random() * gradients.length);
+                var item = gradients[index];
+                var style = {
+                    "background": item.colors[0],
+                    "background": "linear-gradient(to left, " + item.colors[0] + ", " + item.colors[1] + ")"
+                }
+                this.ele.find(".name").text(item.name);
+                this.ele.css(style);
+            },
+            bind: function() {
+                this.ele.click(function() {
+                    Card.change();
+                })
+            }
+        }
+        var Service = {
+            init: function() {
+                Card.init();
+            },
+            init_sidenav: function() {
+                $(".c-navmenu-banner .menu").click(function() {
+                    SideNav.toggle("right");
+                });
+                $(".c-navmenu-banner .logo").click(function() {
+                    SideNav.toggle("top");
+                });
+                $(".c-side-nav .c-ul li").click(function(e) {
+                    e.preventDefault();
+                    SideNav.close();
+                    zen.url.go($(this).attr("v-link"));
+                });
+            }
+        }
+        zen.page.ready(Service);
+    })
+</script>

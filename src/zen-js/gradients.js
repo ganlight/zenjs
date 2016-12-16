@@ -601,9 +601,7 @@ zen.gradients = [{
     }, {
         "name": "The Blue Lagoon",
         "colors": ["#43C6AC", "#191654"]
-    },
-
-    {
+    }, {
         "name": "Can You Feel The Love Tonight",
         "colors": ["#4568DC", "#B06AB3"]
     }, {
