@@ -94,7 +94,7 @@
             <div class="font14 ">color 1 : <span class="color1"></span></div>
             <div class="font14 ">color 2 : <span class="color2"></span></div>
         </div>
-        <div class="intro-field" v-link="http://uigradients.com/">
+        <div class="intro-field" v-link="#gradients/list">
             <img class="intro-logo" src="http://uigradients.com/assets/images/logo.png" alt="Ui Gradients">
             <div class="intro-text">Beautiful color gradients</div>
         </div>
@@ -103,7 +103,7 @@
               <i class="fa fa-info fa-fw green"></i>
             </span>
             <span class="about-detail">
-                <span class="">A little thing by <a href="http://twitter.com/_ighosh" id="twitter-link" target="_blank">@_ighosh</a></span>
+                <span class="yellow"><span v-link="http://uigradients.com/">Ui Gradients</span> by <span v-link="http://twitter.com/_ighosh" id="twitter-link" target="_blank">@_ighosh</span></span>
             <br><span class="">rewrite with zenjs by ganlight</span>
             </span>
         </div>
@@ -115,7 +115,8 @@
             ele: null,
             init: function() {
                 var $card = this.ele = $(".card");
-                this.change();
+                var color = zen.store.getLocal("COLOR");
+                this.change(color);
                 Card.reset($card);
                 $(window).resize(function() {
                     Card.reset($card);
@@ -138,10 +139,14 @@
                 }
                 ele.css(style);
             },
-            change: function() {
-                var gradients = zen.gradients;
-                var index = parseInt(Math.random() * gradients.length);
-                var item = gradients[index];
+            change: function(color) {
+                if (color && color.name) {
+                    var item = color;
+                } else {
+                    var gradients = zen.gradients;
+                    var index = parseInt(Math.random() * gradients.length);
+                    var item = gradients[index];
+                }
                 var style = {
                     "backgroundColor": item.colors[1],
                     "backgroundImage": "linear-gradient(to left, " + item.colors[0] + ", " + item.colors[1] + ")"

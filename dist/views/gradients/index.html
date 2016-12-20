@@ -18,6 +18,74 @@
         color: #FFF;
         margin: 1.5rem;
     }
+
+    .intro-field {
+        position: absolute;
+        width: 100%;
+        bottom: 30px;
+        text-align: center;
+        margin: 0 auto;
+        background: #FFF;
+        padding: 15px 0;
+    }
+
+    .intro-logo {
+        width: 110px;
+    }
+
+    .intro-text {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        color: #979292;
+        letter-spacing: .03rem;
+    }
+
+    .about-field {
+        position: absolute;
+        background: #FFF;
+        right: 0;
+        bottom: 50%;
+        color: #564141;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .about-field .about-toggle {
+        display: inline-block;
+        width: 50px;
+        text-align: center;
+        border-right: 1px solid #eee;
+        vertical-align: bottom;
+    }
+
+    .about-field .about-toggle i {
+        display: inline-block;
+        height: 16px;
+        width: 20px;
+        font-size: 16px;
+        padding: 17px;
+    }
+
+    .about-field .about-detail {
+        display: inline-block;
+        padding: 9px;
+        display: none;
+        transition: all 0.2s;
+    }
+
+    .on .about-detail {
+        display: inline-block;
+    }
+
+    .info-field {
+        position: absolute;
+        color: #FFF;
+        padding: 15px;
+        right: 0;
+        top: 0;
+        font-size: 1.6rem;
+    }
 </style>
 <div class="zen-page">
     <div class="card">
@@ -25,6 +93,19 @@
             <div class="font16 bold name lh30"></div>
             <div class="font14 ">color 1 : <span class="color1"></span></div>
             <div class="font14 ">color 2 : <span class="color2"></span></div>
+        </div>
+        <div class="intro-field" v-link="http://uigradients.com/">
+            <img class="intro-logo" src="http://uigradients.com/assets/images/logo.png" alt="Ui Gradients">
+            <div class="intro-text">Beautiful color gradients</div>
+        </div>
+        <div class="about-field">
+            <span class="about-toggle">
+              <i class="fa fa-info fa-fw green"></i>
+            </span>
+            <span class="about-detail">
+                <span class="">A little thing by <a href="http://twitter.com/_ighosh" id="twitter-link" target="_blank">@_ighosh</a></span>
+            <br><span class="">rewrite with zenjs by ganlight</span>
+            </span>
         </div>
     </div>
 </div>
@@ -62,21 +143,9 @@
                 var index = parseInt(Math.random() * gradients.length);
                 var item = gradients[index];
                 var style = {
-                        "backgroundColor": item.colors[1],
-                        "backgroundImage": "linear-gradient(to left, " + item.colors[0] + ", " + item.colors[1] + ")"
-                    }
-                    // var from = item.colors[0];
-                    // var to = item.colors[1];
-                    // var style = {
-                    //     'backgroundColor': to,
-                    //     'backgroundImage': [
-                    //         'linear-gradient(to left,' + from + ',' + to + ')',
-                    //         '-webkit-linear-gradient(to left,' + from + ',' + to + ')',
-                    //         '-moz-linear-gradient(to left,' + from + ',' + to + ')',
-                    //         '-ms-linear-gradient(to left,' + from + ',' + to + ')',
-                    //         '-o-linear-gradient(to left,' + from + ',' + to + ')'
-                    //     ]
-                    // };
+                    "backgroundColor": item.colors[1],
+                    "backgroundImage": "linear-gradient(to left, " + item.colors[0] + ", " + item.colors[1] + ")"
+                }
                 this.ele.find(".name").text(item.name);
                 this.ele.find(".color1").text(item.colors[0]);
                 this.ele.find(".color2").text(item.colors[1]);
@@ -91,18 +160,13 @@
         var Service = {
             init: function() {
                 Card.init();
+                this.bind();
             },
-            init_sidenav: function() {
-                $(".c-navmenu-banner .menu").click(function() {
-                    SideNav.toggle("right");
-                });
-                $(".c-navmenu-banner .logo").click(function() {
-                    SideNav.toggle("top");
-                });
-                $(".c-side-nav .c-ul li").click(function(e) {
+            bind: function() {
+                $(".about-toggle").click(function(e) {
                     e.preventDefault();
-                    SideNav.close();
-                    zen.url.go($(this).attr("v-link"));
+                    e.stopPropagation();
+                    $(".about-field").toggleClass("on");
                 });
             }
         }

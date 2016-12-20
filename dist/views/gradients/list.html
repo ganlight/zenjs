@@ -1,0 +1,74 @@
+<style>
+    .zen-page {
+        max-width: none;
+    }
+
+    .gradients-item {
+        display: block;
+        padding: 60px 0;
+        text-align: center;
+        color: #FFF;
+        font-size: 1.6rem;
+        margin: 10px;
+    }
+</style>
+<div class="zen-page">
+    <ul class="gradients-list">
+
+    </ul>
+    <div class="page-template hide">
+        <li class="gradients-item ">
+            <span class="name"></span>
+        </li>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        var Gradients = {
+            data: null,
+            init: function() {
+                this.data = zen.gradients;
+                this.rend();
+            },
+            rend: function() {
+                var self = this;
+                var data = this.data;
+                var parent = $(".gradients-list");
+                for (var i = 0; i < data.length; i++) {
+                    var item = data[i];
+                    var clone = $(".page-template .gradients-item").clone();
+                    var style = {
+                        "backgroundColor": item.colors[1],
+                        "backgroundImage": "linear-gradient(to left, " + item.colors[0] + ", " + item.colors[1] + ")"
+                    }
+                    clone.find(".name").text(item.name);
+                    clone.css(style);
+                    zen.store.data(clone, item);
+                    zen.template.values(clone, item);
+                    self.bind(clone);
+                    parent.append(clone);
+                }
+            },
+            bind: function(clone) {
+                clone.click(function(e) {
+                    zen.url.go("#gradients");
+                });
+            }
+        }
+        var Service = {
+            init: function() {
+                Gradients.init();
+                this.bind();
+            },
+            bind: function() {
+                $(".about-toggle").click(function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $(".about-field").toggleClass("on");
+                });
+            }
+        }
+        zen.page.ready(Service);
+    })
+</script>
