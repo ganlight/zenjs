@@ -10,6 +10,7 @@
         color: #FFF;
         font-size: 1.6rem;
         margin: 10px;
+        transition: all 0.2s;
     }
 </style>
 <div class="zen-page">
@@ -52,6 +53,8 @@
             },
             bind: function(clone) {
                 clone.click(function(e) {
+                    var data = zen.store.data(clone);
+                    zen.store.setLocal("COLOR",data);
                     zen.url.go("#gradients");
                 });
             }

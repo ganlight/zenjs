@@ -1,0 +1,30 @@
+<style>
+
+</style>
+<div class="zen-page">
+    <div class="info"></div>
+</div>
+<script src="https://api.douban.com/v2/book/1220562" id="test" type="text/template"></script>
+<script type="text/javascript">
+    $(function() {
+        var Book = {
+            init: function() {
+                var url = "https://api.douban.com/v2/book/1220562";
+                // var url = "/assets/js/common.js";
+                // zen.cgi.ajax(url, {}, function(data) {
+                //     $(".info").text(data);
+                // });
+
+                // $(".info").load(url, function(data) { // $(".info").html(data); // })
+                //  $.getScript(url,function(data){alert(data);})
+
+            }
+        }
+        var Service = {
+            init: function() {
+                Book.init();
+            }
+        }
+        zen.page.ready(Service);
+    })
+</script>

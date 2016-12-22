@@ -6,21 +6,42 @@ zen.cgi = {
     //不同环境的配置，可设置为 DEV , PUB , TEST
     ENV: 'DEV',
     SET: {
-
+        PUBLIC: {
+            COACH_TYPE: 'public/coach/types',
+            COACH_LIST: 'public/coach/list',
+            COACH_DETAIL: 'public/coach/detail',
+            JOB_LIST: 'public/job/list',
+            JOB_DETAIL: 'public/job/detail'
+        },
+        TYPE: {
+            //用来设置不同环境的类型
+            DEV: 'get',
+            TEST: 'post',
+            PUB: 'post'
+        },
+        ROOT: {
+            //用来设置不同环境的API地址
+            DEV: '/assets/json/',
+            TEST: 'http://localhost/',
+            PUB: '/server/api/'
+        }
     },
     TYPE: function() {
-        var ajaxType = CGI.SET.TYPE[CGI.ENV] || "post";
+        var self = this;
+        var ajaxType = self.SET.TYPE[self.ENV] || "post";
         return ajaxType;
     },
     URL: function(module, name) {
+        var self = this;
         var suffix = "?t=" + new Date().getTime();
-        if (CGI.ENV == "PUB") {
+        if (self.ENV == "PUB") {
             suffix = ".php?t=" + new Date().getTime();
         }
-        return CGI.SET.ROOT[CGI.ENV] + CGI.SET[module][name] + suffix;
+        return self.SET.ROOT[CGI.ENV] + self.SET[module][name] + suffix;
     },
     ajax: function(url, data, success) {
-        var type = CGI.TYPE();
+        var self = this;
+        var type = self.TYPE();
         $.ajax({
             url: url,
             type: type,
@@ -32,7 +53,8 @@ zen.cgi = {
         });
     },
     ajaxModule: function(url, data, success) {
-        var type = CGI.TYPE();
+        var self = this;
+        var type = self.TYPE();
         $.ajax({
             url: url,
             type: type,
