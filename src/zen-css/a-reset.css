@@ -33,10 +33,6 @@ body {
     color: #333333;
 }
 
-a:focus {
-    outline: thin dotted;
-}
-
 a:active, a:hover {
     outline: 0;
 }
