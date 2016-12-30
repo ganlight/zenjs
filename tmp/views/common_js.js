@@ -1,14 +1,10 @@
-Zen.views.common_js = function() {/*<script>var App = {
+var App = {
     init: function() {
+        zen.dao.init();
         this.bind();
     },
     bind: function() {
-        $(".c-navmenu-banner .menu").click(function() {
-            $(".zen-container").toggleClass("nav-on");
-        });
     }
 }
 
-// App.init();
-// zen.dao.init();
-</script>*/}
+App.init();

@@ -19,18 +19,62 @@ var pkg = require('./package.json');
 var option = {
     base: 'src'
 };
+var html_opt = {
+    collapseWhitespace: true,
+    collapseBooleanAttributes: true,
+    removeComments: true,
+    removeEmptyAttributes: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    minifyJS: true,
+    minifyCSS: true
+};
 var dist = __dirname + '/dist';
 
-var path2name = function(path) {
-    var _path = path.split("/");
-    var name = "";
-    for (var i = 0; i < _path.length; i++) {
-        var item = _path[i];
-        if (item) {
-            name += '["' + item + '"]';
+var ZEN = {
+    path2name: function(path) {
+        var _path = path.split("/");
+        var name = "";
+        for (var i = 0; i < _path.length; i++) {
+            var item = _path[i];
+            if (item) {
+                name += '["' + item + '"]';
+            }
+        }
+        return name;
+    },
+    to_method: function(file, toname) {
+        var self = this;
+        var contents = file.contents.toString();
+        var _path = file.path.replace(/\\/g, "/");
+        var pos = _path.indexOf("views/") + 6;
+        var pathname = _path.substring(pos, _path.length);
+        var prefix = suffix = "";
+        if (!toname) {
+            var toname = "Zen.views" + '["' + pathname + '"]';
+        }
+        console.log("toname:" + toname);
+        if (pathname.indexOf(".css") > -1) {
+            prefix = toname + ' = function() {/*<style>';
+            suffix = '</style>*/}';
+        } else if (pathname.indexOf(".js") > -1) {
+            prefix = toname + ' = function() {/*<script>';
+            suffix = '</script>*/}'
+        } else {
+            prefix = toname + ' = function() {/*';
+            suffix = '*/}'
+        }
+        contents = prefix + this.encode(contents) + suffix;
+        return contents;
+    },
+    encode: function(contents) {
+        if (contents) {
+            contents = contents.replace(/\/\*/g, "__block_head__").replace(/\*\//g, "__block_foot__")
+            return contents;
+        } else {
+            return "";
         }
     }
-    return name;
 }
 
 gulp.task('zen:copy', function() {
@@ -62,16 +106,7 @@ gulp.task('zen:css', function() {
 });
 
 gulp.task('zen:html', function() {
-    var html_opt = {
-        collapseWhitespace: true,
-        collapseBooleanAttributes: true,
-        removeComments: true,
-        removeEmptyAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        minifyJS: true,
-        minifyCSS: true
-    };
+
     return gulp.src('src/zen-module/*/index.html', option)
         .pipe(htmlmin(html_opt))
         .pipe(concat('zen.html'))
@@ -89,13 +124,13 @@ gulp.task('zen:combine', ['zen:js', 'zen:css', 'zen:html'], function() {
                 var toname = "Zen.css";
                 var prefix = toname + ' = function() {/*<style>';
                 var suffix = '</style>*/}';
-                contents = prefix + contents + suffix;
+                contents = prefix + ZEN.encode(contents) + suffix;
                 file.contents = new Buffer(contents);
             } else if (pathname.indexOf("zen.html") > -1) {
                 var toname = "Zen.modules";
                 var prefix = toname + ' = function() {/*';
                 var suffix = '*/}';
-                contents = prefix + contents + suffix;
+                contents = prefix + ZEN.encode(contents) + suffix;
                 file.contents = new Buffer(contents);
             }
         }))
@@ -107,29 +142,12 @@ gulp.task('zen:combine', ['zen:js', 'zen:css', 'zen:html'], function() {
 });
 
 gulp.task('views:html', function() {
-    var html_opt = {
-        collapseWhitespace: true,
-        collapseBooleanAttributes: true,
-        removeComments: true,
-        removeEmptyAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        minifyJS: true,
-        minifyCSS: true
-    };
     return gulp.src('src/views/**/*.html', option)
         .pipe(htmlmin(html_opt))
         .pipe(tap(function(file) {
             var dir = path.dirname(file.path);
             console.log(file.path);
-            var contents = file.contents.toString();
-            var _path = file.path.replace(/\\/g, "/");
-            var pos = _path.indexOf("views/") + 6;
-            var pathname = _path.substring(pos, _path.length);
-            var toname = "Zen.views." + pathname.replace(/\//g, "__").replace(".html", "_html").replace(/-/g, "_");
-            var prefix = toname + ' = function() {/*';
-            var suffix = '*/}'
-            contents = prefix + contents + suffix;
+            var contents = ZEN.to_method(file);
             file.contents = new Buffer(contents);
         }))
         .pipe(concat('views_html.js'))
@@ -145,14 +163,7 @@ gulp.task('views:js', function() {
         .pipe(tap(function(file) {
             var dir = path.dirname(file.path);
             console.log(file.path);
-            var contents = file.contents.toString();
-            var _path = file.path.replace(/\\/g, "/");
-            var pos = _path.indexOf("views/") + 6;
-            var pathname = _path.substring(pos, _path.length);
-            var toname = "Zen.views." + pathname.replace(".js", "_js").replace(/\//g, "__").replace(/-/g, "_");
-            var prefix = toname + ' = function() {/*<script>';
-            var suffix = '</script>*/}'
-            contents = prefix + contents + suffix;
+            var contents = ZEN.to_method(file);
             file.contents = new Buffer(contents);
         }))
         .pipe(concat('views_js.js'))
@@ -171,14 +182,7 @@ gulp.task('views:css', function() {
         .pipe(tap(function(file) {
             var dir = path.dirname(file.path);
             console.log(file.path);
-            var contents = file.contents.toString();
-            var _path = file.path.replace(/\\/g, "/");
-            var pos = _path.indexOf("views/") + 6;
-            var pathname = _path.substring(pos, _path.length);
-            var toname = "Zen.views." + pathname.replace(".css", "_css").replace(/\//g, "__").replace(/-/g, "_");
-            var prefix = toname + ' = function() {/*<style>';
-            var suffix = '</style>*/}'
-            contents = prefix + contents + suffix;
+            var contents = ZEN.to_method(file);
             file.contents = new Buffer(contents);
         }))
         .pipe(concat('views_css.js'))
@@ -193,15 +197,7 @@ gulp.task('views:md', function() {
         .pipe(tap(function(file) {
             var dir = path.dirname(file.path);
             console.log(file.path);
-            var contents = file.contents.toString();
-            var _path = file.path.replace(/\\/g, "/");
-            var pos = _path.indexOf("views/") + 6;
-            var pathname = _path.substring(pos, _path.length);
-            var toname = "Zen.views" + '["' + pathname + '"]';
-            var prefix = toname + ' = function() {/*';
-            var suffix = '*/}'
-            contents = contents.replace(/\/\*/g, "__block_head__").replace(/\*\//g, "__block_foot__")
-            contents = prefix + contents + suffix;
+            var contents = ZEN.to_method(file);
             file.contents = new Buffer(contents);
         }))
         .pipe(concat('views_md.js'))
@@ -227,14 +223,6 @@ gulp.task('common:css', function() {
 gulp.task('common:js', function() {
     return gulp.src('src/assets/js/*.js', option)
         .pipe(concat('common_js.js'))
-        .pipe(tap(function(file) {
-            console.log(file.path);
-            var contents = file.contents.toString();
-            var prefix = "Zen.views.common_js" + ' = function() {/*<script>';
-            var suffix = '</script>*/}'
-            contents = prefix + contents + suffix;
-            file.contents = new Buffer(contents);
-        }))
         .pipe(gulp.dest('tmp/views'))
 });
 

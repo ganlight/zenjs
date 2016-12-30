@@ -29,8 +29,8 @@ zen.page = {
     getModule: function(type) {
         var module = "";
         var hash = zen.url.getHash() || "index";
-        var name = "Zen.views." + zen.url.pathname(hash) + "_" + type;
-        var name_index = "Zen.views." + zen.url.pathname(hash) + "__index_" + type;
+        var name = 'Zen.views["' + hash + "." + type + '"]';
+        var name_index = 'Zen.views["' + hash + "/index." + type + '"]';
         if (eval(name)) {
             module = zen.parse(eval(name));
             console.log("Zen module : " + name);
@@ -151,8 +151,8 @@ zen.page = {
                     head.append(clone);
                     item.remove();
                 } else {
-                    var script_name = zen.url.pathname(script_src).replace("views__", "Zen.views.");
-                    script = zen.parse(eval(script_name));
+                    // var script_name = zen.url.pathname(script_src).replace("views__", "Zen.views.");
+                    script = zen.content(script_src);
                     item.after(script);
                     item.remove();
                 }

@@ -1,4 +1,4 @@
-Zen.views.blog__config_js = function() {/*<script>var ZEN_ARTICLES = [{
+Zen.views["blog/config.js"] = function() {/*<script>var ZEN_ARTICLES = [{
     title: "Zenjs的安装使用",
     public: "2016-11-25 14:00",
     auther: "ganlight",
@@ -51,7 +51,7 @@ var ZENJS_BLOG = {
     }
 }
 </script>*/}
-Zen.views.focus_time__index_js = function() {/*<script>$(function() {
+Zen.views["focus-time/index.js"] = function() {/*<script>$(function() {
     var tomato = {
         work: 25,
         rest: 5,
@@ -222,7 +222,7 @@ Zen.views.focus_time__index_js = function() {/*<script>$(function() {
     zen.page.ready(Service);
 })
 </script>*/}
-Zen.views.todo__index_js = function() {/*<script>$(function() {
+Zen.views["todo/index.js"] = function() {/*<script>$(function() {
     var TodoData = {
         key: "ZENJS_TODO",
         get: function() {
@@ -406,7 +406,7 @@ Zen.views.todo__index_js = function() {/*<script>$(function() {
     zen.page.ready(Service);
 })
 </script>*/}
-Zen.views.blog__article__index_js = function() {/*<script>$(function() {
+Zen.views["blog/article/index.js"] = function() {/*<script>$(function() {
     var MarkDown = {
         converter: null,
         init: function() {
@@ -428,7 +428,7 @@ Zen.views.blog__article__index_js = function() {/*<script>$(function() {
             var url = "Zen.views" + '["blog/markdown/' + article.file + '.md"]';
             var data = zen.parse(eval(url));
             if (data) {
-                data = data.replace(/__block_head__/g, '/*').replace(/__block_foot__/g, "*\/");
+                data = data.replace(/__block_head__/g, '__block_head__').replace(/__block_foot__/g, "*\/");
                 self.rend(article, data);
             }
         },
@@ -491,7 +491,7 @@ Zen.views.blog__article__index_js = function() {/*<script>$(function() {
     zen.page.ready(Service);
 })
 </script>*/}
-Zen.views.example__multi_select__index_js = function() {/*<script>$(function() {
+Zen.views["example/multi-select/index.js"] = function() {/*<script>$(function() {
     var config_type = {
         ele: "m-type",
         data: [{
@@ -548,7 +548,7 @@ Zen.views.example__multi_select__index_js = function() {/*<script>$(function() {
     zen.page.ready(Service);
 })
 </script>*/}
-Zen.views.example__single_page__toggle_js = function() {/*<script>$(function() {
+Zen.views["example/single-page/toggle.js"] = function() {/*<script>$(function() {
     var config_type = {
         ele: "m-type",
         addAction: function(item) {
