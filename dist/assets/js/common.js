@@ -1,6 +1,6 @@
 var App = {
     init: function() {
-        zen.dao.init();
+        zen.init();
         this.bind();
     },
     bind: function() {

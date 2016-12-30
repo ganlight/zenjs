@@ -73,7 +73,6 @@ zen.page = {
                     head.append(clone);
                     item.remove();
                 } else {
-                    // var script_name = zen.url.pathname(script_src).replace("views__", "Zen.views.");
                     script = zen.content(script_src);
                     item.after(script);
                     item.remove();

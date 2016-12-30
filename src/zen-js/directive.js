@@ -3,15 +3,15 @@ zen.directive = {
         var app = $(".zen-container");
         app.find('*[v-zen]').each(function() {
             //对包含v-slot的加载特定id的代码块
-            var _this = $(this);
+            var self = $(this);
             var name = $(this).attr('v-zen');
             if (!name) return;
             var zen = $(".zen-modules .c-" + name).clone();
-            _this.html(zen);
+            self.html(zen);
         });
         $('*[v-insert]').each(function() {
             //对包含v-insert的加载html
-            var _this = $(this);
+            var self = $(this);
             var _insert = $(this).attr('v-insert');
             if (!_insert) return;
             var url = _insert + ".html";
@@ -21,16 +21,22 @@ zen.directive = {
                 async: false,
                 dataType: 'html',
                 success: function(data) {
-                    _this.html(data);
+                    self.html(data);
                 }
             });
         });
         $('*[v-slot]').each(function() {
             //对包含v-slot的加载特定id的代码块
-            var _this = $(this);
+            //对包含v-slot的加载特定id的代码块
+            var self = $(this);
             var _slot = $(this).attr('v-slot');
             if (!_slot) return;
-            _this.html($("#" + _slot));
+            if ($("#" + _slot).length) {
+                self.html($("#" + _slot));
+            } else {
+                var module = zen.content(_slot + ".html");
+                self.html(module);
+            }
         });
         $('*[v-send]').click(function() {
             //对包含v-send相关的控件，直接进行发送短信或语音验证码
