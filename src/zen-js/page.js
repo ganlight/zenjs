@@ -1,30 +1,16 @@
 //初始化页面
 zen.page = {
-    mode: "normal",
-    fastclick: false,
     animate: "",
     init: function() {
         console.time("load");
         delete Zen.current;
         var page = zen.url.getHash() || "index";
         console.log("###Zen enter : " + page);
-        this.enterAni(this.animate);
+        zen.animate.enter(this.animate);
         this.load_view();
         this.load_module();
         this.load_script();
         console.timeEnd("load");
-    },
-    enterAni: function(ani) {
-        if (!ani) {
-            return;
-        }
-        $('.zen-cur').addClass(ani + ' animated')
-            .one(
-                'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-                function() {
-                    $(this).removeClass(ani + ' animated');
-                }
-            );
     },
     getModule: function(type) {
         var module = "";
@@ -57,12 +43,7 @@ zen.page = {
             view += html;
         }
         if (js) {
-            if (this.isDebug == "debug") {
-                this.debug_script();
-            } else {
-                view += js;
-                this.debug_clear();
-            }
+            view += js;
         }
         if (view) {
             $(".zen-container").removeClass("mask-on nav-top nav-right");
@@ -72,66 +53,7 @@ zen.page = {
     },
     load_module: function() {
         console.time("load_module");
-        var app = $(".zen-container");
-        app.find('*[v-zen]').each(function() {
-            //对包含v-slot的加载特定id的代码块
-            var _this = $(this);
-            var name = $(this).attr('v-zen');
-            if (!name) return;
-            var zen = $(".zen-modules .c-" + name).clone();
-            _this.html(zen);
-        });
-        $('*[v-insert]').each(function() {
-            //对包含v-insert的加载html
-            var _this = $(this);
-            var _insert = $(this).attr('v-insert');
-            if (!_insert) return;
-            var url = _insert + ".html";
-            $.ajax({
-                url: url,
-                type: 'get',
-                async: false,
-                dataType: 'html',
-                success: function(data) {
-                    _this.html(data);
-                }
-            });
-        });
-        $('*[v-slot]').each(function() {
-            //对包含v-slot的加载特定id的代码块
-            var _this = $(this);
-            var _slot = $(this).attr('v-slot');
-            if (!_slot) return;
-            _this.html($("#" + _slot));
-        });
-        $('*[v-send]').click(function() {
-            //对包含v-send相关的控件，直接进行发送短信或语音验证码
-            //这里包含多个参数例如，regist,sms,fn
-            var _send = $(this).attr('v-send');
-            if (!_send) return;
-            var _para = _send.split(',')
-            zen.message.send(_para[0], _para[1], _para[2]);
-        });
-        $('*[v-select]').click(function() {
-            //对包含v-send相关的控件，直接进行发送短信或语音验证码
-            //这里包含多个参数例如，regist,sms
-            var _select = $(this).attr('v-select');
-            if (!_select) return;
-            zen.message.select('', _select);
-        });
-        $('*[v-toggle]').click(function() {
-            //对包含v-toggle相关的控件，直接进行绑定操作
-            var _toggle = $(this).attr('v-toggle');
-            if (!_toggle) return;
-            $("#" + _toggle).toggle();
-            $(this).toggleClass("selected");
-        });
-        $('*[v-link]').click(function() {
-            //对包含v-link相关的地址，直接绑定事件跳转
-            var _link = $(this).attr('v-link');
-            if (!_link) return;
-            window.location.href = _link;
-        });
+        zen.directive.init();
         $(".zen-page").attr("data-ready", "ready");
         console.timeEnd("load_module");
     },
@@ -158,32 +80,6 @@ zen.page = {
                 }
             }
         }
-    },
-    debug_clear: function() {
-        var head = $('head');
-        head.find("*[data-type='debug-script']").remove();
-    },
-    debug_script: function() {
-        //用于调试单页的script脚本(模块下的index.js)
-        var href = "views/" + zen.url.getHash() + "/index.js";
-        var head = $('head');
-        head.find("*[data-type='debug-script']").remove();
-        var clone = $('<script>').attr("type", "text/javascript");
-        clone.attr("src", href);
-        clone.attr("data-type", 'debug-script');
-        head.append(clone);
-    },
-    parse: function(fn) {
-        //这里面主要将html和js代码转化成js函数，通过这样的方式，可以获取里面的内容
-        //如果是多行文本采用下面的方式
-        // return fn.toString().split('\n').slice(1, -1).join('\n') + '\n';
-        if (typeof fn === 'function') {
-            var string = fn.toString();
-            if (string.length > 20) {
-                return string.slice(15, -3);
-            }
-        }
-        return;
     },
     delay: function(fn) {
         if ($(".zen-page").attr("data-ready") == "ready") {
