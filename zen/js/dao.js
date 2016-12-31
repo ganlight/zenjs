@@ -1,15 +1,14 @@
 //道为万物之始
 zen.dao = function() {
     var container = $(".zen-container");
-    this.isDebug = zen.store.gLocal("ZEN_DEBUG") || false;
-    if (Zen.modules) {
-        var modules = zen.parse(Zen.modules);
+    if (Zen.views.zen_modules) {
+        var modules = zen.parse(Zen.views.zen_modules);
         var moudles_div = $("<div>").addClass("zen-modules");
         moudles_div.append(modules);
         container.append(moudles_div);
     }
-    if (Zen.css) {
-        var css = zen.parse(Zen.css);
+    if (Zen.views.zen_css) {
+        var css = zen.parse(Zen.views.zen_css);
         $("title").after(css);
     }
     if (Zen.views.common_css) {

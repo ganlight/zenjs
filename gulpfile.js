@@ -43,15 +43,16 @@ var ZEN = {
         }
         return name;
     },
-    to_method: function(file, toname) {
+    to_method: function(file, name) {
         var self = this;
         var contents = file.contents.toString();
         var _path = file.path.replace(/\\/g, "/");
         var pos = _path.indexOf("views/") + 6;
         var pathname = _path.substring(pos, _path.length);
         var prefix = suffix = "";
-        if (!toname) {
-            var toname = "Zen.views" + '["' + pathname + '"]';
+        var toname = "Zen.views" + '["' + pathname + '"]';
+        if (name) {
+            toname = "Zen.views" + '["' + name + '"]';
         }
         console.log("toname:" + toname);
         if (pathname.indexOf(".css") > -1) {
@@ -109,20 +110,25 @@ gulp.task('zen:combine', ['zen:js', 'zen:css', 'zen:html'], function() {
     return gulp.src(['tmp/zen/zen.js', 'tmp/zen/zen.css', 'tmp/zen/zen.html'], option)
         .pipe(tap(function(file) {
             console.log(file.path);
-            var contents = file.contents.toString();
-            var pos = file.path.indexOf("views/");
-            var pathname = file.path.substring(pos, file.path.length);
-            if (pathname.indexOf("zen.css") > -1) {
-                var toname = "Zen.css";
-                var prefix = toname + ' = function() {/*<style>';
-                var suffix = '</style>*/}';
-                contents = prefix + ZEN.encode(contents) + suffix;
+            // var contents = file.contents.toString();
+            // var pos = file.path.indexOf("views/");
+            // var pathname = file.path.substring(pos, file.path.length);
+            if (file.path.indexOf("zen.css") > -1) {
+                // var toname = "Zen.css";
+                // var prefix = toname + ' = function() {/*<style>';
+                // var suffix = '</style>*/}';
+                // contents = prefix + ZEN.encode(contents) + suffix;
+                // file.contents = new Buffer(contents);
+
+                var contents = ZEN.to_method(file,"zen_css");
                 file.contents = new Buffer(contents);
-            } else if (pathname.indexOf("zen.html") > -1) {
-                var toname = "Zen.modules";
-                var prefix = toname + ' = function() {/*';
-                var suffix = '*/}';
-                contents = prefix + ZEN.encode(contents) + suffix;
+            } else if (file.path.indexOf("zen.html") > -1) {
+                // var toname = "Zen.modules";
+                // var prefix = toname + ' = function() {/*';
+                // var suffix = '*/}';
+                // contents = prefix + ZEN.encode(contents) + suffix;
+                // file.contents = new Buffer(contents);
+                var contents = ZEN.to_method(file,"zen_modules");
                 file.contents = new Buffer(contents);
             }
         }))
@@ -160,7 +166,9 @@ gulp.task('views:html', function() {
 
 gulp.task('views:js', function() {
     return gulp.src('src/views/**/*.js', option)
-        // .pipe(uglify())
+        .pipe(uglify().on('error', function(e) {
+            console.log(e);
+        }))
         .pipe(tap(function(file) {
             var dir = path.dirname(file.path);
             console.log(file.path);
@@ -196,7 +204,6 @@ gulp.task('views:css', function() {
 gulp.task('views:md', function() {
     return gulp.src('src/views/**/*.md', option)
         .pipe(tap(function(file) {
-            var dir = path.dirname(file.path);
             console.log(file.path);
             var contents = ZEN.to_method(file);
             file.contents = new Buffer(contents);
@@ -210,15 +217,13 @@ gulp.task('views:md', function() {
 
 gulp.task('common:css', function() {
     return gulp.src('src/assets/css/*.css', option)
-        .pipe(concat('common_css.js'))
+        .pipe(concat('common_css.css'))
         .pipe(tap(function(file) {
             console.log(file.path);
-            var contents = file.contents.toString();
-            var prefix = "Zen.views.common_css" + ' = function() {/*<style>';
-            var suffix = '</style>*/}'
-            contents = prefix + contents + suffix;
+            var contents = ZEN.to_method(file,"common_css");
             file.contents = new Buffer(contents);
         }))
+        .pipe(rename('common_css.js'))
         .pipe(gulp.dest('tmp/views'))
 });
 gulp.task('common:js', function() {
@@ -266,13 +271,8 @@ gulp.task('server', function() {
 });
 
 gulp.task('watch', ['release'], function() {
-    gulp.watch('src/assets/**/*', ['build:views']);
-    gulp.watch('src/views/**/*', ['build:views']);
-    gulp.watch('src/index.html', ['zen:copy']);
-    gulp.watch('src/blog/**/*', ['zen:copy']);
-    gulp.watch('src/zen-css/*.css', ['build:zen', 'release:zepto']);
-    gulp.watch('src/zen-js/*.js', ['build:zen', 'release:zepto']);
-    gulp.watch('src/zen-module/**/*', ['build:zen', 'release:zepto']);
+    gulp.watch('src/**/*', ['build:views']);
+    gulp.watch('zen/**/*', ['build:zen', 'release:zepto']);
 });
 
 // 参数说明

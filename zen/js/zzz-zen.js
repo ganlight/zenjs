@@ -7,4 +7,3 @@ var zm = Zen.modules
 var zv = Zen.views
 var zd = Zen.data
 var zt = Zen.template
-var zen = Zen.common
