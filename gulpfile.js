@@ -110,24 +110,10 @@ gulp.task('zen:combine', ['zen:js', 'zen:css', 'zen:html'], function() {
     return gulp.src(['tmp/zen/zen.js', 'tmp/zen/zen.css', 'tmp/zen/zen.html'], option)
         .pipe(tap(function(file) {
             console.log(file.path);
-            // var contents = file.contents.toString();
-            // var pos = file.path.indexOf("views/");
-            // var pathname = file.path.substring(pos, file.path.length);
             if (file.path.indexOf("zen.css") > -1) {
-                // var toname = "Zen.css";
-                // var prefix = toname + ' = function() {/*<style>';
-                // var suffix = '</style>*/}';
-                // contents = prefix + ZEN.encode(contents) + suffix;
-                // file.contents = new Buffer(contents);
-
                 var contents = ZEN.to_method(file,"zen_css");
                 file.contents = new Buffer(contents);
             } else if (file.path.indexOf("zen.html") > -1) {
-                // var toname = "Zen.modules";
-                // var prefix = toname + ' = function() {/*';
-                // var suffix = '*/}';
-                // contents = prefix + ZEN.encode(contents) + suffix;
-                // file.contents = new Buffer(contents);
                 var contents = ZEN.to_method(file,"zen_modules");
                 file.contents = new Buffer(contents);
             }

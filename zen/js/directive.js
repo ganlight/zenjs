@@ -31,7 +31,7 @@ zen.directive = {
             var self = $(this);
             var _slot = $(this).attr('v-slot');
             if (!_slot) return;
-            if ($("#" + _slot).length) {
+            if (document.getElementById(_slot)) {
                 self.html($("#" + _slot));
             } else {
                 var module = zen.content(_slot + ".html");
