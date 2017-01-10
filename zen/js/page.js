@@ -48,6 +48,8 @@ zen.page = {
         if (view) {
             $(".zen-container").removeClass("mask-on nav-top nav-right");
             $(".zen-cur").html(view);
+        } else {
+            window.location.hash = "index";
         }
         console.timeEnd("load_view");
     },

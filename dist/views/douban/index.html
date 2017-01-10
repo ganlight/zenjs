@@ -17,7 +17,15 @@
 
                 // $(".info").load(url, function(data) { // $(".info").html(data); // })
                 //  $.getScript(url,function(data){alert(data);})
-
+                var self =this;
+                var xhr = new XMLHttpRequest()
+                var self = this
+                xhr.open('GET', url)
+                xhr.onload = function () {
+                  self.commits = JSON.parse(xhr.responseText)
+                  console.log(self.commits[0].html_url)
+                }
+                xhr.send()
             }
         }
         var Service = {
