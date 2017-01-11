@@ -20,6 +20,6 @@ zen.dao = function() {
         $("head").append(common_js);
     }
     //创建一个zen-stack(zen-cur)
-    var zen_cur = $('<div>').addClass("zen-stack zen-cur");
+    var zen_cur = $('<div>').addClass("zen-stack zen-cur clearfix");
     container.append(zen_cur);
 }

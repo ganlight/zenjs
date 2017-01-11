@@ -38,6 +38,13 @@ zen.directive = {
                 self.html(module);
             }
         });
+        $('*[v-scroll]').click(function() {
+            //对包含v-send相关的控件，直接进行发送短信或语音验证码
+            //这里包含多个参数例如，regist,sms,fn
+            var _scroll = $(this).attr('v-scroll');
+            if (!_scroll) return;
+            zen.scroll.to(_scroll);
+        });
         $('*[v-send]').click(function() {
             //对包含v-send相关的控件，直接进行发送短信或语音验证码
             //这里包含多个参数例如，regist,sms,fn

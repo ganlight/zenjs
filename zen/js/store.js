@@ -8,7 +8,11 @@ zen.store = {
             }
         } else {
             var _data = clone.data("data");
-            return _data;
+            if (typeof(_data) == 'string') {
+                return JSON.parse(_data);
+            } else {
+                return _data;
+            }
         }
     },
     gData: function(item) {

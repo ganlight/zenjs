@@ -56,6 +56,7 @@ zen.page = {
     load_module: function() {
         console.time("load_module");
         zen.directive.init();
+        zen.resize();
         $(".zen-page").attr("data-ready", "ready");
         console.timeEnd("load_module");
     },
