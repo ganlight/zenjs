@@ -1,13 +1,13 @@
 zen.scroll = {
     to: function(ele, speed) {
         if (!speed) speed = 300;
-        if (!ele) {
+        if (ele.length > 0 && $(ele).length) {
             $("html,body").animate({
-                scrollTop: 0
+                scrollTop: $(ele).offset().top
             }, speed);
         } else {
-            if (ele.length > 0) $("html,body").animate({
-                scrollTop: $(ele).offset().top
+            $("html,body").animate({
+                scrollTop: 0
             }, speed);
         }
         return false;

@@ -1,11 +1,18 @@
 //道为万物之始
 zen.dao = function() {
     var container = $(".zen-container");
+
+    //创建一个zen-stack(zen-cur)
+    var zen_bg = $('<div>').addClass("zen-bg");
+    var zen_modules = $("<div>").addClass("zen-modules");
+    var zen_cur = $('<div>').addClass("zen-stack zen-cur clearfix");
+    container.append(zen_bg);
+    container.append(zen_modules);
+    container.append(zen_cur);
+
     if (Zen.views.zen_modules) {
         var modules = zen.parse(Zen.views.zen_modules);
-        var moudles_div = $("<div>").addClass("zen-modules");
-        moudles_div.append(modules);
-        container.append(moudles_div);
+        zen_modules.append(modules);
     }
     if (Zen.views.zen_css) {
         var css = zen.parse(Zen.views.zen_css);
@@ -19,7 +26,4 @@ zen.dao = function() {
         var common_js = zen.parse(Zen.views.common_js);
         $("head").append(common_js);
     }
-    //创建一个zen-stack(zen-cur)
-    var zen_cur = $('<div>').addClass("zen-stack zen-cur clearfix");
-    container.append(zen_cur);
 }
