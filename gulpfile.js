@@ -91,11 +91,13 @@ gulp.task('zen:js', function() {
 
 gulp.task('zen:css', function() {
     return gulp.src(['zen/css/*.css', 'zen/module/**/*.css'], option)
+        .pipe(sourcemaps.init())
         .pipe(nano({
             zindex: false
         }))
         .pipe(concat('zen.css'))
         .pipe(postcss([autoprefixer]))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('tmp/zen'))
 });
 

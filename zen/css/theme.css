@@ -1,0 +1,15 @@
+.color-a{
+  color: #333
+}
+
+.crumb-list .list-crumb-item {
+    color: #666;
+}
+
+.crumb-list .crumb {
+    color: #6886aa
+}
+
+.crumb-list .crumb:hover {
+    color: #6093bb
+}
