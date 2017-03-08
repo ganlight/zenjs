@@ -38,33 +38,44 @@
 
     .home-nav .nav-mid {
         height: 1px;
-        width: 40%;
+        width: 60%;
         background-color: #FFF;
         transform: rotate(-45%);
         -webkit-transform: rotate(-45deg);
         -moz-transform: rotate(-45deg);
         position: absolute;
-        left: 30%;
+        left: 20%;
     }
 
     .nav-top .nav-items {
-        border-left: 1px solid #eee;
+        border-left: 1px solid rgb(88, 103, 122);
         margin-left: 50px;
         padding: 15px 0;
+        width: 150px;
     }
 
     .nav-bot .nav-items {
-        border-right: 1px solid #eee;
+        border-right: 1px solid rgb(88, 103, 122);
         margin-right: 50px;
         padding: 15px 0;
+        width: 150px;
+        float: right;
     }
 
     .nav-items li {
         position: relative;
         display: block;
-        /*max-width: 300px;*/
+        /*max-width: 100px;*/
         line-height: 40px;
         padding: 0 25px;
+        transition: all 0.2s;
+        border-bottom: 2px solid transparent;
+    }
+
+    .nav-items li:hover {
+        color: #FFF;
+        border-bottom: 2px solid #FFF;
+        padding: 0 40px;
     }
 
     .home-nav .nav-bot {
@@ -77,7 +88,8 @@
         color: #FFF;
         font-size: 12px;
     }
-    footer.info a{
+
+    footer.info a {
         text-align: center;
         color: #FFF;
         font-size: 12px;
@@ -86,23 +98,29 @@
 <div class="zen-page v-center">
     <nav class="home-nav">
         <div class="nav-top">
+            <div class="text-right lh30 ">大道至简，衍化至繁</div>
             <div class="nav-line"></div>
             <span class="nav-btn">GANLIGHT</span>
-            <ul class="nav-items">
-                <li>BLOG</li>
-                <li>DESGIN</li>
-                <li>ABOUT</li>
-            </ul>
+            <div class="menu-box clearfix">
+                <ul class="nav-items">
+                    <li v-link="#/ganlight/blog">BLOG</li>
+                    <li v-link="#/ganlight/desgin">DESGIN</li>
+                    <li v-link="#/ganlight/about">ABOUT</li>
+                </ul>
+            </div>
         </div>
         <div class="nav-mid"></div>
         <div class="nav-bot">
-            <ul class="nav-items">
-                <li>INTRO</li>
-                <li>API</li>
-                <li>GITHUB</li>
-            </ul>
+            <div class="menu-box clearfix">
+                <ul class="nav-items">
+                    <li v-link="#/zenjs">INTRO</li>
+                    <li v-link="#/zenjs/api">API</li>
+                    <li v-link="#/zenjs/demo">DEMO</li>
+                </ul>
+            </div>
             <span class="nav-btn">ZENJS</span>
             <div class="nav-line"></div>
+            <div class="text-left lh30 ">大道无形，道法自然</div>
         </div>
     </nav>
     <footer class="info fix-bottom">
