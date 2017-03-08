@@ -1,7 +1,7 @@
 <style>
     .zen-stack {
         position: absolute;
-        top:0;
+        top: 0;
         left: 0;
         width: 100%;
         height: 100%;
@@ -13,94 +13,101 @@
         height: 100%;
     }
 
-    .c-navmenu-banner .title {
-        font-size: 1.6rem;
-        color: #FFF;
-    }
-
-    .c-navmenu-banner .menu {
-        cursor: pointer;
-    }
-
-    .c-navmenu-banner>div {
+    .home-nav {
         position: relative;
-        padding: 1.1rem 1.5rem;
-        font-size: 2rem;
-    }
-
-    .link-item {
-        height: 100px;
-        width: 64px;
         color: #FFF;
+        width: 80%;
+        margin: 0 auto;
     }
 
-    .link-item i {
-        font-size: 2.4rem;
+    .home-nav .nav-line {
+        height: 1px;
+        background-color: #FFF;
     }
 
-    .link-item .name {
-        line-height: 3rem;
-        font-size: 1.4rem;
-    }
-
-    .link-item .white-line {
-        height: .1rem;
-        background: #FFF;
-    }
-
-    .info {
-        margin: 65px auto 0;
-        color: #bfbfbf;
-        font-size: 1.2rem;
+    .home-nav .nav-btn {
+        display: inline-block;
+        font-size: 16px;
+        border: 1px solid #FFF;
+        line-height: 50px;
+        height: 50px;
+        width: 200px;
         text-align: center;
+        margin: -1px auto;
     }
 
-    .info p {
-        line-height: 1;
+    .home-nav .nav-mid {
+        height: 1px;
+        width: 40%;
+        background-color: #FFF;
+        transform: rotate(-45%);
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        position: absolute;
+        left: 30%;
     }
 
-    .info a {
-        color: inherit;
-        text-decoration: none;
+    .nav-top .nav-items {
+        border-left: 1px solid #eee;
+        margin-left: 50px;
+        padding: 15px 0;
     }
 
-    .info a:hover {
-        text-decoration: underline;
+    .nav-bot .nav-items {
+        border-right: 1px solid #eee;
+        margin-right: 50px;
+        padding: 15px 0;
+    }
+
+    .nav-items li {
+        position: relative;
+        display: block;
+        /*max-width: 300px;*/
+        line-height: 40px;
+        padding: 0 25px;
+    }
+
+    .home-nav .nav-bot {
+        position: relative;
+        text-align: right;
+    }
+
+    footer.info {
+        text-align: center;
+        color: #FFF;
+        font-size: 12px;
+    }
+    footer.info a{
+        text-align: center;
+        color: #FFF;
+        font-size: 12px;
     }
 </style>
 <div class="zen-page v-center">
-    <div class="c-navmenu-banner fix-top">
-        <div class="text-center clearfix">
-            <span class="logo fl"><i class="fa fa-paper-plane fa-fw white" ></i><span class="white ml10 font16">ZENJS</span></span>
-            <span class="title white"></span>
-            <span class="fr menu"><i class="fa fa-bars fa-fw white" ></i></span>
+    <nav class="home-nav">
+        <div class="nav-top">
+            <div class="nav-line"></div>
+            <span class="nav-btn">GANLIGHT</span>
+            <ul class="nav-items">
+                <li>BLOG</li>
+                <li>DESGIN</li>
+                <li>ABOUT</li>
+            </ul>
         </div>
-    </div>
-    <ul class="link-list">
-        <li class="link-item text-center" v-link="#example/index">
-            <div class=""><i class="fa fa-tree fa-fw white font32"></i></div>
-            <div class="name">MODULES</div>
-            <div class="white-line"></div>
-        </li>
-        <li class="link-item text-center" v-link="#blog/catalog">
-            <div class=""><i class="fa fa-bookmark fa-fw white font32"></i></div>
-            <div class="name">BLOG</div>
-            <div class="white-line"></div>
-        </li>
-        <li class="link-item text-center" v-link="https://github.com/ganlight/zenjs">
-            <div class=""><i class="fa fa-code fa-fw white"></i></div>
-            <div class="name ">GITHUB</div>
-            <div class="white-line"></div>
-        </li>
-        <li class="link-item text-center" v-link="#about">
-            <div class=""><i class="fa fa-inbox fa-fw white font32"></i></div>
-            <div class="name">ABOUT</div>
-            <div class="white-line"></div>
-        </li>
-    </ul>
+        <div class="nav-mid"></div>
+        <div class="nav-bot">
+            <ul class="nav-items">
+                <li>INTRO</li>
+                <li>API</li>
+                <li>GITHUB</li>
+            </ul>
+            <span class="nav-btn">ZENJS</span>
+            <div class="nav-line"></div>
+        </div>
+    </nav>
     <footer class="info fix-bottom">
-        <p>Zenjs Written by <a href="http://zenjs.cn">ganlight</a></p>
-        <p>© 2009-2016 zenjs.cn 版权所有 <a href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action">粤ICP备16113949号</a></p>
+        <div class="lh25">Design and Written by <a href="http://ganlight.com">ganlight</a></div>
+        <div class="mb15">© 2016-2017 ganlight.com 版权所有 <a href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action">粤ICP备16113949号</a></div>
     </footer>
 </div>
 <script type="text/javascript">
