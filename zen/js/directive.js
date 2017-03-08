@@ -38,6 +38,24 @@ zen.directive = {
                 self.html(module);
             }
         });
+        $('zen-slot').each(function() {
+            //对包含v-slot的加载特定id的代码块
+            //对包含v-slot的加载特定id的代码块
+            var self = $(this);
+            var _slot = $(this).attr('name');
+            if (!_slot) return;
+            if (document.getElementById(_slot)) {
+                self.html($("#" + _slot));
+            } else {
+                var module = zen.content(_slot);
+                if (module=="") {
+                    self.html("can not find zen-slot" + _slot + ",please check the path or the id is right.");
+                    return;
+                }
+                self.after(module);
+                self.remove();
+            }
+        });
         $('*[v-scroll]').click(function() {
             //对包含v-send相关的控件，直接进行发送短信或语音验证码
             //这里包含多个参数例如，regist,sms,fn

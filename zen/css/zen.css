@@ -7,6 +7,7 @@
     transition: all 0.2s;
 }
 
+
 /*.zen-container {
     position: absolute;
     width: 100%;
@@ -32,7 +33,6 @@
 
 .zen-page {
     position: relative;
-    max-width: 1024px;
     margin: 0 auto;
     width: 100%;
     min-height: 100%;
@@ -45,4 +45,26 @@
 
 .zen-module.show {
     display: block;
+}
+
+.container {
+    margin: 0 30px;
+}
+
+@media screen and (max-width: 980px) {
+    .container {
+        margin: 0 20px;
+    }
+}
+
+@media screen and (max-width: 736px) {
+    .container {
+        margin: 0 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        margin: 0 10px;
+    }
 }

@@ -103,9 +103,9 @@
             <span class="nav-btn">GANLIGHT</span>
             <div class="menu-box clearfix">
                 <ul class="nav-items">
-                    <li v-link="#/ganlight/blog">BLOG</li>
-                    <li v-link="#/ganlight/desgin">DESGIN</li>
-                    <li v-link="#/ganlight/about">ABOUT</li>
+                    <li v-link="#ganlight/blog/catalog">BLOG</li>
+                    <li v-link="#ganlight/desgin">DESGIN</li>
+                    <li v-link="#ganlight/about">ABOUT</li>
                 </ul>
             </div>
         </div>
@@ -113,9 +113,9 @@
         <div class="nav-bot">
             <div class="menu-box clearfix">
                 <ul class="nav-items">
-                    <li v-link="#/zenjs">INTRO</li>
-                    <li v-link="#/zenjs/api">API</li>
-                    <li v-link="#/zenjs/demo">DEMO</li>
+                    <li v-link="#zenjs">INTRO</li>
+                    <li v-link="#zenjs/api">API</li>
+                    <li v-link="#zenjs/demo">DEMO</li>
                 </ul>
             </div>
             <span class="nav-btn">ZENJS</span>
@@ -123,10 +123,7 @@
             <div class="text-left lh30 ">大道无形，道法自然</div>
         </div>
     </nav>
-    <footer class="info fix-bottom">
-        <div class="lh25">Design and Written by <a href="http://ganlight.com">ganlight</a></div>
-        <div class="mb15">© 2016-2017 ganlight.com 版权所有 <a href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action">粤ICP备16113949号</a></div>
-    </footer>
+    <zen-slot name="layout/footer.html"></zen-slot>
 </div>
 <script type="text/javascript">
     $(function() {

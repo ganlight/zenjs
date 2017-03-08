@@ -1,0 +1,43 @@
+<style>
+    .zen-stack {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #141E30;
+        background: linear-gradient(to left, #141E30, #243B55);
+    }
+
+    .zen-page {
+        height: 100%;
+    }
+
+</style>
+<div class="zen-page">
+    <zen-slot name="layout/menu.html"></zen-slot>
+    <zen-slot name="layout/footer.html"></zen-slot>
+</div>
+<script type="text/javascript">
+    $(function() {
+        var Service = {
+            init: function() {
+                this.init_sidenav();
+            },
+            init_sidenav: function() {
+                $(".c-navmenu-banner .menu").click(function() {
+                    SideNav.toggle("right");
+                });
+                $(".c-navmenu-banner .logo").click(function() {
+                    SideNav.toggle("top");
+                });
+                $(".c-side-nav .c-ul li").click(function(e) {
+                    e.preventDefault();
+                    SideNav.close();
+                    zen.url.go($(this).attr("v-link"));
+                });
+            }
+        }
+        zen.page.ready(Service);
+    })
+</script>

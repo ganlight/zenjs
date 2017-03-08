@@ -13,19 +13,19 @@
         height: 100%;
     }
 
-    .home-nav {
+    .menu-nav {
         position: relative;
         color: #FFF;
         width: 80%;
         margin: 0 auto;
     }
 
-    .home-nav .nav-line {
+    .menu-nav .nav-line {
         height: 1px;
         background-color: #FFF;
     }
 
-    .home-nav .nav-btn {
+    .menu-nav .nav-btn {
         display: inline-block;
         font-size: 16px;
         border: 1px solid #FFF;
@@ -36,7 +36,7 @@
         margin: -1px auto;
     }
 
-    .home-nav .nav-mid {
+    .menu-nav .nav-mid {
         height: 1px;
         width: 60%;
         background-color: #FFF;
@@ -78,7 +78,7 @@
         padding: 0 40px;
     }
 
-    .home-nav .nav-bot {
+    .menu-nav .nav-bot {
         position: relative;
         text-align: right;
     }
@@ -96,16 +96,16 @@
     }
 </style>
 <div class="zen-page v-center">
-    <nav class="home-nav">
+    <nav class="menu-nav">
         <div class="nav-top">
             <div class="text-right lh30 ">大道至简，衍化至繁</div>
             <div class="nav-line"></div>
             <span class="nav-btn">GANLIGHT</span>
             <div class="menu-box clearfix">
                 <ul class="nav-items">
-                    <li v-link="#ganlight/blog/catalog">BLOG</li>
-                    <li v-link="#ganlight/desgin">DESGIN</li>
-                    <li v-link="#ganlight/about">ABOUT</li>
+                    <li v-link="#/ganlight/blog">BLOG</li>
+                    <li v-link="#/ganlight/desgin">DESGIN</li>
+                    <li v-link="#/ganlight/about">ABOUT</li>
                 </ul>
             </div>
         </div>
@@ -113,9 +113,9 @@
         <div class="nav-bot">
             <div class="menu-box clearfix">
                 <ul class="nav-items">
-                    <li v-link="#zenjs">INTRO</li>
-                    <li v-link="#zenjs/api">API</li>
-                    <li v-link="#zenjs/demo">DEMO</li>
+                    <li v-link="#/zenjs">INTRO</li>
+                    <li v-link="#/zenjs/api">API</li>
+                    <li v-link="#/zenjs/demo">DEMO</li>
                 </ul>
             </div>
             <span class="nav-btn">ZENJS</span>
@@ -123,7 +123,10 @@
             <div class="text-left lh30 ">大道无形，道法自然</div>
         </div>
     </nav>
-    <zen-slot name="layout/footer.html"></zen-slot>
+    <footer class="info fix-bottom">
+        <div class="lh25">Design and Written by <a href="http://ganlight.com">ganlight</a></div>
+        <div class="mb15">© 2016-2017 ganlight.com 版权所有 <a href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action">粤ICP备16113949号</a></div>
+    </footer>
 </div>
 <script type="text/javascript">
     $(function() {
