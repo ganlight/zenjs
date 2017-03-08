@@ -7,4 +7,8 @@ h2 {
     margin: 0;
     line-height: 60px;
 }
+
+body {
+    background-color: rgba(31, 35, 36, 1);
+}
 </style>*/}

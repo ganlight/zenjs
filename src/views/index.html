@@ -17,6 +17,7 @@
         position: relative;
         color: #FFF;
         width: 80%;
+        max-width: 800px;
         margin: 0 auto;
     }
 
@@ -29,8 +30,8 @@
         display: inline-block;
         font-size: 16px;
         border: 1px solid #FFF;
-        line-height: 50px;
-        height: 50px;
+        line-height: 40px;
+        height: 40px;
         width: 200px;
         text-align: center;
         margin: -1px auto;
@@ -38,13 +39,14 @@
 
     .home-nav .nav-mid {
         height: 1px;
-        width: 60%;
+        width: 584px;
         background-color: #FFF;
         transform: rotate(-45%);
         -webkit-transform: rotate(-45deg);
         -moz-transform: rotate(-45deg);
         position: absolute;
-        left: 20%;
+        left: 50%;
+        margin-left: -292px;
     }
 
     .nav-top .nav-items {
@@ -96,7 +98,7 @@
     }
 </style>
 <div class="zen-page v-center">
-    <nav class="home-nav">
+    <nav class="home-nav clearfix">
         <div class="nav-top">
             <div class="text-right lh30 ">大道至简，衍化至繁</div>
             <div class="nav-line"></div>
@@ -128,22 +130,7 @@
 <script type="text/javascript">
     $(function() {
         var Service = {
-            init: function() {
-                this.init_sidenav();
-            },
-            init_sidenav: function() {
-                $(".c-navmenu-banner .menu").click(function() {
-                    SideNav.toggle("right");
-                });
-                $(".c-navmenu-banner .logo").click(function() {
-                    SideNav.toggle("top");
-                });
-                $(".c-side-nav .c-ul li").click(function(e) {
-                    e.preventDefault();
-                    SideNav.close();
-                    zen.url.go($(this).attr("v-link"));
-                });
-            }
+            init: function() {}
         }
         zen.page.ready(Service);
     })
