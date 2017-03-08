@@ -22,7 +22,7 @@
 
     .article-item {
         position: relative;
-        margin: 15px;
+        margin-bottom: 30px;
     }
 
     .article-item .title {
@@ -146,7 +146,7 @@
                 clone.click(function() {
                     var data = zen.store.data(clone);
                     if (data && data.id > -1) {
-                        window.location.href = "#blog/article" + "?id=" + data.id;
+                        window.location.href = "#ganlight/blog/article" + "?id=" + data.id;
                     }
                 })
             }
