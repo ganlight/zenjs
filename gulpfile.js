@@ -13,6 +13,7 @@ var gutil = require('gulp-util')
 var rename = require('gulp-rename');
 var htmlmin = require('gulp-htmlmin');
 var sourcemaps = require('gulp-sourcemaps');
+var cheerio = require('gulp-cheerio');
 var browserSync = require('browser-sync');
 var pkg = require('./package.json');
 
