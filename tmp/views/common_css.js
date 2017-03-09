@@ -11,4 +11,19 @@ h2 {
 body {
     background-color: rgba(31, 35, 36, 1);
 }
+
+@media screen and (max-width: 980px) {
+}
+
+@media screen and (max-width: 736px) {
+    .menu-nav {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .menu-nav {
+        display: none;
+    }
+}
 </style>*/}
