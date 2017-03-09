@@ -1,10 +1,14 @@
 <style>
     .nav-slogan {
         color: #FFF;
+        padding-top: 30px;
     }
 
     .menu-nav {
-        position: relative;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
         color: #FFF;
         transition: all 0.2s;
         background-color: #141E30;
@@ -42,6 +46,27 @@
         margin-left: -30px;
     }
 
+    .menu-nav .nav-logo {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        left: 50%;
+        top: -20px;
+        margin-left: -20px;
+        transition: all 0.2s;
+        cursor: pointer;
+        opacity: 0.6;
+    }
+
+    .menu-nav .nav-logo:hover {
+        width: 60px;
+        height: 60px;
+        left: 50%;
+        top: -30px;
+        margin-left: -30px;
+        opacity: 1;
+    }
+
     .menu-nav .nav-items {
         display: inline-block;
     }
@@ -75,41 +100,48 @@
     .menu-nav.show-menu {
         position: fixed;
         width: 100%;
-        top: 0;
+        top: -66px;
         left: 0;
         z-index: 100;
     }
+
+    .show-menu .nav-logo{
+        top: 0px;
+    }
+
+    .nav-margin {
+        height: 150px;
+    }
 </style>
-<div class="nav-slogan clearfix">
-    <div class="container">
-        <span class="fl lh30 ">大道至简，衍化至繁</span>
-        <span class="fr lh30 ">大道无形，道法自然</span>
-    </div>
-</div>
 <nav class="menu-nav inline">
     <div class="container">
+        <div class="nav-slogan clearfix">
+            <span class="fl lh30 ">大道至简，衍化至繁</span>
+            <span class="fr lh30 ">大道无形，道法自然</span>
+        </div>
         <div class="nav-line mt5">
-            <div class="nav-mid"></div>
+            <!-- <div class="nav-mid"></div> -->
+            <img src="assets/img/zen-logo.png" alt="" class="nav-logo" v-link="#index">
         </div>
         <div class="nav-left span6">
             <span class="nav-btn">GANLIGHT</span>
             <ul class="nav-items">
-                <li v-link="#/ganlight/blog">BLOG</li>
-                <li v-link="#/ganlight/desgin">DESGIN</li>
-                <li v-link="#/ganlight/about">ABOUT</li>
+                <li v-link="#ganlight/blog/catalog">BLOG</li>
+                <li v-link="#ganlight/desgin">DESGIN</li>
+                <li v-link="#ganlight/about">ABOUT</li>
             </ul>
         </div>
         <div class="nav-right span6">
             <ul class="nav-items">
-                <li v-link="#/zenjs">INTRO</li>
-                <li v-link="#/zenjs/api">API</li>
-                <li v-link="#/zenjs/demo">DEMO</li>
+                <li v-link="#zenjs">INTRO</li>
+                <li v-link="#zenjs/api">API</li>
+                <li v-link="#zenjs/demo">DEMO</li>
             </ul>
             <span class="nav-btn">ZENJS</span>
         </div>
     </div>
 </nav>
-
+<div class="nav-margin"></div>
 <script type="text/javascript">
     $(function() {
         var Menu = {
