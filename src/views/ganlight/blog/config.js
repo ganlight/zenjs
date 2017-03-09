@@ -15,13 +15,13 @@ var ZEN_ARTICLES = [{
     section: "begin",
     file: "zenjs/about-zenjs"
 }, {
-    title: "如何用zenjs写一个博客系统",
+    title: "如何用nodejs爬取一个网站的内容",
     desc: "Zenjs的安装使用Zenjs的安装使用Zenjs的安装使用Zenjs的安装使用Zenjs的安装使用Zenjs的安装使用Zenjs的安装使用",
     public: "2016-11-25 14:00",
     auther: "ganlight",
     type: "zenjs 3",
     section: "begin",
-    file: "zenjs/如何用zenjs写一个博客系统"
+    file: "zenjs/如何用nodejs爬取一个网站的内容"
 }, {
     title: "Zenjs的安装使用",
     desc: "Zenjs的安装使用Zenjs的安装使用Zenjs的安装使用Zenjs的安装使用Zenjs的安装使用Zenjs的安装使用Zenjs的安装使用",

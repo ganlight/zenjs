@@ -5,19 +5,19 @@ $(function() {
             if (showdown && showdown.Converter) {
                 this.converter = new showdown.Converter();
             } else {
-                $(".title").html("暂不支持markdown");
+                $(".article-title").html("暂不支持markdown");
             }
         },
         rend: function(article, data) {
             if (this.converter && data) {
                 var html = this.converter.makeHtml(data);
-                $(".title").html(article.title);
+                $(".article-title").html(article.title);
                 $(".markdown-area").html(html).show();
             }
         },
         load: function(article) {
             var self = this;
-            var url = "Zen.views" + '["blog/markdown/' + article.file + '.md"]';
+            var url = "Zen.views" + '["markdown/' + article.file + '.md"]';
             var data = zen.parse(eval(url));
             if (data) {
                 data = data.replace(/__block_head__/g, '/*').replace(/__block_foot__/g, "*\/");
@@ -26,7 +26,7 @@ $(function() {
         },
         load_file: function(article) {
             var self = this;
-            var url = "blog/" + article.type + "/" + article.file + ".md";
+            var url = "ganlight/blog/" + article.type + "/" + article.file + ".md";
             $.ajax({
                 url: url,
                 type: 'get',

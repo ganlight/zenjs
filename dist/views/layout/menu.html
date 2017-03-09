@@ -1,6 +1,6 @@
 <style>
-    .zen-page {
-        height: 100%;
+    .nav-slogan {
+        color: #FFF;
     }
 
     .menu-nav {
@@ -78,17 +78,15 @@
         left: 0;
         z-index: 100;
     }
-
-    .menu-nav.show-menu .nav-top {
-        display: none;
-    }
 </style>
+<div class="nav-slogan clearfix">
+    <div class="container">
+        <span class="fl lh30 ">大道至简，衍化至繁</span>
+        <span class="fr lh30 ">大道无形，道法自然</span>
+    </div>
+</div>
 <nav class="menu-nav inline">
     <div class="container">
-        <div class="nav-top clearfix">
-            <span class="fl lh30 ">大道至简，衍化至繁</span>
-            <span class="fr lh30 ">大道无形，道法自然</span>
-        </div>
         <div class="nav-line mt5">
             <div class="nav-mid"></div>
         </div>
@@ -116,7 +114,7 @@
         var Menu = {
             init: function() {
                 $(window).scroll(function() {
-                    if ($(window).scrollTop() > 65) {
+                    if ($(window).scrollTop() > $(".nav-slogan").height()) {
                         $(".menu-nav").addClass("show-menu");
                     } else {
                         $(".menu-nav").removeClass("show-menu");

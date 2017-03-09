@@ -8,15 +8,18 @@
         background: #141E30;
         background: linear-gradient(to left, #141E30, #243B55);
     }
+
     .zen-page {
         height: 100%;
     }
+
     .banner-area {
         line-height: 5rem;
         bottom: -0.1rem;
     }
 
-    .banner-area .pre-btn, .banner-area .next-btn {
+    .banner-area .pre-btn,
+    .banner-area .next-btn {
         background: currentColor;
     }
 
@@ -31,31 +34,38 @@
         margin-bottom: 50px;
         padding: 1rem;
         display: none;
-        color: rgb(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.8);
         /*border-bottom: 1px solid #d9d9d9;
         -ms-box-shadow: 0 1px 6px #ccc;
         -o-box-shadow: 0 1px 6px #ccc;
         box-shadow: 0 1px 6px #ccc;*/
     }
 
-    .title {
-        display: inline-block;
-        font-size: 18px;
-        color: rgba(155, 140, 103, 1);
-        border-bottom: 1px dashed rgba(155, 140, 103, 1);
-        line-height: 40px;
-        height: 40px;
+    .article-title {
+        font-size: 36px;
+        font-weight: 200;
+        color: rgba(255, 255, 255, 0.8);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+        margin: 0 auto;
+        line-height: 80px;
         margin-bottom: 10px;
+        max-width: 900px;
     }
 
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-weight: 300;
+    }
 </style>
 <div class="zen-page ">
     <zen-slot name="layout/menu.html"></zen-slot>
     <div class="container">
-        <!-- <span class="title"></span> -->
+        <div class="article-title"></div>
         <div class="markdown-area content"></div>
     </div>
     <zen-slot name="layout/footer.html"></zen-slot>
 </div>
-<script v-script="views/blog/config.js"></script>
+<script v-script="views/markdown/config.js"></script>
 <!-- <script v-script="//cdn.bootcss.com/showdown/1.5.0/showdown.min.js"></script> -->
