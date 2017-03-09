@@ -15,3 +15,17 @@
     <div class="lh25">Design and Written by <a href="http://ganlight.com">ganlight</a></div>
     <div class="mb15">© 2016-2017 ganlight.com 版权所有 <a href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action">粤ICP备16113949号</a></div>
 </footer>
+<script type="text/javascript">
+    $(function() {
+        var Footer = {
+            init: function() {
+                if ($(window).height() > 600) {
+                    $('footer').addClass("fix-bottom");
+                } else {
+                    $('footer').removeClass("fix-bottom");
+                }
+            }
+        }
+        Footer.init();
+    })
+</script>
