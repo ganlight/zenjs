@@ -68,55 +68,21 @@
 <script type="text/javascript">
     $(function() {
         var Catalog = {
+            library: null,
             articles: [],
-            types: {},
-            sections: null,
             map: {},
             init: function() {
-                if (ZEN_ARTICLES) {
-                    this.articles = ZEN_ARTICLES;
-                    this.pre();
-                    this.rendType(this.types);
-                    this.rendArticles(this.articles);
+                if (BOOK_LIBRARY) {
+                    this.library = BOOK_LIBRARY;
+                    this.rend_books(this.library.booklist);
                 }
                 $("footer").removeClass("fix-bottom");
             },
-            pre: function() {
+            rend_books: function(books) {
                 var self = this;
-                if (this.articles && this.articles.length > 0) {
-                    var len = this.articles.length;
-                    var data = this.articles;
-                    for (var i = 0; i < data.length; i++) {
-                        var item = data[i];
-                        item.id = i;
-                        if (!self.types[item.type]) {
-                            self.types[item.type] = [];
-                        }
-                        self.types[item.type].push(item);
-                    }
-                }
-            },
-            rendType: function(types) {
-                var self = this;
-                if (types) {
-                    var parent = $(".catalog-list");
-                    for (var i in types) {
-                        var item = i;
-                        var clone = $(".page-template .catalog-item").clone();
-                        zen.store.data(clone, types[i]);
-                        clone.find(".type_name").text(i);
-                        clone.attr("data-type", i);
-                        clone.find(".type_num").text(types[i].length);
-                        self.bindType(clone);
-                        parent.append(clone);
-                    }
-                }
-            },
-            rendArticles: function(articles) {
-                var self = this;
-                if (articles && articles.length > 0) {
-                    var len = articles.length;
-                    var data = articles;
+                if (books && books.length > 0) {
+                    var len = books.length;
+                    var data = books;
                     var parent = $(".articles-area");
                     parent.empty();
                     for (var i = 0; i < data.length; i++) {
@@ -124,31 +90,17 @@
                         var clone = $(".page-template .article-item").clone();
                         zen.store.data(clone, item);
                         zen.template.values(clone, item);
-                        self.bindArticle(clone);
+                        self.bind_item(clone);
                         parent.append(clone);
                     }
                 }
             },
-            get: function(type, file) {
-                var item = this.map[type + "/" + file] || "";
-                return item;
-            },
-            bindType: function(clone) {
-                var self = this;
-                clone.click(function() {
-                    var type = $(this).attr("data-type");
-                    if (type) {
-                        var articles = self.types[type];
-                        self.rendArticles(articles);
-                    }
-                });
-            },
-            bindArticle: function(clone) {
+            bind_item: function(clone) {
                 var self = this;
                 clone.click(function() {
                     var data = zen.store.data(clone);
-                    if (data && data.id > -1) {
-                        window.location.href = "#ganlight/blog/article" + "?id=" + data.id;
+                    if (data && data.hash) {
+                        window.location.href = "#ganlight/blog/article" + "?id=" + data.hash;
                     }
                 })
             }

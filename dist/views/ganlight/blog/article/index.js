@@ -17,43 +17,25 @@ $(function() {
         },
         load: function(article) {
             var self = this;
-            var url = "Zen.views" + '["markdown/' + article.file + '.md"]';
-            var data = zen.parse(eval(url));
+            var path = "markdown/" + article.file + ".md";
+            console.log(path);
+            var data = zen.content(path);
             if (data) {
-                data = data.replace(/__block_head__/g, '/*').replace(/__block_foot__/g, "*\/");
                 self.rend(article, data);
             }
-        },
-        load_file: function(article) {
-            var self = this;
-            var url = "ganlight/blog/" + article.type + "/" + article.file + ".md";
-            $.ajax({
-                url: url,
-                type: 'get',
-                async: false,
-                dataType: 'html',
-                success: function(data) {
-                    $(".catalog-area").hide();
-                    $(".markdown-area").show();
-                    self.rend(article, data);
-                },
-                error: function(e) {
-                    $(".markdown-area").hide();
-                    $(".catalog-area").show();
-                    zen.message.toast("当前文章" + article.file + "不存在，请返回其他文章");
-                }
-            });
         }
     }
     var Service = {
         id: 0,
         init: function() {
             MarkDown.init();
-            var id = this.id = parseInt(zen.url.getPar("id")) || 0;
-            if (ZEN_ARTICLES && ZEN_ARTICLES[id]) {
-                MarkDown.load(ZEN_ARTICLES[id]);
+            var id = this.id = zen.url.getPar("id");
+            var book = BOOK_LIBRARY.query(id);
+            console.log(book);
+            if (book) {
+                MarkDown.load(book);
             } else {
-                window.location.href = "#blog/article?id=0";
+                // window.location.href = "#ganlight/blog/catalog";
             }
             this.bind();
         },
