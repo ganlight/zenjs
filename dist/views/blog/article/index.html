@@ -1,18 +1,81 @@
+<style>
+    .zen-stack {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #141E30;
+        background: linear-gradient(to left, #141E30, #243B55);
+    }
+
+    .zen-page {
+        height: 100%;
+    }
+
+    .banner-area {
+        line-height: 5rem;
+        bottom: -0.1rem;
+    }
+
+    .banner-area .pre-btn,
+    .banner-area .next-btn {
+        background: currentColor;
+    }
+
+    .banner-area .catalog-type {
+        background: cadetblue;
+    }
+
+    .markdown-area {
+        position: relative;
+        margin: 0 auto;
+        max-width: 900px;
+        margin-bottom: 50px;
+        padding: 1rem;
+        display: none;
+        color: rgba(255, 255, 255, 0.8);
+        /*border-bottom: 1px solid #d9d9d9;
+        -ms-box-shadow: 0 1px 6px #ccc;
+        -o-box-shadow: 0 1px 6px #ccc;
+        box-shadow: 0 1px 6px #ccc;*/
+    }
+
+    .article-title {
+        font-size: 36px;
+        font-weight: 200;
+        color: rgba(255, 255, 255, 0.8);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+        margin: 0 auto;
+        line-height: 80px;
+        margin-bottom: 10px;
+        max-width: 900px;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-weight: 300;
+    }
+
+    .markdown-area ul {
+        list-style: inherit;
+        margin-left: 20px;
+    }
+
+    .markdown-area ul li {
+        line-height: 2rem;
+        margin-bottom: 1.5rem;
+    }
+</style>
 <div class="zen-page ">
-    <div class="banner-area inline clearfix fix-bottom text-center">
-        <div class="pre-btn span3"><i class="fa fa-arrow-left fa-fw white"></i><span class="white ml5 ">上一篇</span></div>
-        <div class="catalog-type span6 white font16" v-link="#blog/catalog">目录</div>
-        <div class="next-btn span3"><span class="white mr5 ">下一篇</span><i class="fa fa-arrow-right fa-fw white"></i></div>
+    <zen-slot name="layout/menu.html"></zen-slot>
+    <div class="container">
+        <div class="article-title"></div>
+        <div class="markdown-area content"></div>
     </div>
-    <h2 class="font24 white text-center normal title"></h2>
-    <div class="markdown-area content"></div>
-    <div class="catalog-area"></div>
-    <div class="page-template hide">
-        <div class="list-item inline c-card clearfix">
-            <div class="font20 title"></div>
-            <div class="font16 gray "><span class="type"></span>/<span class="file"></span></div>
-        </div>
-    </div>
+    <zen-slot name="layout/footer.html"></zen-slot>
 </div>
-<script v-script="views/blog/config.js"></script>
+<script v-script="views/markdown/config.js"></script>
 <!-- <script v-script="//cdn.bootcss.com/showdown/1.5.0/showdown.min.js"></script> -->

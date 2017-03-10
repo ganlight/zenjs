@@ -24,7 +24,8 @@ pre {
 }
 
 pre code {
-    font-size: 1.2rem;
+    font-size: 12px;
+    line-height: 18px;
     padding: 0;
     background: transparent;
 }
@@ -33,16 +34,6 @@ sup {
     font-size: 0.83em;
     vertical-align: super;
     line-height: 0;
-}
-
-ul {
-    list-style: inherit;
-    margin-left: 20px;
-}
-
-ul li {
-    line-height: 2rem;
-    margin-bottom: 1.5rem;
 }
 
 * {

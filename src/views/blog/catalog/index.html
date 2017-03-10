@@ -1,119 +1,88 @@
 <style>
-    .banner-area {
-        line-height: 5rem;
-        z-index: 101;
+    .zen-stack {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #141E30;
+        background: linear-gradient(to left, #141E30, #243B55);
     }
 
-    .banner-area .back-btn {
-        background: currentColor;
-    }
-
-    .banner-area .catalog-area {
-        background: cadetblue;
+    .zen-page {
+        height: 100%;
     }
 
     .articles-area {
-        padding-top: 5rem;
+        margin: 0 auto;
+        max-width: 900px;
+        margin-top: 30px;
+        margin-bottom: 50px;
     }
 
-    .articles-area .article-item {
-        display: block;
-        margin: 1rem;
-        background: ghostwhite;
-        padding: 1rem;
+    .article-item {
+        position: relative;
+        margin-bottom: 30px;
     }
 
-    .articles-area .article-item .title {
-        padding-bottom: 5px;
+    .article-item .title {
+        display: inline-block;
+        font-size: 24px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 1);
+        border-bottom: 1px dashed rgba(255, 255, 255, .8);
+        line-height: 40px;
+        height: 40px;
+        margin-bottom: 10px;
     }
 
-    .catalog-area .catalog-list {
-        display: none;
-    }
-
-    .mask-on .catalog-list {
-        display: block;
+    .article-item .desc {
+        font-size: 14px;
+        color: #FFF;
+        line-height: 20px;
+        letter-spacing: 1px;
+        justify-content: center;
+        color: rgba(255, 255, 255, .6);
     }
 </style>
 <div class="zen-page">
-    <div class="banner-area inline clearfix fix-top text-center">
-        <div class="back-btn span4" v-link="#index">
-            <i class="fa fa-paper-plane fa-fw white"></i>
-            <span class="white ml10 font16">ZENJS</span>
-        </div>
-        <div class="catalog-area span8 white font16 ">
-            <div class="catalog-title">目录</div>
-            <ul class="catalog-list">
-
-            </ul>
-        </div>
-    </div>
-    <ul class="articles-area">
-    </ul>
-    <div class="page-template hide">
-        <div class="article-item">
-            <div class="font20 title"></div>
-            <div class="font16 gray ">
-                <span class="type"></span>/<span class="file"></span>
+    <zen-slot name="layout/menu.html"></zen-slot>
+    <div class="container">
+        <ul class="articles-area">
+        </ul>
+        <div class="page-template hide">
+            <div class="article-item" v-link="">
+                <span class="font20 title"></span>
+                <div class="font16 ">
+                    <span class="desc"></span>
+                </div>
+            </div>
+            <div class="catalog-item">
+                <span class="type_name"></span> <span class="type_num"></span>
             </div>
         </div>
-        <div class="catalog-item">
-            <span class="type_name"></span> <span class="type_num"></span>
-        </div>
     </div>
+    <zen-slot name="layout/footer.html"></zen-slot>
 </div>
-<script v-script="views/blog/config.js"></script>
+<script v-script="views/markdown/config.js"></script>
 <script type="text/javascript">
     $(function() {
         var Catalog = {
+            library: null,
             articles: [],
-            types: {},
-            sections: null,
             map: {},
             init: function() {
-                if (ZEN_ARTICLES) {
-                    this.articles = ZEN_ARTICLES;
-                    this.pre();
-                    this.rendType(this.types);
-                    this.rendArticles(this.articles);
+                if (BOOK_LIBRARY) {
+                    this.library = BOOK_LIBRARY;
+                    this.rend_books(this.library.booklist);
                 }
+                $("footer").removeClass("fix-bottom");
             },
-            pre: function() {
+            rend_books: function(books) {
                 var self = this;
-                if (this.articles && this.articles.length > 0) {
-                    var len = this.articles.length;
-                    var data = this.articles;
-                    for (var i = 0; i < data.length; i++) {
-                        var item = data[i];
-                        item.id = i;
-                        if (!self.types[item.type]) {
-                            self.types[item.type] = [];
-                        }
-                        self.types[item.type].push(item);
-                    }
-                }
-            },
-            rendType: function(types) {
-                var self = this;
-                if (types) {
-                    var parent = $(".catalog-list");
-                    for (var i in types) {
-                        var item = i;
-                        var clone = $(".page-template .catalog-item").clone();
-                        zen.store.data(clone, types[i]);
-                        clone.find(".type_name").text(i);
-                        clone.attr("data-type", i);
-                        clone.find(".type_num").text(types[i].length);
-                        self.bindType(clone);
-                        parent.append(clone);
-                    }
-                }
-            },
-            rendArticles: function(articles) {
-                var self = this;
-                if (articles && articles.length > 0) {
-                    var len = articles.length;
-                    var data = articles;
+                if (books && books.length > 0) {
+                    var len = books.length;
+                    var data = books;
                     var parent = $(".articles-area");
                     parent.empty();
                     for (var i = 0; i < data.length; i++) {
@@ -121,31 +90,17 @@
                         var clone = $(".page-template .article-item").clone();
                         zen.store.data(clone, item);
                         zen.template.values(clone, item);
-                        self.bindArticle(clone);
+                        self.bind_item(clone);
                         parent.append(clone);
                     }
                 }
             },
-            get: function(type, file) {
-                var item = this.map[type + "/" + file] || "";
-                return item;
-            },
-            bindType: function(clone) {
-                var self = this;
-                clone.click(function() {
-                    var type = $(this).attr("data-type");
-                    if (type) {
-                        var articles = self.types[type];
-                        self.rendArticles(articles);
-                    }
-                });
-            },
-            bindArticle: function(clone) {
+            bind_item: function(clone) {
                 var self = this;
                 clone.click(function() {
                     var data = zen.store.data(clone);
-                    if (data && data.id > -1) {
-                        window.location.href = "#blog/article" + "?id=" + data.id;
+                    if (data && data.hash) {
+                        window.location.href = "#blog/article" + "?id=" + data.hash;
                     }
                 })
             }

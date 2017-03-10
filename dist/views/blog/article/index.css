@@ -1,71 +1,41 @@
-code, pre {
-}
+code, pre {}
 
 code {
-   padding: 1px 3px;
-   -webkit-border-radius: 3px;
-   -moz-border-radius: 3px;
-   border-radius: 3px;
-   background: #334;
-   color: #FFF;
+    padding: 1px 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #334;
+    color: #FFF;
 }
 
 pre {
-   display: block;
-   padding: 14px;
-   margin: 0 0 18px;
-   line-height: 16px;
-   font-size: 1.4rem;
-   border: 1px solid #334;
-   white-space: pre;
-   white-space: pre-wrap;
-   word-wrap: break-word;
-   background-color: #282a36;
-   border-radius: 6px;
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 1.4rem;
+    border: 1px solid #334;
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background-color: #282a36;
+    border-radius: 6px;
 }
+
 pre code {
-   font-size: 1.2rem;
-   padding: 0;
-   background: transparent;
+    font-size: 12px;
+    line-height: 18px;
+    padding: 0;
+    background: transparent;
 }
+
 sup {
-   font-size: 0.83em;
-   vertical-align: super;
-   line-height: 0;
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
 }
-ul{
-  list-style: inherit;
-  margin-left: 20px;
-}
-ul li{
-  line-height: 2rem;
-  margin-bottom: 1.5rem;
-}
+
 * {
-	 -webkit-print-color-adjust: exact;
-}
-
-.banner-area {
-    line-height: 5rem;
-    bottom: -0.1rem;
-}
-
-.banner-area .pre-btn,
-.banner-area .next-btn {
-    background: currentColor;
-}
-
-.banner-area .catalog-type {
-    background: cadetblue;
-}
-
-.markdown-area {
-    position: relative;
-    background: #fff;
-    margin: 1rem 1rem 0;
-    border-radius: .3rem;
-    padding: 1rem;
-    margin-bottom: 6rem;
-    display: none;
-    color: #2c3e50;
+    -webkit-print-color-adjust: exact;
 }
