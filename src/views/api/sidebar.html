@@ -1,0 +1,94 @@
+<style>
+    .chapter-nav {
+        color: #FFF;
+        font-size: 16px;
+        max-width: 250px;
+        padding: 10px;
+        border-right: 1px solid #58677a;
+        position: fixed;
+    }
+
+    .chapter-nav .chapter-title {
+        font-size: 16px;
+        border-bottom: 1px solid #58677a;
+        line-height: 40px;
+        height: 40px;
+        padding-bottom: 5px;
+        min-width: 80%;
+        display: inline-block;
+        margin-top: 15px;
+        cursor: pointer;
+    }
+
+    .chapter-nav li {
+        line-height: 30px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+</style>
+<nav class="chapter-nav">
+
+</nav>
+<div class="template-area" style="display:none;">
+    <div class="chapter-item">
+        <span class="chapter-title"></span>
+        <ul>
+        </ul>
+    </div>
+</div>
+<script v-script="views/api/config.js"></script>
+<script>
+    $(function() {
+        var SideMenu = {
+            dom: null,
+            library: null,
+            init: function() {
+                if (BOOK_LIBRARY) {
+                    this.library = BOOK_LIBRARY;
+                    this.rend_main(this.library.bookshelf);
+                }
+            },
+            rend_main: function(data) {
+                console.log(data);
+                var self = this;
+                self.dom = $("<div>");
+                var len = data.length;
+                for (var i = 0; i < len; i++) {
+                    var item = data[i];
+                    var clone = $(".template-area .chapter-item").clone();
+                    clone.find(".chapter-title").text(item.catalog.name);
+                    self.rend_sub(clone, item.books);
+                    self.bind_main(clone);
+                    self.dom.append(clone);
+                }
+                $(".chapter-nav").append(self.dom);
+            },
+            bind_main: function(target) {
+                target.find(".chapter-title").click(function() {
+                    target.find("ul").toggle(300);
+                });
+            },
+            rend_sub: function(target, data) {
+                var self = this;
+                console.log(data);
+                var len = data.length;
+                for (var i = 0; i < len; i++) {
+                    var item = data[i];
+                    var clone = $("<li>");
+                    clone.text(item.title);
+                    zen.store.data(clone, item);
+                    self.bind_sub(clone);
+                    target.find("ul").append(clone);
+                }
+                return target;
+            },
+            bind_sub: function(target) {
+                target.click(function() {
+                    var data = zen.store.data(target);
+                    window.location.hash = "#api/index?catalog=" + data.catalog + "&hash=" + data.hash;
+                });
+            }
+        }
+        SideMenu.init();
+    })
+</script>

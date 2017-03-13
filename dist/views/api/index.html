@@ -1,0 +1,127 @@
+<style>
+    .markdown-area {
+        position: relative;
+        margin: 0 auto;
+        max-width: 900px;
+        margin-bottom: 50px;
+        padding: 1rem;
+        display: none;
+        color: rgba(255, 255, 255, 0.8);
+        /*border-bottom: 1px solid #d9d9d9;
+        -ms-box-shadow: 0 1px 6px #ccc;
+        -o-box-shadow: 0 1px 6px #ccc;
+        box-shadow: 0 1px 6px #ccc;*/
+    }
+
+    .article-title {
+        font-size: 36px;
+        font-weight: 200;
+        color: rgba(255, 255, 255, 0.8);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+        margin: 0 auto;
+        line-height: 80px;
+        margin-bottom: 10px;
+        max-width: 900px;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-weight: 300;
+    }
+
+    .markdown-area ul {
+        list-style: inherit;
+        margin-left: 20px;
+    }
+
+    .markdown-area ul li {
+        line-height: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .main-container{
+      margin-left: 300px;
+      position: relative;
+    }
+</style>
+<div class="zen-page">
+    <zen-slot name="layout/menu.html"></zen-slot>
+    <div class="container">
+        <zen-slot name="api/sidebar.html"></zen-slot>
+        <div class="main-container">
+            <div class="article-title"></div>
+            <div class="markdown-area content"></div>
+        </div>
+    </div>
+    <zen-slot name="layout/footer.html"></zen-slot>
+</div>
+<script>
+    $(function() {
+        var MarkDown = {
+            converter: null,
+            init: function() {
+                if (showdown && showdown.Converter) {
+                    this.converter = new showdown.Converter();
+                } else {
+                    $(".article-title").html("暂不支持markdown");
+                }
+            },
+            rend: function(article, data) {
+                if (this.converter && data) {
+                    var html = this.converter.makeHtml(data);
+                    $(".article-title").html(article.title);
+                    $(".markdown-area").html(html).show();
+                }
+            },
+            load: function(article) {
+                var self = this;
+                var path = "markdown/" + article.file + ".md";
+                console.log(path);
+                var data = zen.content(path);
+                if (data) {
+                    self.rend(article, data);
+                }
+            }
+        }
+        var Service = {
+            id: 0,
+            init: function() {
+                MarkDown.init();
+                var hash = this.hash = zen.url.getPar("hash");
+                var book = BOOK_LIBRARY.query(hash);
+                console.log(book);
+                if (book) {
+                    MarkDown.load(book);
+                } else {
+                    // window.location.href = "#blog/catalog";
+                }
+                this.bind();
+            },
+            bind: function() {
+                $(".zen-page .pre-btn").click(function() {
+                    if (Service.id > 0) {
+                        var id = Service.id - 1;
+                        if (ZEN_ARTICLES && ZEN_ARTICLES[id]) {
+                            window.location.href = "#blog/article?id=" + id;
+                        }
+                    } else {
+                        zen.message.toast("没有上一篇了.");
+                    }
+                })
+                $(".zen-page .next-btn").click(function() {
+                    if (Service.id < ZEN_ARTICLES.length - 1) {
+                        var id = Service.id + 1;
+                        if (ZEN_ARTICLES && ZEN_ARTICLES[id]) {
+                            window.location.href = "#blog/article?id=" + id;
+                        }
+                    } else {
+                        zen.message.toast("没有下一篇了.");
+                    }
+                })
+            }
+        }
+        zen.page.ready(Service);
+    })
+</script>
