@@ -1,0 +1,25 @@
+<style>
+    .zen-stack {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #141E30;
+        background: linear-gradient(to left, #141E30, #243B55);
+    }
+
+    .zen-page {
+        height: 100%;
+    }
+
+    .main-container {
+        width: 80%;
+    }
+</style>
+<div class="zen-page v-center">
+    <div class="main-container">
+        <zen-slot name="layout/home-nav.html"></zen-slot>
+        <zen-slot name="layout/footer.html"></zen-slot>
+    </div>
+</div>
