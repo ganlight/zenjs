@@ -1,0 +1,97 @@
+<style>
+    .demo-item {
+        width: 100%;
+        height: 300px;
+        display: inline-block;
+        position: relative;
+        background-color: #3085a3;
+        background: url("assets/img/background.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        text-align: center;
+        cursor: pointer;
+        color: #FFF;
+        margin: 10px;
+    }
+
+    .demo-item h2,
+    .demo-item p {
+        position: absolute;
+        right: 30px;
+        left: 30px;
+        padding: 10px 0;
+    }
+
+    .demo-item p {
+        bottom: 30px;
+        line-height: 1.5;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+    }
+
+    .demo-item h2 {
+        top: 30px;
+        -webkit-transition: -webkit-transform 0.35s;
+        transition: transform 0.35s;
+        -webkit-transform: translate3d(0, 20px, 0);
+        transform: translate3d(0, 20px, 0);
+    }
+
+    .demo-item:hover h2 {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .demo-item h2::after {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: #fff;
+        content: '';
+        -webkit-transform: translate3d(0, 40px, 0);
+        transform: translate3d(0, 40px, 0);
+    }
+
+    .demo-item h2::after,
+    .demo-item p {
+        opacity: 0;
+        -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+        transition: opacity 0.35s, transform 0.35s;
+    }
+
+    .demo-item:hover h2::after,
+    .demo-item:hover p {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+</style>
+<div class="zen-page ">
+    <zen-slot name="layout/menu.html"></zen-slot>
+    <div class="container">
+        <ul class="demo-list inline">
+            <li class="span4">
+                <div class="demo-item">
+                    <h2>Sweet <span>Marley</span></h2>
+                    <p>Marley tried to convince her but she was not interested.</p>
+                </div>
+            </li>
+            <li class="span4">
+                <div class="demo-item">
+                    <h2>Sweet <span>Marley</span></h2>
+                    <p>Marley tried to convince her but she was not interested.</p>
+                </div>
+            </li>
+            <li class="span4">
+                <div class="demo-item">
+                    <h2>Sweet <span>Marley</span></h2>
+                    <p>Marley tried to convince her but she was not interested.</p>
+                </div>
+            </li>>Marley tried to convince her but she was not interested.</p>
+            </li>
+        </ul>
+    </div>
+    <zen-slot name="layout/footer.html"></zen-slot>
+</div>
