@@ -41,9 +41,9 @@
         margin-bottom: 1.5rem;
     }
 
-    .main-container{
-      margin-left: 300px;
-      position: relative;
+    .main-container {
+        margin-left: 300px;
+        position: relative;
     }
 </style>
 <div class="zen-page">
@@ -91,12 +91,10 @@
                 MarkDown.init();
                 var hash = this.hash = zen.url.getPar("hash");
                 var book = BOOK_LIBRARY.query(hash);
-                console.log(book);
-                if (book) {
-                    MarkDown.load(book);
-                } else {
-                    // window.location.href = "#blog/catalog";
+                if (!book) {
+                    book = BOOK_LIBRARY.booklist[0];
                 }
+                MarkDown.load(book);
                 this.bind();
             },
             bind: function() {
