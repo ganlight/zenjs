@@ -5,10 +5,11 @@
     }
 
     .design-list .design-item {
-        max-width: 50%;
+        width: 50%;
         display: inline-block;
         float: left;
         margin: 0 auto;
+        cursor: pointer;
     }
 
     .design-item .content {
@@ -32,6 +33,7 @@
     }
 
     .design-header img {
+        width: 100%;
         max-width: 100%;
         height: auto;
         vertical-align: middle;
@@ -49,13 +51,17 @@
         opacity: 0;
     }
 
-    .design-header:hover .overlay {
+    .design-item:hover .overlay {
         opacity: 0.5;
     }
 
     .design-body {
         margin: 20px;
         position: relative;
+        width: 100%;
+        /*overflow: hidden;*/
+        max-height: 90px;
+        height: auto;
     }
 
     .design-body h2 {
@@ -119,7 +125,7 @@
                     <div class="design-header">
                         <a>
                             <div class="overlay"></div>
-                            <img src="https://ooo.0o0.ooo/2017/03/10/58c189da36d5b.jpg">
+                            <img src="assets/img/background.jpg">
                         </a>
                     </div>
                     <div class="design-body">
@@ -138,7 +144,7 @@
                     <div class="design-header">
                         <a>
                             <div class="overlay"></div>
-                            <img src="https://ooo.0o0.ooo/2017/03/10/58c189da36d5b.jpg">
+                            <img src="assets/img/background.jpg">
                         </a>
                     </div>
                     <div class="design-body">

@@ -32,42 +32,5 @@ var shelf_life = {
     books: books_life
 }
 
-// library > shelf > book
-//query 根据hash来找
-var BookLibrary = {
-    booklist: [],
-    bookmap: {},
-    bookshelf: [shelf_zenjs, shelf_life],
-    init: function() {
-        var self = this;
-        var len = self.bookshelf.length;
-        for (var i = 0; i < len; i++) {
-            var shelf = self.bookshelf[i];
-            self.add(shelf);
-        }
-        return this;
-    },
-    query: function(hash) {
-        if (hash && this.bookmap[hash]) {
-            return this.bookmap[hash];
-        }
-        return false;
-    },
-    add: function(shelf) {
-        var self = this;
-        var catalog = shelf.catalog;
-        var books = shelf.books;
-        var len = books.length;
-        for (var i = 0; i < len; i++) {
-            var book = books[i];
-            book.hash = "BOOK-ID-" + zen.hash(book.file);
-            book.catalog = catalog.type;
-            self.booklist.push(book);
-            self.bookmap[book.hash] = book;
-            catalog.num++;
-        }
-    }
-}
-
-var ZEN_ARTICLES = [];
-var BOOK_LIBRARY = BookLibrary.init();
+var SHELFS = [shelf_zenjs, shelf_life];
+var BOOK_LIBRARY = new zen.blog(SHELFS);
