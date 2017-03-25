@@ -1,0 +1,62 @@
+<div class="zen-page ">
+    <zen-slot name="layout/menu.html"></zen-slot>
+    <div class="container">
+        <ul class="design-list clearfix inline">
+        </ul>
+    </div>
+    <div class="template-area hide">
+        <li class="design-item">
+            <div class="content">
+                <div class="design-header">
+                    <a>
+                        <div class="overlay"></div>
+                        <img src="assets/img/background.jpg">
+                    </a>
+                </div>
+                <div class="design-body">
+                    <ul class="tag-list">
+                    </ul>
+                    <h2 class="title"></h2>
+                    <h4 class="info"></h4>
+                </div>
+            </div>
+        </li>
+    </div>
+    <zen-slot name="layout/footer.html"></zen-slot>
+</div>
+<script v-script="views/design/config.js"></script>
+<script>
+    $(function() {
+        var DesignList = {
+            dom: null,
+            data: null,
+            init: function() {
+                if (DESIGN_DIC) {
+                    this.data = DESIGN_DIC;
+                    this.rend(this.data);
+                }
+            },
+            rend: function(data) {
+                console.log(data);
+                var self = this;
+                var parent = $(".design-list");
+                var len = data.length;
+                for (var i = 0; i < len; i++) {
+                    var item = data[i];
+                    var clone = $(".template-area .design-item").clone();
+                    zen.store.data(clone,item);
+                    clone.find(".title").text(item.title);
+                    self.bind(clone);
+                    parent.append(clone);
+                }
+            },
+            bind: function(target) {
+                target.click(function() {
+                    var data = zen.store.data(target);
+                    window.location.hash = "#design/index?hash=" + data.title;
+                });
+            }
+        }
+        DesignList.init();
+    })
+</script>
