@@ -14,7 +14,7 @@ zen.parse = function(fn) {
     if (typeof fn === 'function') {
         var string = fn.toString();
         if (string.length > 20) {
-            return string.slice(15, -3);
+            return string.slice(14, -3);
         }
     }
     return "";
